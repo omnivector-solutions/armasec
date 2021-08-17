@@ -1,0 +1,57 @@
+from typing import List, Optional
+
+from fastapi import HTTPException, status
+from fastapi.openapi.models import APIKey, APIKeyIn
+from fastapi.security.api_key import APIKeyBase
+from starlette.requests import Request
+
+from armasec.managers import TokenManager
+from armasec.token_payload import TokenPayload
+
+
+class TokenSecurity(APIKeyBase):
+    """
+    An injectable Security class for Armada that returns a TokenPayload when used with Depends()
+    """
+
+    def __init__(
+        self,
+        manager: TokenManager,
+        scopes: Optional[List[str]] = None,
+        debug: bool = False,
+    ):
+        self.manager = manager
+        self.debug = debug
+        self.model: APIKey = APIKey(
+            **{"in": APIKeyIn.header},
+            name=self.manager.header_key,
+            description=self.__class__.__doc__,
+        )
+        self.scheme_name = self.__class__.__name__
+        self.scopes = scopes
+
+    async def __call__(self, request: Request) -> TokenPayload:
+        try:
+            token_payload = await self.manager.extract_token_payload(request.headers)
+        except Exception as err:
+            if self.debug:
+                raise err
+            else:
+                raise HTTPException(
+                    status_code=getattr(err, "status_code", status.HTTP_401_UNAUTHORIZED),
+                    detail="Not authenticated",
+                    headers={"WWW-Authenticate": "Bearer"},
+                )
+
+        if not self.scopes:
+            return token_payload
+
+        for scope in self.scopes:
+            if scope in token_payload.permissions:
+                return token_payload
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
