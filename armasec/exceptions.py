@@ -12,7 +12,7 @@ class ArmadaSecurityError(buzz.Buzz):
 
 class AuthenticationError(buzz.Buzz):
     """
-    Indicates a failure to authenticate and decode jwt
+    Indicates a failure to authenticate and decode jwt.
     """
 
     status_code = starlette.status.HTTP_401_UNAUTHORIZED
@@ -20,7 +20,7 @@ class AuthenticationError(buzz.Buzz):
 
 class AuthorizationError(buzz.Buzz):
     """
-    Indicates that the provided claims don't match the claims required for a protected endpoint
+    Indicates that the provided claims don't match the claims required for a protected endpoint.
     """
 
     status_code = starlette.status.HTTP_403_FORBIDDEN

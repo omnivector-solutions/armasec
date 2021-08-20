@@ -27,6 +27,7 @@ mypy = "^0.910"
 isort = "^5.9.3"
 pytest-sugar = "^0.9.4"
 black = "^21.7b0"
+flake8 = "^3.9.2"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

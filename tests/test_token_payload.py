@@ -6,7 +6,11 @@ from armasec.token_payload import TokenPayload
 
 
 @pytest.mark.freeze_time("2021-08-12 16:38:00")
-def test_to_dict__returns_a_dict_compatible_with_a_jwt_payload():
+def test_to_dict():
+    """
+    This test veifires that the ``to_dict()`` method produces a dictionary representation of the
+    TokenPayload instance's data.
+    """
     payload = TokenPayload(
         sub="someone",
         permissions=["a", "b", "c"],
@@ -20,7 +24,11 @@ def test_to_dict__returns_a_dict_compatible_with_a_jwt_payload():
 
 
 @pytest.mark.freeze_time("2021-08-12 16:38:00")
-def test_from_dict__constructs_a_token_from_a_jwt_payload_dict():
+def test_from_dict():
+    """
+    This test verifies that a TokenPayload instance can be correctly initialized with the data
+    embedded in a properly constructed and valid jwt.
+    """
     payload = TokenPayload.from_dict(
         dict(
             sub="someone",

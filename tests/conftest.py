@@ -10,7 +10,7 @@ from armasec.security import TokenSecurity
 @pytest.fixture
 def manager():
     """
-    Produes an instance of a Test Manager with convenience for setting up tests
+    Provides an instance of a TestManager that helps with setting up tests.
     """
     return TestTokenManager(
         secret="itsasecrettoeverybody",
@@ -21,13 +21,13 @@ def manager():
 
 
 @pytest.fixture
-def security(manager):
-    return TokenSecurity(manager)
-
-
-@pytest.fixture
-async def client(security):
+async def client(manager):
+    """
+    Provides a FastAPI client against which httpx requests an be made. Includes a "/secure" endpoint
+    that requires auth via the TokenSecurity injectable.
+    """
     app = fastapi.FastAPI()
+    security = TokenSecurity(manager)
 
     @app.get("/secure", dependencies=[fastapi.Depends(security)])
     async def _():

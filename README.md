@@ -75,8 +75,8 @@ url = "https://pypicloud.omnivector.solutions/simple"
 ```
 
 Then run:
-```
-poetry add armada-security
+```python
+$ poetry add armada-security
 ```
 
 
@@ -84,14 +84,14 @@ poetry add armada-security
 
 To install directly with `pip`, you can use the `--index-url` command line argument:
 
-```
-pip install --index-url=https://pypicloud.omnivector.solutions/simple armada-security
+```bash
+$ pip install --index-url=https://pypicloud.omnivector.solutions/simple armada-security
 ```
 
 
 ## Example Usage
 
-```
+```python
 from armasec import TokenManager, TokenSecurity, TokenPayload
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel

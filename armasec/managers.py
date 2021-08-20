@@ -13,7 +13,7 @@ from armasec.token_payload import TokenPayload
 
 def noop(*args, **kwargs):
     """
-    This is a no-op function that will be used if no debug_logger is passed to the manager
+    This is a no-op function that will be used if no debug_logger is passed to the manager.
     """
     pass
 
@@ -21,7 +21,7 @@ def noop(*args, **kwargs):
 class TokenManager:
     """
     Manages auth via jwt and manages extraction from request headers and serialization into
-    TokenPayload instances
+    TokenPayload instances.
     """
 
     auth_scheme = "bearer"
@@ -44,7 +44,7 @@ class TokenManager:
     def log_error(self, err: Exception, final_message: str, trace: TracebackType):
         """
         Logs an en error with the supplied message, a string representation of the error, and its
-        traceback. If no debug_logger is supplied, it will just return without doing anything
+        traceback. If no debug_logger is supplied, it will just return without doing anything.
         """
         if not self.debug_logger:
             return
@@ -73,7 +73,7 @@ class TokenManager:
 
     async def _decode_to_payload_dict(self, token: str) -> dict:
         """
-        Invokes decoding. Should be overridden by classes that need to apply more decoding logic
+        Invokes decoding. Should be overridden by classes that need to apply more decoding logic.
         """
         return dict(
             jwt.decode(
@@ -87,7 +87,7 @@ class TokenManager:
 
     async def decode(self, token: str) -> TokenPayload:
         """
-        Decodes a jwt into a TokenPayload while checking signatures and claims
+        Decodes a jwt into a TokenPayload while checking signatures and claims.
         """
         self.debug_logger(f"Attempting to decode '{token}'")
         with AuthenticationError.handle_errors(
@@ -103,7 +103,7 @@ class TokenManager:
 
     def unpack_token_from_header(self, headers: Union[Headers, dict]) -> str:
         """
-        Unpacks a jwt from a request header
+        Unpacks a jwt from a request header.
         """
         self.debug_logger(f"Attempting to unpack token from headers {headers}")
         auth_str = headers.get(self.header_key)
@@ -129,7 +129,7 @@ class TokenManager:
 
     async def extract_token_payload(self, headers: Union[Headers, dict]) -> TokenPayload:
         """
-        Retrieves a token from a request header and decodes it into a TokenPayload
+        Retrieves a token from a request header and decodes it into a TokenPayload.
         """
         token = self.unpack_token_from_header(headers)
         token_payload = await self.decode(token)
