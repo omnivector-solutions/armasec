@@ -49,3 +49,25 @@ async def test_injector_requires_correctly_encoded_token(client, manager):
     )
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
     assert "Not authenticated" in response.text
+
+
+@pytest.mark.asyncio
+async def test_injector_requires_scopes(client, manager, build_secure_endpoint):
+    """
+    This test verifies that access is granted to requests with valid auth headers where the token
+    carries all of the scopes required by the endpoint
+    """
+    ac_payload = TokenPayload(
+        sub="someone",
+        permissions=["a", "c"],
+        expire=datetime.utcnow(),
+    )
+
+    build_secure_endpoint("/requires_c", scopes=["c"])
+    response = await client.get("/requires_c", headers=manager.pack_header(ac_payload))
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    build_secure_endpoint("/requires_a_b_c", scopes=["a", "b", "c"])
+    response = await client.get("/requires_a_b_c", headers=manager.pack_header(ac_payload))
+    assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
+    assert "Not authorized" in response.text

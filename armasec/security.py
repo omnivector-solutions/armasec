@@ -46,12 +46,11 @@ class TokenSecurity(APIKeyBase):
         if not self.scopes:
             return token_payload
 
-        for scope in self.scopes:
-            if scope in token_payload.permissions:
-                return token_payload
-
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        missing_scopes = [s for s in self.scopes if s not in token_payload.permissions]
+        if len(missing_scopes) > 0:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not authorized",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return token_payload

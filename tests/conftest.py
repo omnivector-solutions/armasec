@@ -1,3 +1,5 @@
+import typing
+
 import asgi_lifespan
 import fastapi
 import httpx
@@ -21,18 +23,40 @@ def manager():
 
 
 @pytest.fixture
-async def client(manager):
+async def app():
+    """
+    Provides an instance of a FastAPI app]
+    """
+    return fastapi.FastAPI()
+
+
+@pytest.fixture
+async def build_secure_endpoint(app, manager):
+    """
+    Provides a method that dynamically builds a GET route on the app that requires a header with a
+    valid token that includes the supplied scopes
+    """
+
+    def _helper(path: str, scopes: typing.Optional[typing.List[str]] = None):
+        """
+        Adds a route onto the app at the provide path. If scopes are provided, they are supplied
+        to the injected TokenSecurity that is added to the route
+        """
+
+        @app.get(path, dependencies=[fastapi.Depends(TokenSecurity(manager, scopes=scopes))])
+        async def _():
+            return dict(good="to go")
+
+    return _helper
+
+
+@pytest.fixture
+async def client(app, manager, build_secure_endpoint):
     """
     Provides a FastAPI client against which httpx requests an be made. Includes a "/secure" endpoint
     that requires auth via the TokenSecurity injectable.
     """
-    app = fastapi.FastAPI()
-    security = TokenSecurity(manager)
-
-    @app.get("/secure", dependencies=[fastapi.Depends(security)])
-    async def _():
-        return dict(good="to go")
-
+    build_secure_endpoint("/secure")
     async with asgi_lifespan.LifespanManager(app):
         async with httpx.AsyncClient(app=app, base_url="http://test") as client:
             yield client
