@@ -66,7 +66,7 @@ is only hosted on OmniVector's internal package index at pypicloud.omnivector.so
 
 ### Poetry
 
-To install via poetr, you need to add the following section to `pyproject.toml`
+To install via poetry, you need to add the following section to `pyproject.toml`
 
 ```
 [[tool.poetry.source]]
