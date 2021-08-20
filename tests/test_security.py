@@ -7,13 +7,13 @@ from armasec.token_payload import TokenPayload
 
 
 @pytest.mark.asyncio
-async def test_injector_allows_authorized_request(client, manager, pack_header):
+async def test_injector_allows_authorized_request(client, manager):
     token_payload = TokenPayload(
         sub="someone",
         permissions=["a", "b", "c"],
         expire=datetime.utcnow(),
     )
-    response = await client.get("/secure", headers=pack_header(token_payload))
+    response = await client.get("/secure", headers=manager.pack_header(token_payload))
     assert response.status_code == starlette.status.HTTP_200_OK
 
 
@@ -25,7 +25,7 @@ async def test_injector_requires_token_header(client):
 
 
 @pytest.mark.asyncio
-async def test_injector_requires_correctly_encoded_token(client, manager, pack_header):
+async def test_injector_requires_correctly_encoded_token(client, manager):
     token_payload = TokenPayload(
         sub="someone",
         permissions=["a", "b", "c"],
@@ -33,7 +33,7 @@ async def test_injector_requires_correctly_encoded_token(client, manager, pack_h
     )
     response = await client.get(
         "/secure",
-        headers=pack_header(token_payload, secret_override="someothersecret"),
+        headers=manager.pack_header(token_payload, secret_override="someothersecret"),
     )
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
     assert "Not authenticated" in response.text

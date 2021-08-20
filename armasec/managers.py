@@ -199,3 +199,34 @@ class TokenManager:
 #             "Could not find a matching decryption key in jwks",
 #         )
 #         # TODO: figure out how to convert the jwks key to a secret
+
+
+class TestTokenManager(TokenManager):
+    """
+    This is a special TokenManager that can be used in tests to produce jwts or pack headers
+    """
+
+    def encode_jwt(self, token_payload: TokenPayload, secret_override: str = None):
+        """
+        Encodes a jwt based on a TokenPayload
+
+        The ``secret_override`` parameter allows you to encode a jwt using a different secret. Any
+        tokens produced in this way will not be decodable by this manager
+        """
+        claims = dict(
+            **token_payload.to_dict(),
+            iss=self.issuer,
+            aud=self.audience,
+        )
+        return jwt.encode(
+            claims,
+            self.secret if not secret_override else secret_override,
+            algorithm=self.algorithm,
+        )
+
+    def pack_header(self, *encode_jwt_args, **encode_jwt_kwargs):
+        """
+        Produces a header including a jwt that could be attached to a request
+        """
+        token = self.encode_jwt(*encode_jwt_args, **encode_jwt_kwargs)
+        return {self.header_key: f"{self.auth_scheme} {token}"}
