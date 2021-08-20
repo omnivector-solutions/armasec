@@ -92,3 +92,23 @@ def test_encode_jwt__creates_encoded_jwt_for_token(manager):
     assert payload["sub"] == "someone"
     assert payload["permissions"] == ["a", "b", "c"]
     assert payload["exp"] == int(datetime.utcnow().timestamp())
+
+
+@pytest.mark.freeze_time("2021-08-12 16:38:00")
+def test_encode_jwt__permissions_override_can_set_different_permissions(manager):
+    token = TokenPayload(
+        sub="someone",
+        permissions=["a", "b", "c"],
+        expire=datetime.utcnow(),
+    )
+    token_jwt = manager.encode_jwt(token, permissions_override=[])
+    payload = jose.jwt.decode(
+        token_jwt,
+        "itsasecrettoeverybody",
+        algorithms=["HS256"],
+        issuer=manager.issuer,
+        audience=manager.audience,
+    )
+    assert payload["sub"] == "someone"
+    assert payload["permissions"] == []
+    assert payload["exp"] == int(datetime.utcnow().timestamp())
