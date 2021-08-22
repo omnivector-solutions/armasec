@@ -75,7 +75,7 @@ url = "https://pypicloud.omnivector.solutions/simple"
 ```
 
 Then run:
-```python
+```bash
 $ poetry add armada-security
 ```
 

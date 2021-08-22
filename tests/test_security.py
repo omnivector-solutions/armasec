@@ -35,8 +35,8 @@ async def test_injector_requires_token_header(client):
 @pytest.mark.asyncio
 async def test_injector_requires_correctly_encoded_token(client, manager):
     """
-    This test verifies that access is dejni3ed to requests that have an auth header that was encoded
-    using a scret that doesn't match the current appl.
+    This test verifies that access is denied to requests when the jwt was encoded using a the wrong
+    scret (i.e. different from the secret that the TokenManager was initialized with).
     """
     token_payload = TokenPayload(
         sub="someone",
@@ -55,7 +55,7 @@ async def test_injector_requires_correctly_encoded_token(client, manager):
 async def test_injector_requires_scopes(client, manager, build_secure_endpoint):
     """
     This test verifies that access is granted to requests with valid auth headers where the token
-    carries all of the scopes required by the endpoint
+    carries all of the scopes required by the endpoint.
     """
     ac_payload = TokenPayload(
         sub="someone",

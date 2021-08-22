@@ -8,7 +8,7 @@ from armasec.token_payload import TokenPayload
 @pytest.mark.freeze_time("2021-08-12 16:38:00")
 def test_to_dict():
     """
-    This test veifires that the ``to_dict()`` method produces a dictionary representation of the
+    This test verifies that the `to_dict()` method produces a dictionary representation of the
     TokenPayload instance's data.
     """
     payload = TokenPayload(

@@ -36,12 +36,8 @@ def test_unpack_token_from_header__success(manager):
         expire=datetime.utcnow(),
     )
     token = manager.encode_jwt(original_payload)
-    assert (
-        manager.unpack_token_from_header(
-            {"Authorization": f"bearer {token}"},
-        )
-        == token
-    )
+    unpacked_token = manager.unpack_token_from_header({"Authorization": f"bearer {token}"})
+    assert token == unpacked_token
 
 
 def test_unpack_token_from_header__fail_when_auth_header_not_found(manager):

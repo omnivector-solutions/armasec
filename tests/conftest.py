@@ -25,7 +25,7 @@ def manager():
 @pytest.fixture
 async def app():
     """
-    Provides an instance of a FastAPI app]
+    Provides an instance of a FastAPI app that is to be used only for testing purposes.
     """
     return fastapi.FastAPI()
 
@@ -34,13 +34,13 @@ async def app():
 async def build_secure_endpoint(app, manager):
     """
     Provides a method that dynamically builds a GET route on the app that requires a header with a
-    valid token that includes the supplied scopes
+    valid token that includes the supplied scopes.
     """
 
     def _helper(path: str, scopes: typing.Optional[typing.List[str]] = None):
         """
         Adds a route onto the app at the provide path. If scopes are provided, they are supplied
-        to the injected TokenSecurity that is added to the route
+        to the injected TokenSecurity that is added to the route.
         """
 
         @app.get(path, dependencies=[fastapi.Depends(TokenSecurity(manager, scopes=scopes))])
@@ -53,8 +53,8 @@ async def build_secure_endpoint(app, manager):
 @pytest.fixture
 async def client(app, manager, build_secure_endpoint):
     """
-    Provides a FastAPI client against which httpx requests an be made. Includes a "/secure" endpoint
-    that requires auth via the TokenSecurity injectable.
+    Provides a FastAPI client against which httpx requests can be made. Includes a "/secure"
+    endpoint that requires auth via the TokenSecurity injectable.
     """
     build_secure_endpoint("/secure")
     async with asgi_lifespan.LifespanManager(app):

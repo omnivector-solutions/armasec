@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 class TokenPayload(BaseModel):
     """
-    A convenience method that can be used to access parts of a decoded jwt
+    A convenience class that can be used to access parts of a decoded jwt.
     """
 
     sub: str
@@ -20,7 +20,7 @@ class TokenPayload(BaseModel):
 
     def to_dict(self):
         """
-        Converts a TokenPayload to the equivalent dictionary returned by ``jwt.decode()``
+        Converts a TokenPayload to the equivalent dictionary returned by `jwt.decode()`.
         """
         return dict(
             sub=self.sub,
@@ -31,7 +31,7 @@ class TokenPayload(BaseModel):
     @classmethod
     def from_dict(cls, payload_dict: dict) -> TokenPayload:
         """
-        Constructs a TokenPayload from a dictionary produced by ``jwt.decode``
+        Constructs a TokenPayload from a dictionary produced by `jwt.decode()`.
         """
         return cls(
             sub=payload_dict["sub"],

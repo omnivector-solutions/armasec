@@ -138,7 +138,7 @@ class TokenManager:
 
 class TestTokenManager(TokenManager):
     """
-    This is a special TokenManager that can be used in tests to produce jwts or pack headers
+    This is a special TokenManager that can be used in tests to produce jwts or pack headers.
     """
 
     def encode_jwt(
@@ -170,7 +170,7 @@ class TestTokenManager(TokenManager):
 
     def pack_header(self, *encode_jwt_args, **encode_jwt_kwargs):
         """
-        Produces a header including a jwt that could be attached to a request
+        Produces a header including a jwt that could be attached to a request.
         """
         token = self.encode_jwt(*encode_jwt_args, **encode_jwt_kwargs)
         return {self.header_key: f"{self.auth_scheme} {token}"}
