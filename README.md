@@ -100,10 +100,11 @@ from pydantic import BaseModel
 app = FastAPI()
 
 manager = TokenManager(
-    secret="supertopsecret",
-    algorithm="HS256",
-    issuer="https://issuer-url.com/",
-    audience="https://audience-url.com",
+    secret="my-closely-guarded-client-secret",
+    algorithm="RS256",
+    client_id="my-client-id",
+    domain="mydomain.com",
+    audience="https://my-service-api.mydomain.com",
 )
 read_stuff_security = TokenSecurity(manager, scopes=["read:stuff"])
 

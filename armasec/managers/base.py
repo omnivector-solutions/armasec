@@ -71,7 +71,7 @@ class TokenManager:
             )
         )
 
-    async def _decode_to_payload_dict(self, token: str) -> dict:
+    def _decode_to_payload_dict(self, token: str) -> dict:
         """
         Invokes decoding. Should be overridden by classes that need to apply more decoding logic.
         """
@@ -85,7 +85,7 @@ class TokenManager:
             )
         )
 
-    async def decode(self, token: str) -> TokenPayload:
+    def decode(self, token: str) -> TokenPayload:
         """
         Decodes a jwt into a TokenPayload while checking signatures and claims.
         """
@@ -94,7 +94,7 @@ class TokenManager:
             "Failed to decode token string",
             do_except=self.log_error,
         ):
-            payload_dict = await self._decode_to_payload_dict(token)
+            payload_dict = self._decode_to_payload_dict(token)
             self.debug_logger(f"Payload dictionary is {payload_dict}")
             self.debug_logger("Attempting to convert to TokenPayload")
             token_payload = TokenPayload.from_dict(payload_dict)
@@ -127,50 +127,10 @@ class TokenManager:
         )
         return token
 
-    async def extract_token_payload(self, headers: Union[Headers, dict]) -> TokenPayload:
+    def extract_token_payload(self, headers: Union[Headers, dict]) -> TokenPayload:
         """
         Retrieves a token from a request header and decodes it into a TokenPayload.
         """
         token = self.unpack_token_from_header(headers)
-        token_payload = await self.decode(token)
+        token_payload = self.decode(token)
         return token_payload
-
-
-class TestTokenManager(TokenManager):
-    """
-    This is a special TokenManager that can be used in tests to produce jwts or pack headers.
-    """
-
-    def encode_jwt(
-        self,
-        token_payload: TokenPayload,
-        permissions_override: Optional[List[str]] = None,
-        secret_override: Optional[str] = None,
-    ):
-        """
-        Encodes a jwt based on a TokenPayload
-
-        Adds any supplied scopes to a "permissions" claim in the jwt
-
-        The ``secret_override`` parameter allows you to encode a jwt using a different secret. Any
-        tokens produced in this way will not be decodable by this manager
-        """
-        claims = dict(
-            **token_payload.to_dict(),
-            iss=self.issuer,
-            aud=self.audience,
-        )
-        if permissions_override is not None:
-            claims["permissions"] = permissions_override
-        return jwt.encode(
-            claims,
-            self.secret if not secret_override else secret_override,
-            algorithm=self.algorithm,
-        )
-
-    def pack_header(self, *encode_jwt_args, **encode_jwt_kwargs):
-        """
-        Produces a header including a jwt that could be attached to a request.
-        """
-        token = self.encode_jwt(*encode_jwt_args, **encode_jwt_kwargs)
-        return {self.header_key: f"{self.auth_scheme} {token}"}

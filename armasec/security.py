@@ -32,7 +32,7 @@ class TokenSecurity(APIKeyBase):
 
     async def __call__(self, request: Request) -> TokenPayload:
         try:
-            token_payload = await self.manager.extract_token_payload(request.headers)
+            token_payload = self.manager.extract_token_payload(request.headers)
         except Exception as err:
             if self.debug:
                 raise err
