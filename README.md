@@ -58,6 +58,18 @@ Though `armada-security` provides everything you need to apply security, you wil
 manage users and permissions through the OIDC platform itself.
 
 
+### Supported algorithms
+
+The `armada-security` package has been tested with the following algorithms for authentication:
+
+* HS256 for the standard TokenManager
+* RS256 for the AsymmetricManager
+
+The `armada-security` package should function with any of the algorithms supported by the
+[python-jose](https://python-jose.readthedocs.io/en/latest/) jwt package. However, no verification
+of functionality has been done outside of HS256 and RS256 yet.
+
+
 ## Installation
 
 The `armada-security` package can be installed like any other python package. For now, though, it
@@ -100,10 +112,11 @@ from pydantic import BaseModel
 app = FastAPI()
 
 manager = TokenManager(
-    secret="supertopsecret",
-    algorithm="HS256",
-    issuer="https://issuer-url.com/",
-    audience="https://audience-url.com",
+    secret="my-closely-guarded-client-secret",
+    algorithm="RS256",
+    client_id="my-client-id",
+    domain="mydomain.com",
+    audience="https://my-service-api.mydomain.com",
 )
 read_stuff_security = TokenSecurity(manager, scopes=["read:stuff"])
 

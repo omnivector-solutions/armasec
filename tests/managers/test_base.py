@@ -8,8 +8,7 @@ from armasec.token_payload import TokenPayload
 
 
 @pytest.mark.freeze_time("2021-08-12 16:38:00")
-@pytest.mark.asyncio
-async def test_decode__success(manager):
+def test_decode__success(manager):
     """
     This test verifies that the ``decode()`` method can successfully unpack a valid jwt into a dict
     containing the payload elements.
@@ -20,7 +19,7 @@ async def test_decode__success(manager):
         expire=datetime.utcnow(),
     )
     token = manager.encode_jwt(original_payload)
-    extracted_payload = await manager.decode(token)
+    extracted_payload = manager.decode(token)
     assert extracted_payload == original_payload
 
 
@@ -77,8 +76,7 @@ def test_unpack_token_from_header__fail_for_invalid_scheme(manager):
 
 
 @pytest.mark.freeze_time("2021-08-12 16:38:00")
-@pytest.mark.asyncio
-async def test_extract_token_payload__success(manager):
+def test_extract_token_payload__success(manager):
     """
     This test verifies that the ``extract_token_payload()`` method successfully decodes a jwt and
     produces a TokenPayload instance from the contents.
@@ -89,55 +87,7 @@ async def test_extract_token_payload__success(manager):
         expire=datetime.utcnow(),
     )
     token = manager.encode_jwt(original_payload)
-    extracted_payload = await manager.extract_token_payload(
+    extracted_payload = manager.extract_token_payload(
         {"Authorization": f"bearer {token}"},
     )
     assert extracted_payload == original_payload
-
-
-@pytest.mark.freeze_time("2021-08-12 16:38:00")
-def test_encode_jwt__success(manager):
-    """
-    This test ensures that the TestTokenManager can create a properly encoded  jwt from a
-    TokenPayload instance.
-    """
-    token = TokenPayload(
-        sub="someone",
-        permissions=["a", "b", "c"],
-        expire=datetime.utcnow(),
-    )
-    token_jwt = manager.encode_jwt(token)
-    payload = jose.jwt.decode(
-        token_jwt,
-        "itsasecrettoeverybody",
-        algorithms=["HS256"],
-        issuer=manager.issuer,
-        audience=manager.audience,
-    )
-    assert payload["sub"] == "someone"
-    assert payload["permissions"] == ["a", "b", "c"]
-    assert payload["exp"] == int(datetime.utcnow().timestamp())
-
-
-@pytest.mark.freeze_time("2021-08-12 16:38:00")
-def test_encode_jwt__permissions_override(manager):
-    """
-    This test ensures that the TestTokenManager can encode a jwt from a TokenPayload instance with
-    the permissions list overridden by the ``permissions_override`` parameter.
-    """
-    token = TokenPayload(
-        sub="someone",
-        permissions=["a", "b", "c"],
-        expire=datetime.utcnow(),
-    )
-    token_jwt = manager.encode_jwt(token, permissions_override=[])
-    payload = jose.jwt.decode(
-        token_jwt,
-        "itsasecrettoeverybody",
-        algorithms=["HS256"],
-        issuer=manager.issuer,
-        audience=manager.audience,
-    )
-    assert payload["sub"] == "someone"
-    assert payload["permissions"] == []
-    assert payload["exp"] == int(datetime.utcnow().timestamp())

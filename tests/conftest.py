@@ -5,7 +5,7 @@ import fastapi
 import httpx
 import pytest
 
-from armasec.managers import TestTokenManager
+from armasec.managers.test import TestTokenManager
 from armasec.security import TokenSecurity
 
 
