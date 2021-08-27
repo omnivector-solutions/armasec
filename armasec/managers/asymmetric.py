@@ -10,10 +10,12 @@ from armasec.exceptions import AuthenticationError
 from armasec.jwk import JWK
 
 
-
-
 class AsymmetricManager(TokenManager):
-    # I think this needs to handle rotation...
+    """
+    Provides a TokenManager that retrieves JWKs from an OIDC provider to use asymmetric signature
+    validation algorithms during the `decode()` process
+    """
+
     jwks: List[JWK]
 
     def __init__(
@@ -33,6 +35,10 @@ class AsymmetricManager(TokenManager):
         self.load_jwks()
 
     def load_jwks(self):
+        """
+        Retrives JWKs public keys from an OIDC provider. Verifies that the keys may be retrieved,
+        checks that they are wellformed, and deserializes them into list of JWK instances.
+        """
 
         jwks_url = f"https://{self.domain}/.well-known/jwks.json"
         self.debug_logger(f"Attempting to fetch jwks from '{jwks_url}'")
@@ -53,6 +59,11 @@ class AsymmetricManager(TokenManager):
         self.jwks = [JWK(**k) for k in data["keys"]]
 
     def _decode_to_payload_dict(self, token: str) -> dict:
+        """
+        Overload for the base class method. Searches for a public keys within the JWKs that matches
+        the incoming token's unverified header and uses it to verify and decode the payload. If a
+        matching public key cannot be found, it will raise an AuthenticationError.
+        """
         unverified_header = jwt.get_unverified_header(token)
         kid = unverified_header.get("kid")
         AuthenticationError.require_condition(
