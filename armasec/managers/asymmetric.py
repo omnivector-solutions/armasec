@@ -13,7 +13,7 @@ from armasec.jwk import JWK
 class AsymmetricManager(TokenManager):
     """
     Provides a TokenManager that retrieves JWKs from an OIDC provider to use asymmetric signature
-    validation algorithms during the `decode()` process
+    validation algorithms during the `decode()` process.
     """
 
     jwks: List[JWK]
@@ -32,6 +32,16 @@ class AsymmetricManager(TokenManager):
         super().__init__(secret, algorithm, issuer, audience, **kwargs)
         self.client_id = client_id
         self.domain = domain
+        self.debug_logger(
+            snick.dedent(
+                f"""
+                Additionally initialized {self.__class__.__name__} with:
+                    {self.client_id=}
+                    {self.domain=}
+                """
+            )
+        )
+
         self.load_jwks()
 
     def load_jwks(self):
@@ -61,7 +71,7 @@ class AsymmetricManager(TokenManager):
     def _decode_to_payload_dict(self, token: str) -> dict:
         """
         Overload for the base class method. Searches for a public keys within the JWKs that matches
-        the incoming token's unverified header and uses it to verify and decode the payload. If a
+        the incoming token's unverified header and uses it to vekrify and decode the payload. If a
         matching public key cannot be found, it will raise an AuthenticationError.
         """
         unverified_header = jwt.get_unverified_header(token)
@@ -79,7 +89,7 @@ class AsymmetricManager(TokenManager):
                 return dict(
                     jwt.decode(
                         token,
-                        jwk,
+                        jwk.dict(),
                         algorithms=[self.algorithm],
                         audience=self.audience,
                         issuer=self.issuer,

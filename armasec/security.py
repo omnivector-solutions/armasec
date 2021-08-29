@@ -33,7 +33,7 @@ class TokenSecurity(APIKeyBase):
     async def __call__(self, request: Request) -> TokenPayload:
         """
         This method is called by FastAPI's dependency injection system when a TokenSecurity instance
-        is injected to a route endpoint via the Depends() method
+        is injected to a route endpoint via the Depends() method.
         """
         try:
             token_payload = self.manager.extract_token_payload(request.headers)

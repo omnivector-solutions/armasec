@@ -41,6 +41,18 @@ class TokenManager:
         self.audience = audience
         self.debug_logger = debug_logger
 
+        self.debug_logger(
+            dedent(
+                f"""
+                Initialized {self.__class__.__name__} with:
+                    {self.secret=}
+                    {self.algorithm=}
+                    {self.issuer=}
+                    {self.audience=}
+                """
+            )
+        )
+
     def log_error(self, err: Exception, final_message: str, trace: TracebackType):
         """
         Logs an en error with the supplied message, a string representation of the error, and its

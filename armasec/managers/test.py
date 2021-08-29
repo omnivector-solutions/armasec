@@ -18,12 +18,12 @@ class TestTokenManager(TokenManager):
         secret_override: Optional[str] = None,
     ):
         """
-        Encodes a jwt based on a TokenPayload
+        Encodes a jwt based on a TokenPayload.
 
-        Adds any supplied scopes to a "permissions" claim in the jwt
+        Adds any supplied scopes to a "permissions" claim in the jwt.
 
         The ``secret_override`` parameter allows you to encode a jwt using a different secret. Any
-        tokens produced in this way will not be decodable by this manager
+        tokens produced in this way will not be decodable by this manager.
         """
         claims = dict(
             **token_payload.to_dict(),
