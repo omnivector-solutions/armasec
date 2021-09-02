@@ -20,4 +20,3 @@ class JWK(BaseModel):
 
     class Config:
         extra = "allow"
-

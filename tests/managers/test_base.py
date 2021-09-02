@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import jose
 import pytest
 
 from armasec.exceptions import AuthenticationError
