@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "armada-security"
-version = "0.3.1"
+version = "0.3.2"
 description = "Armada Security Tools"
 authors = ["OmniVector Solutions <info@omnivector.solutions>"]
 license = "MIT"

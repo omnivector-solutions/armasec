@@ -1,6 +1,6 @@
 from traceback import format_tb
 from types import TracebackType
-from typing import Callable, List, Optional, Union
+from typing import Callable, Optional, Union
 
 from fastapi.security.utils import get_authorization_scheme_param
 from jose import jwt
@@ -44,11 +44,11 @@ class TokenManager:
         self.debug_logger(
             dedent(
                 f"""
-                Initialized {self.__class__.__name__} with:
-                    {self.secret=}
-                    {self.algorithm=}
-                    {self.issuer=}
-                    {self.audience=}
+                Initialized    {self.__class__.__name__} with:
+                    secret:    {self.secret}
+                    algorithm: {self.algorithm}
+                    issuer:    {self.issuer}
+                    audience:  {self.audience}
                 """
             )
         )

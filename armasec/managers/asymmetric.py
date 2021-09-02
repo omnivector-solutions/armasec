@@ -2,12 +2,12 @@ from typing import List
 
 import httpx
 import snick
-from jose import jwt, jwk
+from jose import jwt
 from starlette.status import HTTP_200_OK
 
-from armasec.managers.base import TokenManager
 from armasec.exceptions import AuthenticationError
 from armasec.jwk import JWK
+from armasec.managers.base import TokenManager
 
 
 class AsymmetricManager(TokenManager):
@@ -36,8 +36,8 @@ class AsymmetricManager(TokenManager):
             snick.dedent(
                 f"""
                 Additionally initialized {self.__class__.__name__} with:
-                    {self.client_id=}
-                    {self.domain=}
+                    client_id: {self.client_id}
+                    domain: {self.domain}
                 """
             )
         )
@@ -53,17 +53,17 @@ class AsymmetricManager(TokenManager):
         jwks_url = f"https://{self.domain}/.well-known/jwks.json"
         self.debug_logger(f"Attempting to fetch jwks from '{jwks_url}'")
         with AuthenticationError.handle_errors(
-            message=f"Call to {jwks_url=} failed",
+            message=f"Call to JWKS url {jwks_url} failed",
             do_except=self.log_error,
         ):
             response = httpx.get(jwks_url)
         AuthenticationError.require_condition(
             response.status_code == HTTP_200_OK,
-            f"Didn't get a success status code from {jwks_url=}: {response.status_code=}",
+            f"Didn't get a success status code from JWKS url {jwks_url}: {response.status_code}",
         )
         data = response.json()
         AuthenticationError.require_condition(
-            'keys' in data,
+            "keys" in data,
             "Response jwks data is malformed",
         )
         self.jwks = [JWK(**k) for k in data["keys"]]
@@ -77,8 +77,8 @@ class AsymmetricManager(TokenManager):
         unverified_header = jwt.get_unverified_header(token)
         kid = unverified_header.get("kid")
         AuthenticationError.require_condition(
-           kid,
-            f"Unverified header doesn't contain 'kid'...not sure how this happened",
+            kid,
+            "Unverified header doesn't contain 'kid'...not sure how this happened",
         )
         self.debug_logger(f"Extraced unverified header: {unverified_header}")
 
