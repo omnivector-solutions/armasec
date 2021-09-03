@@ -4,6 +4,7 @@ import pytest
 
 from armasec.exceptions import AuthenticationError
 from armasec.token_payload import TokenPayload
+from armasec.utilities import encode_jwt
 
 
 @pytest.mark.freeze_time("2021-08-12 16:38:00")
@@ -17,7 +18,7 @@ def test_decode__success(manager):
         permissions=["a", "b", "c"],
         expire=datetime.utcnow(),
     )
-    token = manager.encode_jwt(original_payload)
+    token = encode_jwt(manager, original_payload)
     extracted_payload = manager.decode(token)
     assert extracted_payload == original_payload
 
@@ -33,7 +34,7 @@ def test_unpack_token_from_header__success(manager):
         permissions=["a", "b", "c"],
         expire=datetime.utcnow(),
     )
-    token = manager.encode_jwt(original_payload)
+    token = encode_jwt(manager, original_payload)
     unpacked_token = manager.unpack_token_from_header({"Authorization": f"bearer {token}"})
     assert token == unpacked_token
 
@@ -85,7 +86,7 @@ def test_extract_token_payload__success(manager):
         permissions=["a", "b", "c"],
         expire=datetime.utcnow(),
     )
-    token = manager.encode_jwt(original_payload)
+    token = encode_jwt(manager, original_payload)
     extracted_payload = manager.extract_token_payload(
         {"Authorization": f"bearer {token}"},
     )

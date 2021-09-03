@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
 ROOT_DIR:=$(shell dirname $(shell pwd))
-PACKAGE_NAME:=${PACKAGE_NAME}
+PACKAGE_NAME:=armasec
 
 install:
 	poetry install

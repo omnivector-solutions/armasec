@@ -4,6 +4,7 @@ import pytest
 import starlette
 
 from armasec.token_payload import TokenPayload
+from armasec.utilities import pack_header
 
 
 @pytest.mark.asyncio
@@ -17,7 +18,7 @@ async def test_injector_allows_authorized_request(client, manager):
         permissions=["a", "b", "c"],
         expire=datetime.utcnow(),
     )
-    response = await client.get("/secure", headers=manager.pack_header(token_payload))
+    response = await client.get("/secure", headers=pack_header(manager, token_payload))
     assert response.status_code == starlette.status.HTTP_200_OK
 
 
@@ -45,7 +46,7 @@ async def test_injector_requires_correctly_encoded_token(client, manager):
     )
     response = await client.get(
         "/secure",
-        headers=manager.pack_header(token_payload, secret_override="someothersecret"),
+        headers=pack_header(manager, token_payload, secret_override="someothersecret"),
     )
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
     assert "Not authenticated" in response.text
@@ -64,10 +65,10 @@ async def test_injector_requires_scopes(client, manager, build_secure_endpoint):
     )
 
     build_secure_endpoint("/requires_c", scopes=["c"])
-    response = await client.get("/requires_c", headers=manager.pack_header(ac_payload))
+    response = await client.get("/requires_c", headers=pack_header(manager, ac_payload))
     assert response.status_code == starlette.status.HTTP_200_OK
 
     build_secure_endpoint("/requires_a_b_c", scopes=["a", "b", "c"])
-    response = await client.get("/requires_a_b_c", headers=manager.pack_header(ac_payload))
+    response = await client.get("/requires_a_b_c", headers=pack_header(manager, ac_payload))
     assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
     assert "Not authorized" in response.text

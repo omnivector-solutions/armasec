@@ -5,7 +5,7 @@ import fastapi
 import httpx
 import pytest
 
-from armasec.managers.test import TestTokenManager
+from armasec.managers import TokenManager
 from armasec.security import TokenSecurity
 
 
@@ -14,7 +14,7 @@ def manager():
     """
     Provides an instance of a TestManager that helps with setting up tests.
     """
-    return TestTokenManager(
+    return TokenManager(
         secret="itsasecrettoeverybody",
         algorithm="HS256",
         issuer="https://test-issuer.com",

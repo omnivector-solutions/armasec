@@ -4,6 +4,7 @@ import jose
 import pytest
 
 from armasec.token_payload import TokenPayload
+from armasec.utilities import encode_jwt
 
 
 @pytest.mark.freeze_time("2021-08-12 16:38:00")
@@ -17,7 +18,7 @@ def test_encode_jwt__success(manager):
         permissions=["a", "b", "c"],
         expire=datetime.utcnow(),
     )
-    token_jwt = manager.encode_jwt(token)
+    token_jwt = encode_jwt(manager, token)
     payload = jose.jwt.decode(
         token_jwt,
         "itsasecrettoeverybody",
@@ -41,7 +42,7 @@ def test_encode_jwt__permissions_override(manager):
         permissions=["a", "b", "c"],
         expire=datetime.utcnow(),
     )
-    token_jwt = manager.encode_jwt(token, permissions_override=[])
+    token_jwt = encode_jwt(manager, token, permissions_override=[])
     payload = jose.jwt.decode(
         token_jwt,
         "itsasecrettoeverybody",
