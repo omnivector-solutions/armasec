@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added additional logging for debugging
 - Corrected grammar in some docstrings
 - Fixed bug where TokenPayload breaks if you don't provide it a "permissions" field
-- Added ``decode`` cli tool
+- Added `decode` cli tool
 
 ## v0.3.0 - 2021-08-26
 - Added AsymmetricManager for use with RS256 tokens
