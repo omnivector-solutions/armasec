@@ -14,7 +14,7 @@ mypy: install
 lint: install
 	poetry run black --check ${PACKAGE_NAME} tests
 	poetry run isort --check ${PACKAGE_NAME} tests
-	poetry run flake8 --max-line-length=100
+	poetry run flake8 --max-line-length=100 ${PACKAGE_NAME} tests
 
 qa: test mypy lint
 	echo "All tests pass! Ready for deployment"
