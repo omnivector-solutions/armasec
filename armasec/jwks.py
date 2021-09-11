@@ -8,8 +8,8 @@ from pydantic import BaseModel
 
 class JWK(BaseModel):
     """
-    Provides a specification for the objects retrieved from JWK endpoints in OIDC providers. Assists
-    with validation and item access
+    This Model provides a specification for the objects retrieved from JWK endpoints in OIDC
+    providers. It also assists with validation and item access.
     """
 
     alg: str
@@ -27,8 +27,8 @@ class JWK(BaseModel):
 
 class JWKs(BaseModel):
     """
-    Provides a specification for the container object retrieved from JWK endpoints in OIDC providers. Assists
-    with validation and item access
+    This Model provides a specification for the container object retrieved from JWK endpoints in
+    OIDC providers. It also assists with validation and item access.
     """
 
     keys: List[JWK]

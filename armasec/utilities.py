@@ -4,7 +4,6 @@ Provides some utility functions predominately intended to be used in testing
 from typing import List, Optional
 
 from jose import jwt
-from pydantic import BaseModel
 
 from armasec.managers.base import TokenManager
 from armasec.token_payload import TokenPayload

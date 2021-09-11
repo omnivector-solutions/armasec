@@ -1,14 +1,11 @@
-from collections import namedtuple
 from unittest import mock
 
 import httpx
 import pytest
-import respx
 import starlette
 
 from armasec.exceptions import AuthenticationError
 from armasec.managers import AsymmetricManager
-from armasec.utilities import encode_jwt
 
 
 def test_init__success(mock_openid_server):
@@ -16,7 +13,7 @@ def test_init__success(mock_openid_server):
     This test verifies that an AssymmetricManager can be propery constructed. It also check to make
     sure that calls are made to the OIDC openid-configuration and jwks endpoints
     """
-    manager = AsymmetricManager(
+    AsymmetricManager(
         secret=mock_openid_server.client_secret,
         client_id=mock_openid_server.client_id,
         algorithm=mock_openid_server.algorithm,

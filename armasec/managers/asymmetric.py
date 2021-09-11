@@ -10,9 +10,9 @@ from jose import jwt
 from starlette.status import HTTP_200_OK
 
 from armasec.exceptions import AuthenticationError
-from armasec.openid_config import OpenidConfig
 from armasec.jwks import JWK
 from armasec.managers.base import TokenManager
+from armasec.openid_config import OpenidConfig
 from armasec.utilities import build_openid_config_url
 
 
@@ -75,7 +75,7 @@ class AsymmetricManager(TokenManager):
         """
         Retrives the openid config from an OIDC provider.
         """
-        self.debug_logger(f"Fetching openid configration")
+        self.debug_logger("Fetching openid configration")
         data = self._load_openid_resource(build_openid_config_url(self.domain))
         AuthenticationError.require_condition(
             "issuer" in data,
@@ -92,7 +92,7 @@ class AsymmetricManager(TokenManager):
         Retrives JWKs public keys from an OIDC provider. Verifies that the keys may be retrieved,
         checks that they are wellformed, and deserializes them into list of JWK instances.
         """
-        self.debug_logger(f"Fetching jwks")
+        self.debug_logger("Fetching jwks")
         data = self._load_openid_resource(self.openid_config.jwks_uri)
         AuthenticationError.require_condition(
             "keys" in data,
