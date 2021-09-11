@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.4.1 - 2021-09-13
+- Adjustments to expose jwt.decode() options for testing overrides
+
+## v0.4.0 - 2021-09-10
+- Made audience optional
+- Added pytest extension to allow use of a mock openid server
+- Improved compatibility with OIDC providers
+
 ## v0.3.3 - 2021-09-02
 - Eliminated TestTokenManager and moved logic to utilities instead
 

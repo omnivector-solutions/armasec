@@ -5,7 +5,7 @@ from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.api_key import APIKeyBase
 from starlette.requests import Request
 
-from armasec.managers import TokenManager
+from armasec.token_manager import TokenManager
 from armasec.token_payload import TokenPayload
 
 

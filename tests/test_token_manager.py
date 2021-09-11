@@ -1,26 +1,22 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 
 from armasec.exceptions import AuthenticationError
-from armasec.token_payload import TokenPayload
-from armasec.utilities import encode_jwt
+from armasec.schemas.jwks import JWKs
+from armasec.token_decoders.rs256 import RS256Decoder
+from armasec.token_manager import TokenManager
 
 
-@pytest.mark.freeze_time("2021-08-12 16:38:00")
-def test_decode__success(manager):
+@pytest.fixture
+def manager(rs256_openid_config, rs256_jwk):
     """
-    This test verifies that the ``decode()`` method can successfully unpack a valid jwt into a dict
-    containing the payload elements.
+    This fixture provides a TokenManager configured with armasec's pytest_extension jwks and
+    a token decoder using the same.
     """
-    original_payload = TokenPayload(
-        sub="someone",
-        permissions=["a", "b", "c"],
-        expire=datetime.utcnow(),
-    )
-    token = encode_jwt(manager, original_payload)
-    extracted_payload = manager.decode(token)
-    assert extracted_payload == original_payload
+    jwks = JWKs(keys=[rs256_jwk])
+    decoder = RS256Decoder(jwks)
+    return TokenManager(rs256_openid_config, decoder)
 
 
 @pytest.mark.freeze_time("2021-08-12 16:38:00")
@@ -29,14 +25,8 @@ def test_unpack_token_from_header__success(manager):
     This test verifies that the ``unpack_token_from_header()`` method can successfully unpack a jwt
     from a header mapping where it is embedded with a scheme marker (like 'bearer').
     """
-    original_payload = TokenPayload(
-        sub="someone",
-        permissions=["a", "b", "c"],
-        expire=datetime.utcnow(),
-    )
-    token = encode_jwt(manager, original_payload)
-    unpacked_token = manager.unpack_token_from_header({"Authorization": f"bearer {token}"})
-    assert token == unpacked_token
+    headers = {"Authorization": "bearer dummy-token"}
+    assert manager.unpack_token_from_header(headers) == "dummy-token"
 
 
 def test_unpack_token_from_header__fail_when_auth_header_not_found(manager):
@@ -75,19 +65,17 @@ def test_unpack_token_from_header__fail_for_invalid_scheme(manager):
         manager.unpack_token_from_header(dict(Authorization="carrier xxxxxxxxxxxx"))
 
 
-@pytest.mark.freeze_time("2021-08-12 16:38:00")
-def test_extract_token_payload__success(manager):
+@pytest.mark.freeze_time("2021-09-16 20:56:00")
+def test_extract_token_payload__success(manager, build_rs256_token):
     """
     This test verifies that the ``extract_token_payload()`` method successfully decodes a jwt and
     produces a TokenPayload instance from the contents.
     """
-    original_payload = TokenPayload(
-        sub="someone",
-        permissions=["a", "b", "c"],
-        expire=datetime.utcnow(),
+    exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
+    token = build_rs256_token(
+        claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
     )
-    token = encode_jwt(manager, original_payload)
-    extracted_payload = manager.extract_token_payload(
-        {"Authorization": f"bearer {token}"},
-    )
-    assert extracted_payload == original_payload
+    token_payload = manager.extract_token_payload({"Authorization": f"bearer {token}"})
+    assert token_payload.sub == "me"
+    assert token_payload.permissions == ["read:all"]
+    assert token_payload.expire == exp
