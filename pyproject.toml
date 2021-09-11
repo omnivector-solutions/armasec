@@ -36,6 +36,9 @@ snick = "^1.0.0"
 [tool.poetry.scripts]
 decode = 'bin.decode:cli'
 
+[tool.poetry.plugins.pytest11]
+mock_oidc = "armasec.mock_oidc"
+
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = "--random-order --cov=armasec --cov-report=term-missing --cov-fail-under=85"

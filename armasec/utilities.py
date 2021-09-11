@@ -4,6 +4,7 @@ Provides some utility functions predominately intended to be used in testing
 from typing import List, Optional
 
 from jose import jwt
+from pydantic import BaseModel
 
 from armasec.managers.base import TokenManager
 from armasec.token_payload import TokenPayload
@@ -26,8 +27,9 @@ def encode_jwt(
     claims = dict(
         **token_payload.to_dict(),
         iss=manager.issuer,
-        aud=manager.audience,
     )
+    if manager.audience:
+        claims["aud"] = manager.audience
     if permissions_override is not None:
         claims["permissions"] = permissions_override
     return jwt.encode(
@@ -47,3 +49,10 @@ def pack_header(
     """
     token = encode_jwt(manager, *encode_jwt_args, **encode_jwt_kwargs)
     return {manager.header_key: f"{manager.auth_scheme} {token}"}
+
+
+def build_openid_config_url(domain):
+    """
+    Builds a url for an openid configuration given a domain
+    """
+    return f"https://{domain}/.well-known/openid-configuration"

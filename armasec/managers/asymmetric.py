@@ -1,4 +1,8 @@
-from typing import List
+"""
+This module provides a TokenManager that is designed to use with OpenID issued tokens that are
+asymmetrically signed.
+"""
+from typing import List, Optional
 
 import httpx
 import snick
@@ -6,8 +10,10 @@ from jose import jwt
 from starlette.status import HTTP_200_OK
 
 from armasec.exceptions import AuthenticationError
-from armasec.jwk import JWK
+from armasec.openid_config import OpenidConfig
+from armasec.jwks import JWK
 from armasec.managers.base import TokenManager
+from armasec.utilities import build_openid_config_url
 
 
 class AsymmetricManager(TokenManager):
@@ -24,12 +30,16 @@ class AsymmetricManager(TokenManager):
         algorithm: str,
         client_id: str,
         domain: str,
-        audience: str,
+        audience: Optional[str] = None,
         *args,
         **kwargs,
     ):
-        issuer = f"https://{domain}/"
-        super().__init__(secret, algorithm, issuer, audience, **kwargs)
+        super().__init__(
+            secret,
+            algorithm,
+            audience=audience,
+            **kwargs,
+        )
         self.client_id = client_id
         self.domain = domain
         self.debug_logger(
@@ -41,32 +51,58 @@ class AsymmetricManager(TokenManager):
                 """
             )
         )
+        self.openid_config = self.fetch_openid_config()
+        self.issuer = self.openid_config.issuer
+        self.jwks = self.fetch_jwks()
 
-        self.load_jwks()
+    def _load_openid_resource(self, url: str):
+        """
+        Helper method to load data from an openid connect resource.
+        """
+        self.debug_logger(f"Attempting to fetch from openid resource '{url}'")
+        with AuthenticationError.handle_errors(
+            message=f"Call to url {url} failed",
+            do_except=self.log_error,
+        ):
+            response = httpx.get(url)
+        AuthenticationError.require_condition(
+            response.status_code == HTTP_200_OK,
+            f"Didn't get a success status code from url {url}: {response.status_code}",
+        )
+        return response.json()
 
-    def load_jwks(self):
+    def fetch_openid_config(self) -> OpenidConfig:
+        """
+        Retrives the openid config from an OIDC provider.
+        """
+        self.debug_logger(f"Fetching openid configration")
+        data = self._load_openid_resource(build_openid_config_url(self.domain))
+        AuthenticationError.require_condition(
+            "issuer" in data,
+            "openid configuration didn't include an 'issuer'",
+        )
+        with AuthenticationError.handle_errors(
+            message="openid config data was invalid",
+            do_except=self.log_error,
+        ):
+            return OpenidConfig(**data)
+
+    def fetch_jwks(self) -> List[JWK]:
         """
         Retrives JWKs public keys from an OIDC provider. Verifies that the keys may be retrieved,
         checks that they are wellformed, and deserializes them into list of JWK instances.
         """
-
-        jwks_url = f"https://{self.domain}/.well-known/jwks.json"
-        self.debug_logger(f"Attempting to fetch jwks from '{jwks_url}'")
-        with AuthenticationError.handle_errors(
-            message=f"Call to JWKS url {jwks_url} failed",
-            do_except=self.log_error,
-        ):
-            response = httpx.get(jwks_url)
-        AuthenticationError.require_condition(
-            response.status_code == HTTP_200_OK,
-            f"Didn't get a success status code from JWKS url {jwks_url}: {response.status_code}",
-        )
-        data = response.json()
+        self.debug_logger(f"Fetching jwks")
+        data = self._load_openid_resource(self.openid_config.jwks_uri)
         AuthenticationError.require_condition(
             "keys" in data,
             "Response jwks data is malformed",
         )
-        self.jwks = [JWK(**k) for k in data["keys"]]
+        with AuthenticationError.handle_errors(
+            message="jwks data was invalid",
+            do_except=self.log_error,
+        ):
+            return [JWK(**k) for k in data["keys"]]
 
     def _decode_to_payload_dict(self, token: str) -> dict:
         """

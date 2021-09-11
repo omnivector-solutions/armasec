@@ -8,6 +8,8 @@ import pytest
 from armasec.managers import TokenManager
 from armasec.security import TokenSecurity
 
+pytest.plugins = ["armasec.mock_oidc"]
+
 
 @pytest.fixture
 def manager():

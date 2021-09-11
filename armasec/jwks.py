@@ -1,3 +1,6 @@
+"""
+This module provides pydantic schemas for JSON Web Keys.
+"""
 from typing import List
 
 from pydantic import BaseModel
@@ -20,3 +23,12 @@ class JWK(BaseModel):
 
     class Config:
         extra = "allow"
+
+
+class JWKs(BaseModel):
+    """
+    Provides a specification for the container object retrieved from JWK endpoints in OIDC providers. Assists
+    with validation and item access
+    """
+
+    keys: List[JWK]
