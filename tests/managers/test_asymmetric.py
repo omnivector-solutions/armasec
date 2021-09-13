@@ -73,10 +73,9 @@ def test_init__fails_if_response_is_malformed(mock_openid_server):
         )
 
 
-def test__decode_to_payload_dict__success(mock_openid_server):
+def test_decode__success(mock_openid_server):
     """
-    This test verifies that a the _decode_to_payload_dict() method can successfully extract a
-    token payload when it finds a matching public key in the JWKs.
+    This test verifies that a the decode() method can successfully decode a token.
     """
     manager = AsymmetricManager(
         secret=mock_openid_server.client_secret,
@@ -84,12 +83,13 @@ def test__decode_to_payload_dict__success(mock_openid_server):
         algorithm=mock_openid_server.algorithm,
         domain=mock_openid_server.domain,
         audience=mock_openid_server.audience,
+        decode_options_override=dict(verify_exp=False),
     )
-    payload = manager._decode_to_payload_dict(mock_openid_server.access_token)
-    assert payload["iss"] == mock_openid_server.openid_config.issuer
+    token_payload = manager.decode(mock_openid_server.access_token)
+    assert token_payload.sub == "m1d1F6CmTThowu74diMLAIuNDGok5mLW@clients"
 
 
-def test__decode_to_payload_dict__fails_if_kid_not_in_unverified_header(mock_openid_server):
+def test_decode__fails_if_kid_not_in_unverified_header(mock_openid_server):
     """
     This test verifies that an exception is raised if the token's unverified header does not contain
     a "kid" claim.
@@ -100,13 +100,14 @@ def test__decode_to_payload_dict__fails_if_kid_not_in_unverified_header(mock_ope
         algorithm=mock_openid_server.algorithm,
         domain=mock_openid_server.domain,
         audience=mock_openid_server.audience,
+        decode_options_override=dict(verify_exp=False),
     )
     with mock.patch("jose.jwt.get_unverified_header", return_value=dict()):
         with pytest.raises(AuthenticationError, match="doesn't contain 'kid'"):
-            manager._decode_to_payload_dict(mock_openid_server.access_token)
+            manager.decode(mock_openid_server.access_token)
 
 
-def test__decode_to_payload_dict__fails_if_no_jwk_matches_unverified_header(mock_openid_server):
+def test_decode__fails_if_no_jwk_matches_unverified_header(mock_openid_server):
     """
     This test verifies that an exception is raised if none of the loaded JWKs match the token's
     unverified header.
@@ -117,22 +118,8 @@ def test__decode_to_payload_dict__fails_if_no_jwk_matches_unverified_header(mock
         algorithm=mock_openid_server.algorithm,
         domain=mock_openid_server.domain,
         audience=mock_openid_server.audience,
+        decode_options_override=dict(verify_exp=False),
     )
     with mock.patch("jose.jwt.get_unverified_header", return_value=dict(kid="unmatchable")):
         with pytest.raises(AuthenticationError, match="Could not find a matching jwk"):
-            manager._decode_to_payload_dict(mock_openid_server.access_token)
-
-
-def test_decode(mock_openid_server):
-    """
-    This test verifies that a the decode() method can successfully decode a token.
-    """
-    manager = AsymmetricManager(
-        secret=mock_openid_server.client_secret,
-        client_id=mock_openid_server.client_id,
-        algorithm=mock_openid_server.algorithm,
-        domain=mock_openid_server.domain,
-        audience=mock_openid_server.audience,
-    )
-    token_payload = manager.decode(mock_openid_server.access_token)
-    assert token_payload.sub == "m1d1F6CmTThowu74diMLAIuNDGok5mLW@clients"
+            manager.decode(mock_openid_server.access_token)

@@ -19,9 +19,12 @@ Example Usage::
             algorithm=mock_openid_server.algorithm,
             domain=mock_openid_server.domain,
             audience=mock_openid_server.audience,
+            decode_options_override=dict(verify_exp=False),
         )
         token_payload = manager.decode(mock_openid_server.access_token)
         assert token_payload.sub == "m1d1F6CmTThowu74diMLAIuNDGok5mLW@clients"
+
+TODO: Figure out if we can develop a dummy openid server that is configurable without fixed config
 """
 
 import contextlib

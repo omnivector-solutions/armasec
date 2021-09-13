@@ -1,6 +1,6 @@
 from traceback import format_tb
 from types import TracebackType
-from typing import Callable, Optional, Union
+from typing import Any, Callable, Optional, Union
 
 from fastapi.security.utils import get_authorization_scheme_param
 from jose import jwt
@@ -33,22 +33,40 @@ class TokenManager:
         algorithm: str,
         issuer: Optional[str] = None,
         audience: Optional[str] = None,
-        debug_logger: Callable[..., None] = noop,
+        debug_logger: Optional[Callable[..., None]] = None,
+        decode_options_override: Optional[dict] = None,
     ):
+        """
+        Initializes a base TokenManager.
+
+        Args:
+
+            secret:                  The secret key needed to decode a token
+            algorithm:               The algorithm used to encode the token
+            issuer:                  The issuer of the token (must match the "iss" claim)
+            audience:                The audience of the token (must match the "aud" claim)
+            debug_logger:            A callable, that if provided, will allow debug logging. Should
+                                     be passed as a logger method like `logger.debug`
+            decode_options_override: Options that can override the default behavior of the jwt
+                                     decode method. For example, one can ignore token expiration by
+                                     setting this to `{ "verify_exp": False }`
+        """
         self.secret = secret
         self.algorithm = algorithm
         self.issuer = issuer
         self.audience = audience
-        self.debug_logger = debug_logger
+        self.debug_logger = debug_logger if debug_logger else noop
+        self.decode_options_override = decode_options_override if decode_options_override else {}
 
         self.debug_logger(
             dedent(
                 f"""
-                Initialized    {self.__class__.__name__} with:
-                    secret:    {self.secret}
-                    algorithm: {self.algorithm}
-                    issuer:    {self.issuer}
-                    audience:  {self.audience}
+                Initialized {self.__class__.__name__} with:
+                    secret:                  {self.secret}
+                    algorithm:               {self.algorithm}
+                    issuer:                  {self.issuer}
+                    audience:                {self.audience}
+                    decode_options_override: {self.decode_options_override}
                 """
             )
         )
@@ -83,19 +101,12 @@ class TokenManager:
             )
         )
 
-    def _decode_to_payload_dict(self, token: str) -> dict:
+    def _get_decode_secret(self, token: str) -> Any:
         """
-        Invokes decoding. Should be overridden by classes that need to apply more decoding logic.
+        Retrieve the secret that will be needed to decode the token. Override in
+        inheriting classes that need to programatically produce a secret.
         """
-        return dict(
-            jwt.decode(
-                token,
-                self.secret,
-                algorithms=[self.algorithm],
-                audience=self.audience,
-                issuer=self.issuer,
-            )
-        )
+        return self.secret
 
     def decode(self, token: str) -> TokenPayload:
         """
@@ -106,7 +117,17 @@ class TokenManager:
             "Failed to decode token string",
             do_except=self.log_error,
         ):
-            payload_dict = self._decode_to_payload_dict(token)
+            decode_secret = self._get_decode_secret(token)
+            payload_dict = dict(
+                jwt.decode(
+                    token,
+                    decode_secret,
+                    algorithms=[self.algorithm],
+                    audience=self.audience,
+                    issuer=self.issuer,
+                    options=self.decode_options_override,
+                )
+            )
             self.debug_logger(f"Payload dictionary is {payload_dict}")
             self.debug_logger("Attempting to convert to TokenPayload")
             token_payload = TokenPayload.from_dict(payload_dict)

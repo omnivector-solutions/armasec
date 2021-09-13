@@ -2,7 +2,7 @@
 This module provides a TokenManager that is designed to use with OpenID issued tokens that are
 asymmetrically signed.
 """
-from typing import List, Optional
+from typing import Any, List, Optional
 
 import httpx
 import snick
@@ -104,32 +104,25 @@ class AsymmetricManager(TokenManager):
         ):
             return [JWK(**k) for k in data["keys"]]
 
-    def _decode_to_payload_dict(self, token: str) -> dict:
+    def _get_decode_secret(self, token: str) -> Any:
         """
-        Overload for the base class method. Searches for a public keys within the JWKs that matches
-        the incoming token's unverified header and uses it to vekrify and decode the payload. If a
-        matching public key cannot be found, it will raise an AuthenticationError.
+        Overload the base class method. Search for a public keys within the JWKs that matches
+        the incoming token's unverified header. Uses it for the decode secret.
+        Raise AuthenticationError if matching public key cannot be found.
         """
+        self.debug_logger("Getting decode secret from JWKs")
         unverified_header = jwt.get_unverified_header(token)
+        self.debug_logger(f"Extraced unverified header: {unverified_header}")
         kid = unverified_header.get("kid")
         AuthenticationError.require_condition(
             kid,
             "Unverified header doesn't contain 'kid'...not sure how this happened",
         )
-        self.debug_logger(f"Extraced unverified header: {unverified_header}")
 
         for jwk in self.jwks:
             self.debug_logger(f"Checking key in jwk: {jwk}")
             if jwk.kid == kid:
-                self.debug_logger("Key matches unverified header. Decoding token...")
-                return dict(
-                    jwt.decode(
-                        token,
-                        jwk.dict(),
-                        algorithms=[self.algorithm],
-                        audience=self.audience,
-                        issuer=self.issuer,
-                    )
-                )
+                self.debug_logger("Key matches unverified header. Using as decode secret.")
+                return jwk.dict()
 
         raise AuthenticationError("Could not find a matching jwk")
