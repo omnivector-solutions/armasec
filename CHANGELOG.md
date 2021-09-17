@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.5.0 - 2021-09-17
+- Major refactor for imporoved testability
+- Moved TokenDecoders into their own class heirarchy
+- Real tests for RS256 decoding
+- Pytest extension for improved testability in client code
+- OpenidConfigLoader for fetching OIDC configuration
+- mock_openid_server for test loading of OIDC config
+
 ## v0.4.1 - 2021-09-13
 - Adjustments to expose jwt.decode() options for testing overrides
 
