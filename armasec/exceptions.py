@@ -1,5 +1,5 @@
 import buzz
-import starlette
+import starlette.status
 
 
 class ArmadaSecurityError(buzz.Buzz):

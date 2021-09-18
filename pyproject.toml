@@ -30,6 +30,8 @@ respx = "^0.17.1"
 python-dotenv = "^0.19.0"
 snick = "^1.0.0"
 pytest-cov = "^2.12.1"
+uvicorn = "^0.15.0"
+loguru = "^0.5.3"
 
 [tool.poetry.plugins.pytest11]
 json_decoder = "armasec.pytest_extension"

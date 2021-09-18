@@ -23,6 +23,9 @@ format: install
 	poetry run black ${PACKAGE_NAME} tests
 	poetry run isort ${PACKAGE_NAME} tests
 
+example: install
+	poetry run uvicorn --host 0.0.0.0 --app-dir=examples basic:app --reload
+
 clean: clean-eggs clean-build
 	@find . -iname '*.pyc' -delete
 	@find . -iname '*.pyo' -delete

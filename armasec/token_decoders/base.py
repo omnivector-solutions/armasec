@@ -3,7 +3,7 @@ This module provides an abstract base class for algorithmic token decoders
 """
 from abc import ABC, abstractmethod
 from functools import partial
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Optional
 
 from jose import jwt
 
@@ -47,11 +47,12 @@ class TokenDecoder(ABC):
         """
         pass
 
-    def decode(self, token: str, **claims: Dict[str, Any]) -> TokenPayload:
+    def decode(self, token: str, **claims) -> TokenPayload:
         """
         Decodes a jwt into a TokenPayload while checking signatures and claims.
         """
         self.debug_logger(f"Attempting to decode '{token}'")
+        self.debug_logger(f"  checking claims: {claims}")
         with AuthenticationError.handle_errors(
             "Failed to decode token string",
             do_except=partial(log_error, self.debug_logger),

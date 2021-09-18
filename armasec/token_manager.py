@@ -23,6 +23,7 @@ class TokenManager:
         self,
         openid_config: OpenidConfig,
         token_decoder: TokenDecoder,
+        audience: Optional[str] = None,
         debug_logger: Optional[Callable[..., None]] = None,
         decode_options_override: Optional[dict] = None,
     ):
@@ -39,6 +40,7 @@ class TokenManager:
                                      decode method. For example, one can ignore token expiration by
                                      setting this to `{ "verify_exp": False }`
         """
+        self.audience = audience
         self.debug_logger = debug_logger if debug_logger else noop
         self.decode_options_override = decode_options_override if decode_options_override else {}
 
@@ -76,5 +78,5 @@ class TokenManager:
         Retrieves a token from a request header and decodes it into a TokenPayload.
         """
         token = self.unpack_token_from_header(headers)
-        token_payload = self.token_decoder.decode(token)
+        token_payload = self.token_decoder.decode(token, audience=self.audience)
         return token_payload
