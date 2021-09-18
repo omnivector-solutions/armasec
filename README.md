@@ -47,9 +47,9 @@
 
 ## About The Project
 
-The `armada-security` package provides tools to authenticate and authorize request in a FastAPI app.
-The `TokenSecurity` module can be used with FastAPI's dependency injection to make adding security
-to endpoints very simple.
+The `armada-security` package provides tools to authenticate and authorize requests in a FastAPI
+app.  The `TokenSecurity` module can be used with FastAPI's dependency injection to make adding
+security to endpoints very simple.
 
 The `armada-security` package was built specifically for use with Auth0, but any OIDC complient
 platform should work with it as well.
@@ -60,14 +60,10 @@ manage users and permissions through the OIDC platform itself.
 
 ### Supported algorithms
 
-The `armada-security` package has been tested with the following algorithms for authentication:
+The `armada-security` package supports following algorithms for authentication:
 
-* HS256 for the standard TokenManager
-* RS256 for the AsymmetricManager
-
-The `armada-security` package should function with any of the algorithms supported by the
-[python-jose](https://python-jose.readthedocs.io/en/latest/) jwt package. However, no verification
-of functionality has been done outside of HS256 and RS256 yet.
+* HS256: Symmetric secret key based signature checking
+* RS256: Asymmetric public/private key based signature checking
 
 
 ## Installation
@@ -104,20 +100,15 @@ $ pip install --index-url=https://pypicloud.omnivector.solutions/simple armada-s
 ## Example Usage
 
 ```python
-from armasec import TokenManager, TokenSecurity, TokenPayload
+from armasec import TokenManager, TokenSecurity, TokenPayload, OpenidConfigLoader
 from fastapi import FastAPI, Depends
-from pydantic import BaseModel
 
 
 app = FastAPI()
 
-manager = TokenManager(
-    secret="my-closely-guarded-client-secret",
-    algorithm="RS256",
-    client_id="my-client-id",
-    domain="mydomain.com",
-    audience="https://my-service-api.mydomain.com",
-)
+loader = OpenidConfigLoader("my-domain.com")
+decoder = RS256Decoder(loader.jwks)
+manager = TokenManager(loader.config, decoder)
 read_stuff_security = TokenSecurity(manager, scopes=["read:stuff"])
 
 @app.get("/stuff")
