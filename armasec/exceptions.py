@@ -2,7 +2,7 @@ import buzz
 import starlette.status
 
 
-class ArmadaSecurityError(buzz.Buzz):
+class ArmasecError(buzz.Buzz):
     """
     A custom exception class used for checking conditions and handling other exceptions.
     """
@@ -10,7 +10,7 @@ class ArmadaSecurityError(buzz.Buzz):
     status_code = starlette.status.HTTP_400_BAD_REQUEST
 
 
-class AuthenticationError(buzz.Buzz):
+class AuthenticationError(ArmasecError):
     """
     Indicates a failure to authenticate and decode jwt.
     """
@@ -18,7 +18,7 @@ class AuthenticationError(buzz.Buzz):
     status_code = starlette.status.HTTP_401_UNAUTHORIZED
 
 
-class AuthorizationError(buzz.Buzz):
+class AuthorizationError(ArmasecError):
     """
     Indicates that the provided claims don't match the claims required for a protected endpoint.
     """

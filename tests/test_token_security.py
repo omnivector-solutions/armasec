@@ -72,7 +72,7 @@ async def client(app, manager, build_secure_endpoint):
 async def test_injector_allows_authorized_request(client, manager, build_rs256_token):
     """
     This test verifies that access is granted to requests with valid auth headers on endpoints that
-    are secured by armada-security's injectable security instances.
+    are secured by armasec's injectable security instances.
     """
     exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
     token = build_rs256_token(

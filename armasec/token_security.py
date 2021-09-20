@@ -11,7 +11,7 @@ from armasec.token_payload import TokenPayload
 
 class TokenSecurity(APIKeyBase):
     """
-    An injectable Security class for Armada that returns a TokenPayload when used with Depends().
+    An injectable Security class that returns a TokenPayload when used with Depends().
     """
 
     def __init__(

@@ -1,10 +1,9 @@
 [tool.poetry]
-name = "armada-security"
+name = "armasec"
 version = "0.5.0"
-description = "Armada Security Tools"
+description = "Injectable FastAPI auth via OIDC"
 authors = ["OmniVector Solutions <info@omnivector.solutions>"]
 license = "MIT"
-packages = [ { include = "armasec" } ]
 
 [tool.poetry.dependencies]
 python = "^3.8"

@@ -1,8 +1,8 @@
-[contributors-url]: https://github.com/omnivector-solutions/armada-security/graphs/contributors
-[forks-url]: https://github.com/omnivector-solutions/armada-security/network/members
-[stars-url]: https://github.com/omnivector-solutions/armada-security/stargazers
-[issues-url]: https://github.com/omnivector-solutions/armada-security/issues
-[license-url]: https://github.com/omnivector-solutions/armada-security/blob/master/LICENSE
+[contributors-url]: https://github.com/omnivector-solutions/armasec/graphs/contributors
+[forks-url]: https://github.com/omnivector-solutions/armasec/network/members
+[stars-url]: https://github.com/omnivector-solutions/armasec/stargazers
+[issues-url]: https://github.com/omnivector-solutions/armasec/issues
+[license-url]: https://github.com/omnivector-solutions/armasec/blob/master/LICENSE
 [website]: https://www.omnivector.solutions
 [infrastructure]: https://github.com/omnivector-solutions/infrastructure
 
@@ -16,24 +16,22 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/omnivector-solutions/armada-security">
+  <a href="https://github.com/omnivector-solutions/armasec">
     <img src=".images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">armada-security</h3>
+  <h3 align="center">armasec</h3>
 
   <p align="center">
     A security package that works with OIDC platforms for FastAPI apps.
     <br />
-    <a href="https://github.com/omnivector-solutions/armada-security/issues">Report Bug</a>
+    <a href="https://github.com/omnivector-solutions/armasec/issues">Report Bug</a>
     ·
-    <a href="https://github.com/omnivector-solutions/armada-security/issues">Request Feature</a>
+    <a href="https://github.com/omnivector-solutions/armasec/issues">Request Feature</a>
   </p>
 </p>
 
-[![](https://github.com/omnivector-solutions/armada-security/workflows/TestBuildReleaseEdge/badge.svg)](https://github.com/omnivector-solutions/armada-security-simulator/actions?query=workflow%3ATestBuildReleaseEdge)
-
-# Armada Security
+# Armasec
 
 ## Table of Contents
 
@@ -47,20 +45,20 @@
 
 ## About The Project
 
-The `armada-security` package provides tools to authenticate and authorize requests in a FastAPI
+The `armasec` package provides tools to authenticate and authorize requests in a FastAPI
 app.  The `TokenSecurity` module can be used with FastAPI's dependency injection to make adding
 security to endpoints very simple.
 
-The `armada-security` package was built specifically for use with Auth0, but any OIDC complient
+The `armasec` package was built specifically for use with Auth0, but any OIDC complient
 platform should work with it as well.
 
-Though `armada-security` provides everything you need to apply security, you will still need to
+Though `armasec` provides everything you need to apply security, you will still need to
 manage users and permissions through the OIDC platform itself.
 
 
 ### Supported algorithms
 
-The `armada-security` package supports the following algorithms for authentication:
+The `armasec` package supports the following algorithms for authentication:
 
 * HS256: Symmetric secret key based signature checking
 * RS256: Asymmetric public/private key based signature checking
@@ -68,32 +66,23 @@ The `armada-security` package supports the following algorithms for authenticati
 
 ## Installation
 
-The `armada-security` package can be installed like any other python package. For now, though, it
-is only hosted on OmniVector's internal package index at pypicloud.omnivector.solutions.
+The `armasec` package can be installed like any other python package.
 
 
 ### Poetry
 
-To install via poetry, you need to add the following section to `pyproject.toml`
-
-```
-[[tool.poetry.source]]
-name = "pypicloud"
-url = "https://pypicloud.omnivector.solutions/simple"
-```
-
-Then run:
+To install via poetry, simply run:
 ```bash
-$ poetry add armada-security
+$ poetry add armasec
 ```
 
 
 ### Pip
 
-To install directly with `pip`, you can use the `--index-url` command line argument:
+To install directly with `pip`, simply run:
 
 ```bash
-$ pip install --index-url=https://pypicloud.omnivector.solutions/simple armada-security
+$ pip install armasec
 ```
 
 
@@ -122,4 +111,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Contact
 Omnivector Solutions - [www.omnivector.solutions][website] - <info@omnivector.solutions>
 
-Project Link: [https://github.com/omnivector-solutions/armada-security](https://github.com/omnivector-solutions/armada-security)
+Project Link: [https://github.com/omnivector-solutions/armasec](https://github.com/omnivector-solutions/armasec)
