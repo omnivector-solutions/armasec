@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Iterable, Optional
 
 from fastapi import HTTPException, status
 from fastapi.openapi.models import APIKey, APIKeyIn
@@ -17,7 +17,7 @@ class TokenSecurity(APIKeyBase):
     def __init__(
         self,
         manager: TokenManager,
-        scopes: Optional[List[str]] = None,
+        scopes: Optional[Iterable[str]] = None,
         debug: bool = False,
     ):
         self.manager = manager

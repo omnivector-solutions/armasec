@@ -100,23 +100,18 @@ $ pip install --index-url=https://pypicloud.omnivector.solutions/simple armada-s
 ## Example Usage
 
 ```python
-from armasec import TokenManager, TokenSecurity, TokenPayload, OpenidConfigLoader
+import os
+
+from armasec import Armasec
 from fastapi import FastAPI, Depends
 
 
 app = FastAPI()
+armasec = Armasec(os.environ.get("ARMASEC_DOMAIN"), audience=os.environ.get("ARMASEC_AUDIENCE"))
 
-loader = OpenidConfigLoader("my-domain.com")
-decoder = RS256Decoder(loader.jwks)
-manager = TokenManager(loader.config, decoder)
-read_stuff_security = TokenSecurity(manager, scopes=["read:stuff"])
-
-@app.get("/stuff")
-async def get_items(token_payload: TokenPayload = Depends(read_stuff_security)):
-    return dict(
-        message="Successfully authenticated!",
-        token_payload=token_payload,
-    )
+@app.get("/stuff", dependencies=[Depends(armasec.lockdown("read:stuff"))])
+async def check_access():
+    return dict(message="Successfully authenticated!")
 ```
 
 
