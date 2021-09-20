@@ -1,3 +1,6 @@
+"""
+Test the Armasec convenience class.
+"""
 from datetime import datetime, timezone
 
 import asgi_lifespan
@@ -58,6 +61,9 @@ async def test_lockdown__with_no_scopes(
     app,
     client,
 ):
+    """
+    Test that lockdown works correctly when supplied no scopes.
+    """
 
     armasec = Armasec(rs256_domain, audience="https://this.api")
 
@@ -82,10 +88,11 @@ async def test_lockdown__with_scopes(
     app,
     client,
 ):
+    """
+    Test that lockdown works correctly when supplied with scopes.
+    """
 
-    from loguru import logger
-
-    armasec = Armasec(rs256_domain, audience="https://this.api", debug_logger=logger.debug)
+    armasec = Armasec(rs256_domain, audience="https://this.api")
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown("read:more"))
 
     good_token = build_rs256_token(
