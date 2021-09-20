@@ -71,7 +71,7 @@ class AsymmetricManager(TokenManager):
     def _decode_to_payload_dict(self, token: str) -> dict:
         """
         Overload for the base class method. Searches for a public keys within the JWKs that matches
-        the incoming token's unverified header and uses it to vekrify and decode the payload. If a
+        the incoming token's unverified header and uses it to verify and decode the payload. If a
         matching public key cannot be found, it will raise an AuthenticationError.
         """
         unverified_header = jwt.get_unverified_header(token)

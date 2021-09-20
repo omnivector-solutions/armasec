@@ -10,7 +10,7 @@ from armasec.utilities import encode_jwt
 @pytest.mark.freeze_time("2021-08-12 16:38:00")
 def test_encode_jwt__success(manager):
     """
-    This test ensures that the TestTokenManager can create a properly encoded  jwt from a
+    This test ensures that the TestTokenManager can create a properly encoded jwt from a
     TokenPayload instance.
     """
     token = TokenPayload(

@@ -16,7 +16,7 @@ def encode_jwt(
     secret_override: Optional[str] = None,
 ):
     """
-    Uses a TokenManager to encodes a jwt based on a TokenPayload.
+    Uses a TokenManager to encode a jwt based on a TokenPayload.
 
     Adds any supplied scopes to a "permissions" claim in the jwt.
 

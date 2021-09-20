@@ -92,7 +92,7 @@ def test_load_jwks__fails_if_request_status_is_not_OK():
 
 def test_load_jwks__fails_if_response_is_malformed():
     """
-    This test verifies that a the data returned by an OIDC's well-known endpoint is formed as
+    This test verifies that the data returned by an OIDC's well-known endpoint is formed as
     expected with a "key" element, and that if the data is malformed, a exception is raised.
     """
     with respx.mock:
@@ -113,7 +113,7 @@ def test_load_jwks__fails_if_response_is_malformed():
 
 def test__decode_to_payload_dict__success():
     """
-    This test verifies that a the data _decode_to_payload_dict() method can successfully extract a
+    This test verifies that the data _decode_to_payload_dict() method can successfully extract a
     token payload when it finds a matching public key in the JWKs.
     """
     with respx.mock:
