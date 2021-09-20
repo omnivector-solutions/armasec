@@ -60,7 +60,7 @@ manage users and permissions through the OIDC platform itself.
 
 ### Supported algorithms
 
-The `armada-security` package supports following algorithms for authentication:
+The `armada-security` package supports the following algorithms for authentication:
 
 * HS256: Symmetric secret key based signature checking
 * RS256: Asymmetric public/private key based signature checking

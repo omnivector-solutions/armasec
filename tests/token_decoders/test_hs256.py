@@ -20,7 +20,7 @@ def test_get_decode_key():
 @pytest.mark.freeze_time("2021-09-16 20:56:00")
 def test_decode():
     """
-    Verify that the decoder can decode and verify a jwt signed with the HS256 algorithm
+    Verify that the decoder can decode and verify a jwt signed with the HS256 algorithm.
     """
     exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
     token = jose.jwt.encode(

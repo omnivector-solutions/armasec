@@ -15,7 +15,7 @@ from armasec.schemas import JWKs
 
 def test_config__is_lazy_loaded(rs256_domain, mock_openid_server):
     """
-    Verify that the config property lazy loads from the openid-configuration route
+    Verify that the config property lazy loads from the openid-configuration route.
     """
     OpenidConfigLoader(rs256_domain)
     assert not mock_openid_server.openid_config_route.called
@@ -23,7 +23,7 @@ def test_config__is_lazy_loaded(rs256_domain, mock_openid_server):
 
 def test_build_openid_config_url():
     """
-    Verify that the openid config url is built correctly
+    Verify that the openid config url is built correctly.
     """
     assert (
         OpenidConfigLoader.build_openid_config_url("my.domain")

@@ -53,7 +53,7 @@ def rs256_sub():
 @pytest.fixture()
 def rs256_private_key():
     """
-    This fixture provides a pre-generated private key for RS256 hashing
+    This fixture provides a pre-generated private key for RS256 hashing.
     """
     return dedent(
         """
@@ -197,7 +197,7 @@ def rs256_openid_config(rs256_iss, rs256_jwks_uri):
 def mock_openid_server(rs256_domain, rs256_openid_config, rs256_jwk, rs256_jwks_uri):
     """
     Mock routes that would be used in loading an openid-configuration and jwks from a typical
-    openid server
+    openid server.
     """
     MockOpenidRoutes = namedtuple("MockOpenidRoutes", ["openid_config_route", "jwks_route"])
     with respx.mock:

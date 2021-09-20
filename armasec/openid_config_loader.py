@@ -36,7 +36,7 @@ class OpenidConfigLoader:
     @staticmethod
     def build_openid_config_url(domain):
         """
-        Builds a url for an openid configuration given a domain
+        Builds a url for an openid configuration given a domain.
         """
         return f"https://{domain}/.well-known/openid-configuration"
 
