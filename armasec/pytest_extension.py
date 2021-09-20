@@ -22,8 +22,9 @@ from armasec.schemas.openid_config import OpenidConfig
 def rs256_domain():
     """
     Return a domain for use in fixtures from the armasec pytest extension.
+    The value here doesn't really have anything to do with an actual domain name.
     """
-    return "armasec.is.awesome.dev"
+    return "armasec.dev"
 
 
 @pytest.fixture()
