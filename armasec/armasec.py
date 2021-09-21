@@ -5,7 +5,6 @@ This module defines the core Armasec class.
 from functools import lru_cache
 from typing import Any, Callable, Coroutine
 
-from fastapi import Depends
 from starlette.requests import Request
 
 from armasec.openid_config_loader import OpenidConfigLoader
@@ -47,12 +46,12 @@ class Armasec:
     @lru_cache
     def lockdown(self, *scopes: str) -> Callable[[Request], Coroutine[Any, Any, TokenPayload]]:
         """
-        Lazy load a loader, decoder, manager. Then instantiate a TokenSecurity with the provided scopes and
-        invoke it with a dependency-injected Starlette request.
+        Lazy load a loader, decoder, manager. Then instantiate a TokenSecurity with the provided
+        scopes and invoke it with a dependency-injected Starlette request.
 
-        The lazy loading is critical for tests where the mock_openid_server needs to be instantiated after
-        the routers are invoked. Thus, loading the OpenidConfig needs to happen at request time (for the first
-        time) and not at route declaration time.
+        The lazy loading is critical for tests where the mock_openid_server needs to be instantiated
+        after the routers are invoked. Thus, loading the OpenidConfig needs to happen at request
+        time (for the first time) and not at route declaration time.
 
         There is a lot of magic here and it's hard to parse what's going on. Here be dragons.
         """
