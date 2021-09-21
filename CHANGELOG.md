@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## v0.5.0 - 2021-09-20
+- Made the Armasec helper class lazy load elements (to allow easier testing)
+
+## v0.5.0 - 2021-09-20
 - Renamed package to "armasec"
 - Major refactor for imporoved testability
 - Moved TokenDecoders into their own class heirarchy
