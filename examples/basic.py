@@ -1,0 +1,12 @@
+import os
+
+from armasec import Armasec
+from fastapi import FastAPI, Depends
+
+
+app = FastAPI()
+armasec = Armasec(os.environ.get("ARMASEC_DOMAIN"), audience=os.environ.get("ARMASEC_AUDIENCE"))
+
+@app.get("/stuff", dependencies=[Depends(armasec.lockdown("read:stuff"))])
+async def check_access():
+    return dict(message="Successfully authenticated!")

@@ -1,23 +1,23 @@
-from typing import List, Optional
+from typing import Iterable, Optional
 
 from fastapi import HTTPException, status
 from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.api_key import APIKeyBase
 from starlette.requests import Request
 
-from armasec.managers import TokenManager
+from armasec.token_manager import TokenManager
 from armasec.token_payload import TokenPayload
 
 
 class TokenSecurity(APIKeyBase):
     """
-    An injectable Security class for Armada that returns a TokenPayload when used with Depends().
+    An injectable Security class that returns a TokenPayload when used with Depends().
     """
 
     def __init__(
         self,
         manager: TokenManager,
-        scopes: Optional[List[str]] = None,
+        scopes: Optional[Iterable[str]] = None,
         debug: bool = False,
     ):
         self.manager = manager

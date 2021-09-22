@@ -1,6 +1,9 @@
+"""
+This module defines a pydantic schema for the payload of a jwt.
+"""
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List
 
 from pydantic import BaseModel
@@ -36,5 +39,5 @@ class TokenPayload(BaseModel):
         return cls(
             sub=payload_dict["sub"],
             permissions=payload_dict.get("permissions", list()),
-            expire=datetime.utcfromtimestamp(payload_dict["exp"]),
+            expire=datetime.fromtimestamp(payload_dict["exp"], tz=timezone.utc),
         )
