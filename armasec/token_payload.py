@@ -35,6 +35,6 @@ class TokenPayload(BaseModel):
         """
         return cls(
             sub=payload_dict["sub"],
-            permissions=payload_dict["permissions"],
+            permissions=payload_dict.get("permissions", list()),
             expire=datetime.utcfromtimestamp(payload_dict["exp"]),
         )
