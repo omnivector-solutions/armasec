@@ -4,7 +4,7 @@ import pytest
 
 from armasec.exceptions import AuthenticationError
 from armasec.schemas.jwks import JWKs
-from armasec.token_decoders.rs256 import RS256Decoder
+from armasec.token_decoder import TokenDecoder
 from armasec.token_manager import TokenManager
 
 
@@ -15,7 +15,7 @@ def manager(rs256_openid_config, rs256_jwk):
     a token decoder using the same.
     """
     jwks = JWKs(keys=[rs256_jwk])
-    decoder = RS256Decoder(jwks)
+    decoder = TokenDecoder(jwks)
     return TokenManager(rs256_openid_config, decoder)
 
 
@@ -90,7 +90,7 @@ def test_extract_token_payload__with_audience_succeeds(
     includes an audience claim when the TokenManager is initialized with an audience.
     """
     jwks = JWKs(keys=[rs256_jwk])
-    decoder = RS256Decoder(jwks)
+    decoder = TokenDecoder(jwks)
     manager = TokenManager(rs256_openid_config, decoder, audience="some-audience")
     exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
     token = build_rs256_token(
@@ -113,7 +113,7 @@ def test_extract_token_payload__fails_without_audience(
     jwt carries an audience claim and the TokenManager is not initialized with an audience.
     """
     jwks = JWKs(keys=[rs256_jwk])
-    decoder = RS256Decoder(jwks)
+    decoder = TokenDecoder(jwks)
     manager = TokenManager(rs256_openid_config, decoder)
     exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
     token = build_rs256_token(
@@ -137,7 +137,7 @@ def test_extract_token_payload__fails_with_bad_audience(
     jwt's audience does not match the audience of the TokenManager.
     """
     jwks = JWKs(keys=[rs256_jwk])
-    decoder = RS256Decoder(jwks)
+    decoder = TokenDecoder(jwks)
     manager = TokenManager(rs256_openid_config, decoder, audience="other-audience")
     exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
     token = build_rs256_token(

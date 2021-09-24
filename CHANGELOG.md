@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.6.0 - 2021-09-23
+- Dropped support for HS256
+- Made TokenSecurity class lazy load TokenManager
+- Reorganized a bit to make it work better with OpenAPI swagger
+
 ## v0.5.1 - 2021-09-22
 - Made the Armasec helper class lazy load elements (to allow easier testing)
 - Add github action to publish on tag push

@@ -1,34 +1,38 @@
 """
 This module provides an abstract base class for algorithmic token decoders
 """
-from abc import ABC, abstractmethod
 from functools import partial
-from typing import Any, Callable, Optional
+from typing import Callable, Optional
 
 from jose import jwt
 
 from armasec.exceptions import AuthenticationError
+from armasec.schemas.jwks import JWKs
 from armasec.token_payload import TokenPayload
 from armasec.utilities import log_error, noop
 
 
-class TokenDecoder(ABC):
+class TokenDecoder:
     """
-    Abstract base class for algorithmic token decoders.
+    Decoder class used to decode tokens given an algorithm and jwks.
     """
 
     algorithm: str
 
     def __init__(
         self,
+        jwks: JWKs,
+        algorithm: str = "RS256",
         debug_logger: Optional[Callable[..., None]] = None,
         decode_options_override: Optional[dict] = None,
     ):
         """
-        Initializes a base TokenManager.
+        Initializes a TokenDecoder.
 
         Args:
 
+            algorithm:               The algorithm to use for decoding. Defaults to RS256.
+            jwks:                    JSON web keys object holding the public keys for decoding.
             openid_config:           The openid_configuration needed for claims such as 'issuer'.
             debug_logger:            A callable, that if provided, will allow debug logging. Should
                                      be passed as a logger method like `logger.debug`
@@ -36,16 +40,33 @@ class TokenDecoder(ABC):
                                      decode method. For example, one can ignore token expiration by
                                      setting this to `{ "verify_exp": False }`
         """
+        self.algorithm = algorithm
+        self.jwks = jwks
         self.debug_logger = debug_logger if debug_logger else noop
         self.decode_options_override = decode_options_override if decode_options_override else {}
 
-    @abstractmethod
-    def get_decode_key(self, token: str) -> Any:
+    def get_decode_key(self, token: str) -> dict:
         """
-        Retrieve the key that will be needed to decode the token. Override in
-        inheriting classes.
+        Search for a public keys within the JWKs that matches the incoming token's unverified
+        header. Uses it for the decode key.  Raise AuthenticationError if matching public key cannot
+        be found.
         """
-        pass
+        self.debug_logger("Getting decode key from JWKs")
+        unverified_header = jwt.get_unverified_header(token)
+        self.debug_logger(f"Extraced unverified header: {unverified_header}")
+        kid = unverified_header.get("kid")
+        AuthenticationError.require_condition(
+            kid,
+            "Unverified header doesn't contain 'kid'...not sure how this happened",
+        )
+
+        for jwk in self.jwks.keys:
+            self.debug_logger(f"Checking key in jwk: {jwk}")
+            if jwk.kid == kid:
+                self.debug_logger("Key matches unverified header. Using as decode secret.")
+                return jwk.dict()
+
+        raise AuthenticationError("Could not find a matching jwk")
 
     def decode(self, token: str, **claims) -> TokenPayload:
         """

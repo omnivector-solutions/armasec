@@ -26,6 +26,10 @@ format: install
 example: install
 	poetry run uvicorn --host 0.0.0.0 --app-dir=examples basic:app --reload
 
+publish: install
+	git tag v$(poetry version --short)
+	git push origin v$(poetry version --short)
+
 clean: clean-eggs clean-build
 	@find . -iname '*.pyc' -delete
 	@find . -iname '*.pyo' -delete

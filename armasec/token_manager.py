@@ -5,7 +5,7 @@ from starlette.datastructures import Headers
 
 from armasec.exceptions import AuthenticationError
 from armasec.schemas import OpenidConfig
-from armasec.token_decoders import TokenDecoder
+from armasec.token_decoder import TokenDecoder
 from armasec.token_payload import TokenPayload
 from armasec.utilities import noop
 
