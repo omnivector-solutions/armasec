@@ -10,21 +10,7 @@ import httpx
 import pytest
 import starlette
 
-from armasec.schemas.jwks import JWKs
-from armasec.token_decoders.rs256 import RS256Decoder
-from armasec.token_manager import TokenManager
 from armasec.token_security import TokenSecurity
-
-
-@pytest.fixture
-def manager(rs256_openid_config, rs256_jwk):
-    """
-    This fixture provides a TokenManager configured with armasec's pytest_extension jwks and
-    a token decoder using the same.
-    """
-    jwks = JWKs(keys=[rs256_jwk])
-    decoder = RS256Decoder(jwks)
-    return TokenManager(rs256_openid_config, decoder)
 
 
 @pytest.fixture
@@ -36,7 +22,7 @@ async def app():
 
 
 @pytest.fixture
-async def build_secure_endpoint(app, manager):
+async def build_secure_endpoint(app, rs256_domain, mock_openid_server, rs256_jwk):
     """
     Provides a method that dynamically builds a GET route on the app that requires a header with a
     valid token that includes the supplied scopes.
@@ -48,7 +34,7 @@ async def build_secure_endpoint(app, manager):
         to the injected TokenSecurity that is added to the route.
         """
 
-        @app.get(path, dependencies=[fastapi.Depends(TokenSecurity(manager, scopes=scopes))])
+        @app.get(path, dependencies=[fastapi.Depends(TokenSecurity(rs256_domain, scopes=scopes))])
         async def _():
             return dict(good="to go")
 
@@ -56,7 +42,7 @@ async def build_secure_endpoint(app, manager):
 
 
 @pytest.fixture
-async def client(app, manager, build_secure_endpoint):
+async def client(app, build_secure_endpoint):
     """
     Provides a FastAPI client against which httpx requests can be made. Includes a "/secure"
     endpoint that requires auth via the TokenSecurity injectable.
@@ -69,7 +55,7 @@ async def client(app, manager, build_secure_endpoint):
 
 @pytest.mark.asyncio
 @pytest.mark.freeze_time("2021-09-16 20:56:00")
-async def test_injector_allows_authorized_request(client, manager, build_rs256_token):
+async def test_injector_allows_authorized_request(client, build_rs256_token):
     """
     This test verifies that access is granted to requests with valid auth headers on endpoints that
     are secured by armasec's injectable security instances.
@@ -84,7 +70,7 @@ async def test_injector_allows_authorized_request(client, manager, build_rs256_t
 
 
 @pytest.mark.asyncio
-async def test_injector_requires_correctly_encoded_token(client, manager):
+async def test_injector_requires_correctly_encoded_token(client):
     """
     This test verifies that access is denied to requests when the jwt is invalid.
     """
@@ -96,7 +82,7 @@ async def test_injector_requires_correctly_encoded_token(client, manager):
 
 @pytest.mark.asyncio
 @pytest.mark.freeze_time("2021-09-16 20:56:00")
-async def test_injector_requires_scopes(client, manager, build_secure_endpoint, build_rs256_token):
+async def test_injector_requires_scopes(client, build_secure_endpoint, build_rs256_token):
     """
     This test verifies that access is granted to requests with valid auth headers where the token
     carries all of the scopes required by the endpoint.
