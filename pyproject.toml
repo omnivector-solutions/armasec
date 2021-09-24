@@ -6,7 +6,7 @@ authors = ["OmniVector Solutions <info@omnivector.solutions>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 python-jose = {extras = ["cryptography"], version = "^3.2.0"}
 fastapi = "^0.68.0"
 httpx = "^0.18.2"
@@ -18,7 +18,7 @@ respx = "^0.17.1"
 pytest = "^6.2.5"
 
 [tool.poetry.dev-dependencies]
-ipython = "^7.26.0"
+ipython = "^7.27.0"
 pytest-freezegun = "^0.4.2"
 asgi-lifespan = "^1.0.1"
 httpx = "^0.18.2"

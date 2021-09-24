@@ -43,7 +43,7 @@ class Armasec:
         self.debug_logger = debug_logger
         self.debug_exceptions = debug_exceptions
 
-    @lru_cache
+    @lru_cache(maxsize=128)
     def lockdown(self, *scopes: str) -> TokenSecurity:
         """
         Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
