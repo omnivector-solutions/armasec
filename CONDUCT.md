@@ -23,7 +23,6 @@ often times the labor was completed simply for the good of the community. We're
 attentive in our communications, whether in person or online, and we're tactful
 when approaching differing views.
 
-
 ## Be Respectful
 Contributors to armasec are expected to be respectful. We're respectful
 of others, their positions, their skills, their commitments, and their efforts.
