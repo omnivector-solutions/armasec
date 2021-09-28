@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.7.0 - 2021-09-27
+- Added support for different permission modes SOME and ALL
+- Updated README
+- Added a license, code of conduct, and contribution guide.
+
 ## v0.6.0 - 2021-09-23
 - Dropped support for HS256
 - Made TokenSecurity class lazy load TokenManager
