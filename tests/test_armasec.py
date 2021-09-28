@@ -119,3 +119,91 @@ async def test_lockdown__with_scopes(
         headers={"Authorization": f"bearer {bad_token}"},
     )
     assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-22 22:54:00")
+async def test_lockdown__with_all_scopes(
+    mock_openid_server,
+    rs256_domain,
+    build_rs256_token,
+    build_secure_endpoint,
+    app,
+    client,
+):
+    """
+    Test that lockdown works correctly requiring all scopes.
+    """
+
+    armasec = Armasec(rs256_domain, audience="https://this.api")
+    build_secure_endpoint("/secured-with-scopes", armasec.lockdown_all("read:one", "read:more"))
+
+    good_token = build_rs256_token(
+        claim_overrides=dict(
+            sub="me",
+            exp=datetime(2021, 9, 23, 22, 54, 0, tzinfo=timezone.utc).timestamp(),
+            permissions=["read:one", "read:more"],
+        ),
+    )
+    response = await client.get(
+        "/secured-with-scopes",
+        headers={"Authorization": f"bearer {good_token}"},
+    )
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    bad_token = build_rs256_token(
+        claim_overrides=dict(
+            sub="me",
+            exp=datetime(2021, 9, 23, 22, 54, 0, tzinfo=timezone.utc).timestamp(),
+            permissions=["read:one"],
+        ),
+    )
+    response = await client.get(
+        "/secured-with-scopes",
+        headers={"Authorization": f"bearer {bad_token}"},
+    )
+    assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-22 22:54:00")
+async def test_lockdown__with_some_scopes(
+    mock_openid_server,
+    rs256_domain,
+    build_rs256_token,
+    build_secure_endpoint,
+    app,
+    client,
+):
+    """
+    Test that lockdown works correctly requiring all scopes.
+    """
+
+    armasec = Armasec(rs256_domain, audience="https://this.api")
+    build_secure_endpoint("/secured-with-scopes", armasec.lockdown_some("read:one", "read:more"))
+
+    good_token = build_rs256_token(
+        claim_overrides=dict(
+            sub="me",
+            exp=datetime(2021, 9, 23, 22, 54, 0, tzinfo=timezone.utc).timestamp(),
+            permissions=["read:one"],
+        ),
+    )
+    response = await client.get(
+        "/secured-with-scopes",
+        headers={"Authorization": f"bearer {good_token}"},
+    )
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    bad_token = build_rs256_token(
+        claim_overrides=dict(
+            sub="me",
+            exp=datetime(2021, 9, 23, 22, 54, 0, tzinfo=timezone.utc).timestamp(),
+            permissions=[],
+        ),
+    )
+    response = await client.get(
+        "/secured-with-scopes",
+        headers={"Authorization": f"bearer {bad_token}"},
+    )
+    assert response.status_code == starlette.status.HTTP_403_FORBIDDEN

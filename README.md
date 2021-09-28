@@ -1,67 +1,36 @@
-[contributors-url]: https://github.com/omnivector-solutions/armasec/graphs/contributors
-[forks-url]: https://github.com/omnivector-solutions/armasec/network/members
-[stars-url]: https://github.com/omnivector-solutions/armasec/stargazers
-[issues-url]: https://github.com/omnivector-solutions/armasec/issues
-[license-url]: https://github.com/omnivector-solutions/armasec/blob/master/LICENSE
-[website]: https://www.omnivector.solutions
-[infrastructure]: https://github.com/omnivector-solutions/infrastructure
+![main build](https://img.shields.io/github/workflow/status/omnivector-solutions/armasec/test_on_push/main?label=main-build&logo=github&style=plastic)
+![github issues](https://img.shields.io/github/issues/omnivector-solutions/py-buzz?label=issues&logo=github&style=plastic)
+![github pull-requests](https://img.shields.io/github/issues-pr/omnivector-solutions/armasec?label=pull-requests&logo=github&style=plastic)
+![github contributors](https://img.shields.io/github/contributors/omnivector-solutions/armasec?logo=github&style=plastic)
 
-[Contributors][contributors-url] •
-[Forks][forks-url] •
-[Stargazers][stars-url] •
-[Issues][issues-url] •
-[MIT License][license-url] •
-[Website][website]
+![python-versions](https://img.shields.io/pypi/pyversions/armasec?label=python-versions&logo=python&style=plastic)
+![pypi version](https://img.shields.io/pypi/v/armasec?label=pypi-version&logo=python&style=plastic)
 
-<!-- PROJECT LOGO -->
-<br />
-<p align="center">
-  <a href="https://github.com/omnivector-solutions/armasec">
-    <img src=".images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">armasec</h3>
-
-  <p align="center">
-    A security package that works with OIDC platforms for FastAPI apps.
-    <br />
-    <a href="https://github.com/omnivector-solutions/armasec/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/omnivector-solutions/armasec/issues">Request Feature</a>
-  </p>
-</p>
+![license](https://img.shields.io/pypi/l/armasec?style=plastic)
 
 # Armasec
 
-## Table of Contents
-
-- [Table of Contents](#table-of-contents)
-- [About The Project](#about-the-project)
-- [Installation](#installation-backend)
-- [Example Usage](#example-usage)
-- [License](#license)
-- [Contact](#contact)
+A security package that works with OIDC platforms for FastAPI apps.
 
 
 ## About The Project
 
 The `armasec` package provides tools to authenticate and authorize requests in a FastAPI
-app.  The `TokenSecurity` module can be used with FastAPI's dependency injection to make adding
-security to endpoints very simple.
+app using tokens issued by an OpenID Connect (OIDC) provider. It is an opinionated package that
+requires minimal configuration.
 
-The `armasec` package was built specifically for use with Auth0, but any OIDC complient
-platform should work with it as well.
+Although the `armasec` package was built specifically for use with Auth0, any OIDC complient
+platform should theoretically work with it as well. Only Auth0 has been tested so far, but other
+platform support should follow in subsequent releases.
 
-Though `armasec` provides everything you need to apply security, you will still need to
-manage users and permissions through the OIDC platform itself.
+Though `armasec` provides everything you need to apply security to your FastAPI endpoints, you will
+still need to manage users and permissions through the OIDC platform itself.
 
 
-### Supported algorithms
+## Documentation
 
-The `armasec` package supports the following algorithms for authentication:
-
-* HS256: Symmetric secret key based signature checking
-* RS256: Asymmetric public/private key based signature checking
+Documentation is hosted hosted on `github.io` at
+[the Armasec homepage](https://omnivector-solutions.github.io/armasec/)
 
 
 ## Installation
@@ -106,9 +75,3 @@ async def check_access():
 
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
-## Contact
-Omnivector Solutions - [www.omnivector.solutions][website] - <info@omnivector.solutions>
-
-Project Link: [https://github.com/omnivector-solutions/armasec](https://github.com/omnivector-solutions/armasec)
