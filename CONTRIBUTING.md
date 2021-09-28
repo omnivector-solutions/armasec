@@ -53,25 +53,6 @@ maintainers will review pull-requests and may test new features out. All
 merge requests should come with commit messages that describe the changes as
 well as a reference to the issue that the code addresses.
 
-*All commits should include the issue #*
-
-Commit messages should follow this format
-
-```
-Issue #56: Fixed gizmo component that was parfolecting
-
-The parfolection happening in the gizmo component was causing a vulnerability
-in the anti-parfolection checks during the enmurculation process.
-
-This was addressed by caching the results of parfolection prior to
-enmurculation.
-
-Also:
-* Added and updated unit tests
-* Added documentation
-* Cleaned up some code
-```
-
 Code contributions should follow best-practices where possible. Use the
 [Zen of Python](https://www.python.org/dev/peps/pep-0020/>) as a guideline.
 All code must pass our quality checks. Run `make qa` to check the quality.
