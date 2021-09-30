@@ -31,8 +31,8 @@ def test_from_dict():
     embedded in a properly constructed and valid jwt.
     """
     exp = datetime(2021, 8, 13, 16, 38, 0, tzinfo=timezone.utc)
-    payload = TokenPayload.from_dict(
-        dict(
+    payload = TokenPayload(
+        **dict(
             sub="someone",
             permissions=["a", "b", "c"],
             exp=int(exp.timestamp()),
