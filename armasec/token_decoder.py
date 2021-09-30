@@ -89,6 +89,6 @@ class TokenDecoder:
             )
             self.debug_logger(f"Payload dictionary is {payload_dict}")
             self.debug_logger("Attempting to convert to TokenPayload")
-            token_payload = TokenPayload.from_dict(payload_dict)
+            token_payload = TokenPayload(**payload_dict)
             self.debug_logger(f"Built token_payload as {token_payload}")
             return token_payload

@@ -6,7 +6,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, validator
 
 
 class TokenPayload(BaseModel):
@@ -15,11 +15,15 @@ class TokenPayload(BaseModel):
     """
 
     sub: str
-    permissions: List[str]
-    expire: datetime
+    permissions: List[str] = None
+    expire: datetime = Field(None, alias='exp')
 
     class Config:
         extra = "allow"
+
+    @validator('permissions', pre=True, always=True)
+    def validate_permissions(cls, v):
+        return v or list()
 
     def to_dict(self):
         """
@@ -30,15 +34,3 @@ class TokenPayload(BaseModel):
             permissions=self.permissions,
             exp=int(self.expire.timestamp()),
         )
-
-    @classmethod
-    def from_dict(cls, payload_dict: dict) -> TokenPayload:
-        """
-        Constructs a TokenPayload from a dictionary produced by `jwt.decode()`.
-        """
-        jwt_payload = dict(
-            sub=payload_dict["sub"],
-            permissions=payload_dict.get("permissions", list()),
-            expire=datetime.fromtimestamp(payload_dict.pop("exp"), tz=timezone.utc),
-        )
-        return cls(**{**jwt_payload, **payload_dict})
