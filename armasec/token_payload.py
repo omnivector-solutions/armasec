@@ -36,8 +36,9 @@ class TokenPayload(BaseModel):
         """
         Constructs a TokenPayload from a dictionary produced by `jwt.decode()`.
         """
-        return cls(
+        jwt_payload = dict(
             sub=payload_dict["sub"],
             permissions=payload_dict.get("permissions", list()),
-            expire=datetime.fromtimestamp(payload_dict["exp"], tz=timezone.utc),
+            expire=datetime.fromtimestamp(payload_dict.pop("exp"), tz=timezone.utc),
         )
+        return cls(**{**jwt_payload, **payload_dict})
