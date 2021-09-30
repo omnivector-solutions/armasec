@@ -3,10 +3,10 @@ This module defines a pydantic schema for the payload of a jwt.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import List
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field
 
 
 class TokenPayload(BaseModel):
@@ -15,15 +15,11 @@ class TokenPayload(BaseModel):
     """
 
     sub: str
-    permissions: List[str] = None
-    expire: datetime = Field(None, alias='exp')
+    permissions: List[str] = Field(list())
+    expire: datetime = Field(None, alias="exp")
 
     class Config:
         extra = "allow"
-
-    @validator('permissions', pre=True, always=True)
-    def validate_permissions(cls, v):
-        return v or list()
 
     def to_dict(self):
         """
