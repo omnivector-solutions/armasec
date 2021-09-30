@@ -36,6 +36,9 @@ python-dotenv = "^0.19.0"
 pytest-cov = "^2.12.1"
 uvicorn = "^0.15.0"
 loguru = "^0.5.3"
+Sphinx = "^4.2.0"
+sphinx-view = "^0.3.0"
+sphinx-material = "^0.0.34"
 
 [tool.poetry.plugins.pytest11]
 pytest_armasec = "armasec.pytest_extension"
