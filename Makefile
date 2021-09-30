@@ -31,8 +31,8 @@ publish: install
 	git push origin v$(poetry version --short)
 
 docs: install
-	poetry run sphinx-apidoc --output-dir=docs/ --no-toc --separate armasec
-	poetry run sphinx-build docs/ docs/build/
+	poetry run sphinx-apidoc --output-dir=docs-source/ --no-toc --separate armasec
+	poetry run sphinx-build docs-source/ docs/
 
 clean: clean-eggs clean-build
 	@find . -iname '*.pyc' -delete
