@@ -33,8 +33,6 @@ publish: install
 docs: install
 	poetry run sphinx-apidoc --output-dir=docs-source/ --no-toc --separate armasec
 	poetry run sphinx-build docs-source/ docs/
-	cp -r docs-source/_static docs/_static
-	cp -r docs-source/_templates docs/_templates
 
 clean: clean-eggs clean-build
 	@find . -iname '*.pyc' -delete
