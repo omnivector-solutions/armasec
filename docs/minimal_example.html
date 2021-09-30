@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Minimal Example &#8212; armasec 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorials" href="tutorials/index.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="minimal-example">
+<h1>Minimal Example<a class="headerlink" href="#minimal-example" title="Permalink to this headline">¶</a></h1>
+<p>The following is a minimal example of how to configure your API to enforce security on endpoints
+using tokens issued by Auth0:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">armasec</span> <span class="kn">import</span> <span class="n">Armasec</span>
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Depends</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">armasec</span> <span class="o">=</span> <span class="n">Armasec</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ARMASEC_DOMAIN&quot;</span><span class="p">),</span>
+    <span class="n">audience</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ARMASEC_AUDIENCE&quot;</span><span class="p">),</span>
+    <span class="n">debug_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/stuff&quot;</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">armasec</span><span class="o">.</span><span class="n">lockdown</span><span class="p">(</span><span class="s2">&quot;read:stuff&quot;</span><span class="p">))])</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">check_access</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Successfully authenticated!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, you would have set two environment variables for your project settings:</p>
+<ul>
+<li><p>ARMASEC_DOMAIN</p>
+<p>This would be your Auth0 domain, like: <code class="docutils literal notranslate"><span class="pre">my-auth.us.auth0.com</span></code></p>
+</li>
+<li><p>ARMASEC_AUDIENCE</p>
+<p>You would get this from your Auth0 API App, like: <code class="docutils literal notranslate"><span class="pre">https://my-api.my-domain.com</span></code></p>
+</li>
+</ul>
+<p>When you run your app, access to the <code class="docutils literal notranslate"><span class="pre">/stuff</span></code> endpoint would be restricted to authenticated users
+whose access tokens carried the permission scope “read:stuff”.</p>
+<p>For a step-by-step walkthrough of how to set up Auth0 for the minimal example, see the
+<a class="reference external" href="tutorials/gettings_started_with_auth0">“Getting Started with Auth0”</a> page.</p>
+<p>The above code can be found in <a class="reference external" href="https://github.com/omnivector-solutions/armasec/blob/main/examples/basic.py">examples/basic.py</a>.</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://pypi.org/project/armasec/">armasec on PyPI</a></li>
+  <li><a href="https://github.com/omnivector-solutions/armasec">armasec on github</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/minimal_example.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

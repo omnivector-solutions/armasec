@@ -1,0 +1,34 @@
+armasec package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   armasec.schemas
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   armasec.armasec
+   armasec.exceptions
+   armasec.openid_config_loader
+   armasec.pytest_extension
+   armasec.token_decoder
+   armasec.token_manager
+   armasec.token_payload
+   armasec.token_security
+   armasec.utilities
+
+Module contents
+---------------
+
+.. automodule:: armasec
+   :members:
+   :undoc-members:
+   :show-inheritance:

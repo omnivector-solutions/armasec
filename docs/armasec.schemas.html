@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>armasec.schemas package &#8212; armasec 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="armasec.schemas.jwks module" href="armasec.schemas.jwks.html" />
+    <link rel="prev" title="armasec package" href="armasec.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="armasec-schemas-package">
+<h1>armasec.schemas package<a class="headerlink" href="#armasec-schemas-package" title="Permalink to this headline">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="armasec.schemas.jwks.html">armasec.schemas.jwks module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="armasec.schemas.openid_config.html">armasec.schemas.openid_config module</a></li>
+</ul>
+</div>
+</section>
+<section id="module-armasec.schemas">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-armasec.schemas" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="armasec.schemas.JWK">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">armasec.schemas.</span></span><span class="sig-name descname"><span class="pre">JWK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kid</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kty</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x5c</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x5t</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#armasec.schemas.JWK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>This Model provides a specification for the objects retrieved from JWK endpoints in OIDC
+providers. It also assists with validation and item access.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.Config">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Config</span></span><a class="headerlink" href="#armasec.schemas.JWK.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.Config.extra">
+<span class="sig-name descname"><span class="pre">extra</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'allow'</span></em><a class="headerlink" href="#armasec.schemas.JWK.Config.extra" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.alg">
+<span class="sig-name descname"><span class="pre">alg</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#armasec.schemas.JWK.alg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.e">
+<span class="sig-name descname"><span class="pre">e</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#armasec.schemas.JWK.e" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.kid">
+<span class="sig-name descname"><span class="pre">kid</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#armasec.schemas.JWK.kid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.kty">
+<span class="sig-name descname"><span class="pre">kty</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#armasec.schemas.JWK.kty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.n">
+<span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#armasec.schemas.JWK.n" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.use">
+<span class="sig-name descname"><span class="pre">use</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#armasec.schemas.JWK.use" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.x5c">
+<span class="sig-name descname"><span class="pre">x5c</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#armasec.schemas.JWK.x5c" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWK.x5t">
+<span class="sig-name descname"><span class="pre">x5t</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#armasec.schemas.JWK.x5t" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="armasec.schemas.JWKs">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">armasec.schemas.</span></span><span class="sig-name descname"><span class="pre">JWKs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="armasec.schemas.jwks.html#armasec.schemas.jwks.JWK" title="armasec.schemas.jwks.JWK"><span class="pre">armasec.schemas.jwks.JWK</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#armasec.schemas.JWKs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>This Model provides a specification for the container object retrieved from JWK endpoints in
+OIDC providers. It also assists with validation and item access.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.JWKs.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="armasec.schemas.jwks.html#armasec.schemas.jwks.JWK" title="armasec.schemas.jwks.JWK"><span class="pre">armasec.schemas.jwks.JWK</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#armasec.schemas.JWKs.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="armasec.schemas.OpenidConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">armasec.schemas.</span></span><span class="sig-name descname"><span class="pre">OpenidConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">issuer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.networks.HttpUrl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jwks_uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.networks.HttpUrl</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#armasec.schemas.OpenidConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>Provides a specification for the objects retrieved from openid_configuration endpoint of the
+OIDC providers. Only includes needed fields for supported Manager instances. Assists with
+validation and item access.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="armasec.schemas.OpenidConfig.Config">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Config</span></span><a class="headerlink" href="#armasec.schemas.OpenidConfig.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.OpenidConfig.Config.extra">
+<span class="sig-name descname"><span class="pre">extra</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'allow'</span></em><a class="headerlink" href="#armasec.schemas.OpenidConfig.Config.extra" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.OpenidConfig.issuer">
+<span class="sig-name descname"><span class="pre">issuer</span></span><em class="property"><span class="pre">:</span> <span class="pre">pydantic.networks.HttpUrl</span></em><a class="headerlink" href="#armasec.schemas.OpenidConfig.issuer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="armasec.schemas.OpenidConfig.jwks_uri">
+<span class="sig-name descname"><span class="pre">jwks_uri</span></span><em class="property"><span class="pre">:</span> <span class="pre">pydantic.networks.HttpUrl</span></em><a class="headerlink" href="#armasec.schemas.OpenidConfig.jwks_uri" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://pypi.org/project/armasec/">armasec on PyPI</a></li>
+  <li><a href="https://github.com/omnivector-solutions/armasec">armasec on github</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/armasec.schemas.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

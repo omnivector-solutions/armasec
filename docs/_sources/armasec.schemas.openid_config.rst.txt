@@ -1,0 +1,7 @@
+armasec.schemas.openid\_config module
+=====================================
+
+.. automodule:: armasec.schemas.openid_config
+   :members:
+   :undoc-members:
+   :show-inheritance:

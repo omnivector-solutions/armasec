@@ -1,0 +1,7 @@
+armasec.token\_decoder module
+=============================
+
+.. automodule:: armasec.token_decoder
+   :members:
+   :undoc-members:
+   :show-inheritance:

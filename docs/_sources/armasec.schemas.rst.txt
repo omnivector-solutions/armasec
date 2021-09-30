@@ -1,0 +1,19 @@
+armasec.schemas package
+=======================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   armasec.schemas.jwks
+   armasec.schemas.openid_config
+
+Module contents
+---------------
+
+.. automodule:: armasec.schemas
+   :members:
+   :undoc-members:
+   :show-inheritance:

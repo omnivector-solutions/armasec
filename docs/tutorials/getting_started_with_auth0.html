@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Getting started with Auth0 &#8212; armasec 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="armasec package" href="../armasec.html" />
+    <link rel="prev" title="Tutorials" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="getting-started-with-auth0">
+<h1>Getting started with Auth0<a class="headerlink" href="#getting-started-with-auth0" title="Permalink to this headline">¶</a></h1>
+<p>This step-by-step walkthrough will show you how to get an Auth0 account set up for use with the
+minimal example.</p>
+<p>You will need:</p>
+<ul class="simple">
+<li><p>A google account</p></li>
+<li><p>Python 3.8+ installed</p></li>
+<li><p>Python packages <code class="docutils literal notranslate"><span class="pre">armasec</span></code> and <code class="docutils literal notranslate"><span class="pre">uvicorn</span></code> installed</p></li>
+</ul>
+<section id="create-auth0-account-tenant">
+<h2>Create Auth0 account tenant<a class="headerlink" href="#create-auth0-account-tenant" title="Permalink to this headline">¶</a></h2>
+<p>Navigate to <a class="reference external" href="https://auth0.com">Auth0’s homepage</a>, and click <code class="docutils literal notranslate"><span class="pre">Sign</span> <span class="pre">Up</span></code>.</p>
+<p>Create a new account (if you don’t already have one). It doesn’t really matter how you choose to
+sign up, but I used my google account.</p>
+<figure class="align-default" id="id1">
+<img alt="Create a personal account" class="with-border" src="../_images/auth0-1.jpg" />
+<figcaption>
+<p><span class="caption-text">Create a personal account</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>For this tutorial, just select a “Personal” account. You can come back and repeat the process for
+your company later if you need to.</p>
+<p>Select <code class="docutils literal notranslate"><span class="pre">I</span> <span class="pre">need</span> <span class="pre">advanced</span> <span class="pre">settings</span></code> so that you can choose your tenant name, and click <code class="docutils literal notranslate"><span class="pre">Next</span></code> to
+move on to tenant setup.</p>
+<figure class="align-default" id="id2">
+<img alt="Select tenant domain" class="with-border" src="../_images/auth0-2.jpg" />
+<figcaption>
+<p><span class="caption-text">Select tenant domain</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Select your tenant domain. For this tutorial, I will be using “armasec-tutorial”. Choose your region
+and click <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Account</span></code>. The full domain that I will use later is
+“armasec-tutorial.us.auth0.com”.</p>
+</section>
+<section id="add-your-api-application">
+<h2>Add your API application<a class="headerlink" href="#add-your-api-application" title="Permalink to this headline">¶</a></h2>
+<p>This will set up the Auth0 api endpoints that Auth0 will use to authenticate your users.</p>
+<figure class="align-default" id="id3">
+<img alt="Navigate to Applications &gt; APIs" class="with-border" src="../_images/auth0-3.jpg" />
+<figcaption>
+<p><span class="caption-text">Navigate to Applications &gt; APIs</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Click <code class="docutils literal notranslate"><span class="pre">Applications</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">APIs</span></code></p>
+<figure class="align-default" id="id4">
+<img alt="Create an API" class="with-border" src="../_images/auth0-4.jpg" />
+<figcaption>
+<p><span class="caption-text">Create an API</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Click <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">API</span></code></p>
+<figure class="align-default" id="id5">
+<img alt="Fill out API form" class="with-border" src="../_images/auth0-5.jpg" />
+<figcaption>
+<p><span class="caption-text">Fill out API form</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Fill out the form. The Name you choose doesn’t matter, but for the tutoial, I used
+“Armasec Tutorial”.  Choose a name for the identifier that makes sense, as this will be the
+“Audience” for your tutorial app. I chose “<a class="reference external" href="https://armasec-tutorial.com">https://armasec-tutorial.com</a>” for this tutorial.</p>
+<p>Leave the “Signing Algorithm” as “RS256”. Armasec also supports HS256, but it is not preferred.</p>
+<p>Click <code class="docutils literal notranslate"><span class="pre">Create</span></code></p>
+<figure class="align-default" id="id6">
+<img alt="Enable RBAC Settings" class="with-border" src="../_images/auth0-6.jpg" />
+<figcaption>
+<p><span class="caption-text">Enable RBAC Settings</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Go to the Settings tab and scroll down to the “RBAC Sttings”</p>
+<p>Activate <code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">RBAC</span></code> and <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Permissions</span></code> in the Access Token”.</p>
+<p>This will include permissions scopes to your users’ access tokens.</p>
+<p>Click <code class="docutils literal notranslate"><span class="pre">Save</span></code></p>
+</section>
+<section id="add-your-permissions">
+<h2>Add your permissions<a class="headerlink" href="#add-your-permissions" title="Permalink to this headline">¶</a></h2>
+<p>Next, we will add the permission for the minimal example.</p>
+<figure class="align-default" id="id7">
+<img alt="Add a permission" class="with-border" src="../_images/auth0-7.jpg" />
+<figcaption>
+<p><span class="caption-text">Add a permission</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Click on the <code class="docutils literal notranslate"><span class="pre">Permissions</span></code> tab and add the “read:stuff” permission.</p>
+</section>
+<section id="grant-your-permission-to-the-test-app">
+<h2>Grant your permission to the test app<a class="headerlink" href="#grant-your-permission-to-the-test-app" title="Permalink to this headline">¶</a></h2>
+<p>Auth0 provides a “Machine-to-Manchine” test app for verifying that log in will work. We will grant
+our “read:stuff” permission to tokens provided from this app.</p>
+<figure class="align-default" id="id8">
+<img alt="Navigate to Applications" class="with-border" src="../_images/auth0-8.jpg" />
+<figcaption>
+<p><span class="caption-text">Navigate to Applications</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Navigate to <code class="docutils literal notranslate"><span class="pre">Applications</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Applications</span></code></p>
+<figure class="align-default" id="id9">
+<img alt="Select tutorial test app" class="with-border" src="../_images/auth0-9.jpg" />
+<figcaption>
+<p><span class="caption-text">Select tutorial test app</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Click on <code class="docutils literal notranslate"><span class="pre">Armasec</span> <span class="pre">Tutorial</span> <span class="pre">(Test</span> <span class="pre">Application)</span></code></p>
+<figure class="align-default" id="id10">
+<img alt="Add permission to test app" class="with-border" src="../_images/auth0-10.jpg" />
+<figcaption>
+<p><span class="caption-text">Add permission to test app</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Go to the APIs tab and click the drop-down. Select the “read-stuff” box in the “Permissions” box.
+Click <cite>Update</cite>.</p>
+</section>
+<section id="start-up-the-example-app">
+<h2>Start up the example app<a class="headerlink" href="#start-up-the-example-app" title="Permalink to this headline">¶</a></h2>
+<p>Copy the example app to a local source file called “example.py”.</p>
+<p>Start it up with uvicorn:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m uvicorn --host 0.0.0.0 example:app
+</pre></div>
+</div>
+</section>
+<section id="try-it-out">
+<h2>Try it out<a class="headerlink" href="#try-it-out" title="Permalink to this headline">¶</a></h2>
+<p>Next, we will try to use a test token to call our minimal example’s endpont.</p>
+<p>Navigate back to <code class="docutils literal notranslate"><span class="pre">Applications</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">APIs</span></code>, select the <code class="docutils literal notranslate"><span class="pre">Armasec</span> <span class="pre">Tutorial</span></code>, and go to the Test
+tab.</p>
+<figure class="align-default" id="id11">
+<img alt="Copy test access token" class="with-border" src="../_images/auth0-11.jpg" />
+<figcaption>
+<p><span class="caption-text">Copy test access token</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Find the “Response” box. This contains a token that has been issued by your test application. Click
+the <code class="docutils literal notranslate"><span class="pre">Copy</span> <span class="pre">Token</span></code> button.</p>
+<p>Now, open a browser to “localhost:8000/docs”</p>
+<figure class="align-default" id="id12">
+<img alt="Swagger page for example" class="with-border" src="../_images/auth0-12.jpg" />
+<figcaption>
+<p><span class="caption-text">Swagger page for example</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>This will show you the auto-generated swagger docs for the example API app. Click on the
+<code class="docutils literal notranslate"><span class="pre">Authorize</span></code> button to add the token you copied to the clipboard in the header of requests to the
+API.</p>
+<figure class="align-default" id="id13">
+<img alt="Add access token in Swagger" class="with-border" src="../_images/auth0-13.jpg" />
+<figcaption>
+<p><span class="caption-text">Add access token in Swagger</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>First, type “Bearer ” followed by pasting the token from the clipboard into the form and click the
+<code class="docutils literal notranslate"><span class="pre">Authorize</span></code> button in the dialog, click <code class="docutils literal notranslate"><span class="pre">Close</span></code> to dismiss the dialog. Now, all subsequent calls
+to the API will include a header that looks like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;Authorization&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer eyJhbGciOi...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now, expand the “GET” REST operation on the <code class="docutils literal notranslate"><span class="pre">/stuff</span></code> endpoint and click <code class="docutils literal notranslate"><span class="pre">Try</span> <span class="pre">it</span> <span class="pre">out</span></code>.</p>
+<figure class="align-default" id="id14">
+<img alt="Try it out" class="with-border" src="../_images/auth0-14.jpg" />
+<figcaption>
+<p><span class="caption-text">Try it out</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Finally, click <code class="docutils literal notranslate"><span class="pre">Execute</span></code> to issue the request to the API.</p>
+<figure class="align-default" id="id15">
+<img alt="Execute" class="with-border" src="../_images/auth0-15.jpg" />
+<figcaption>
+<p><span class="caption-text">Execute</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>You should see a response that includes a 200 status code and a response body that includes:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Successfully authenticated&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Congratulations! You are now using Armasec and Auth0 to authorize requests to your API.</p>
+</section>
+<section id="tinker">
+<h2>Tinker<a class="headerlink" href="#tinker" title="Permalink to this headline">¶</a></h2>
+<p>Now, there are a few things you can do to check out how things work. Try the following things:</p>
+<ul class="simple">
+<li><p>Remove the “read:stuff” permission from the test application and try another request</p></li>
+<li><p>Try a request without being authorized in swagger</p></li>
+<li><p>Try making requests using <code class="docutils literal notranslate"><span class="pre">curl</span></code> or the <code class="docutils literal notranslate"><span class="pre">httpx</span></code> library in IPython</p></li>
+</ul>
+</section>
+<section id="send-feedback">
+<h2>Send feedback<a class="headerlink" href="#send-feedback" title="Permalink to this headline">¶</a></h2>
+<p>If the above tutorial didn’t work as expected, a step needs better clarification, or you have some
+questions about it, please create an issue on
+<a class="reference external" href="https://github.com/omnivector-solutions/armasec/issues">Armasec’s GitHub’s issues</a>.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://pypi.org/project/armasec/">armasec on PyPI</a></li>
+  <li><a href="https://github.com/omnivector-solutions/armasec">armasec on github</a></li>
+</ul>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorials/getting_started_with_auth0.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

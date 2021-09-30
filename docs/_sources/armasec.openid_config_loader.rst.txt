@@ -1,0 +1,7 @@
+armasec.openid\_config\_loader module
+=====================================
+
+.. automodule:: armasec.openid_config_loader
+   :members:
+   :undoc-members:
+   :show-inheritance:

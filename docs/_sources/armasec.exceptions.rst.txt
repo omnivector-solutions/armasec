@@ -1,0 +1,7 @@
+armasec.exceptions module
+=========================
+
+.. automodule:: armasec.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:

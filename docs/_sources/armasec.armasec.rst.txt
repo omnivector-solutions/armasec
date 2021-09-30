@@ -1,0 +1,7 @@
+armasec.armasec module
+======================
+
+.. automodule:: armasec.armasec
+   :members:
+   :undoc-members:
+   :show-inheritance:
