@@ -30,7 +30,7 @@ The maintainers of armasec can be reached most easily via email::
 Conduct
 =======
 
-Everyone's conduct should be respectful and friendly. For most folks, these
+Everyone's conduct should be respectful and friendly. For most people, these
 things don't need to be spelled out. However, to establish a baseline of
 acceptable conduct, the armasec project expects contributors to adhere
 to a customized version of the

@@ -17,7 +17,7 @@ from armasec.utilities import noop
 
 class PermissionMode(AutoNameEnum):
     """
-    Defines whether endpoints should require ALL permissions or only SOME.
+    Endpoint permissions.
     """
 
     ALL = auto()

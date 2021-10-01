@@ -176,7 +176,7 @@ async def test_lockdown__with_some_scopes(
     client,
 ):
     """
-    Test that lockdown works correctly requiring all scopes.
+    Test that lockdown works correctly requiring some scopes.
     """
 
     armasec = Armasec(rs256_domain, audience="https://this.api")

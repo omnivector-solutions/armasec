@@ -1,6 +1,6 @@
 .. image:: https://img.shields.io/github/workflow/status/omnivector-solutions/armasec/test_on_push/main?label=main-build&logo=github&style=plastic
    :alt: main build
-.. image:: https://img.shields.io/github/issues/omnivector-solutions/py-buzz?label=issues&logo=github&style=plastic
+.. image:: https://img.shields.io/github/issues/omnivector-solutions/armasec?label=issues&logo=github&style=plastic
    :alt: github issues
 .. image:: https://img.shields.io/github/issues-pr/omnivector-solutions/armasec?label=pull-requests&logo=github&style=plastic
    :alt: pull requests
@@ -15,16 +15,12 @@
 .. image:: https://img.shields.io/pypi/l/armasec?style=plastic
    :alt: license
 
-.. raw:: html
+.. figure:: _static/logo.png
+   :alt: Logo
+   :align: center
+   :width: 80px
 
-    <br />
-    <p align="center">
-      <a href="https://github.com/omnivector-solutions/armasec">
-        <img src="_static/logo.png" alt="Logo" width="80" height="80">
-        <h3 align="center">Armasec</h3>
-      </a>
-      <p align="center"><i>An Omnivector Solutions initiative</i><p>
-    </p>
+   An Omnivector Solutions initiative
 
 =========
  Armasec
@@ -74,7 +70,10 @@ Quickstart
 
 
    app = FastAPI()
-   armasec = Armasec(os.environ.get("ARMASEC_DOMAIN"), audience=os.environ.get("ARMASEC_AUDIENCE"))
+   armasec = Armasec(
+       os.environ.get("ARMASEC_DOMAIN"),
+       audience=os.environ.get("ARMASEC_AUDIENCE"),
+   )
 
    @app.get("/stuff", dependencies=[Depends(armasec.lockdown("read:stuff"))])
    async def check_access():
@@ -87,4 +86,5 @@ Quickstart
 
 License
 =======
+
 Distributed under the MIT License. See `LICENSE` for more information.

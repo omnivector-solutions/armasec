@@ -4,7 +4,7 @@
 
 Welcome
 =======
-Contributors and users of armasec come from folks from around the globe
+Contributors and users of armasec are people who come from places around the globe
 with a diverse set of skills, personalities, and experiences. It is through
 these differences that our community experiences great successes and continued
 growth. When you're working with other contributors or users, we expect you
@@ -25,7 +25,7 @@ Be Considerate
 Contributors to armasec are expected to be considerate of their peers.
 We're thoughtful when addressing the efforts of others, keeping in mind that
 often times the labor was completed simply for the good of the community. We're
-attentive in our communications, whether in person or online, and we're tactful
+attentive in our communications, whether in person or online, and we are tactful
 when approaching differing views.
 
 Be Respectful
@@ -39,7 +39,7 @@ raising our issues.
 
 Conclusion
 ==========
-Overall, we're good to each other. Contribution is done on a voluntary basis,
+Overall, we are good to each other. Contribution is done on a voluntary basis,
 and folks are expected to be good and decent in their conduct. Any disputes
 will be resolved by the maintainers and those that do not wish to follow the
 guidelines will be asked to stop contributing.

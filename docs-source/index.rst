@@ -23,15 +23,14 @@
       .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
     </style>
     <br />
-    <p align="center">
-      <a href="https://github.com/omnivector-solutions/armasec">
-        <img src="_static/logo.png" alt="Logo" width="80" height="80">
-        <h3 align="center">Armasec</h3>
-      </a>
-      <p align="center"><i>An Omnivector Solutions initiative</i><p>
-    </p>
 
 
+.. figure:: _static/logo.png
+   :alt: Logo
+   :align: center
+   :width: 80px
+
+   An Omnivector Solutions initiative
 
 
 Armasec Documentation
