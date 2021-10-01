@@ -3,10 +3,10 @@ This module defines a pydantic schema for the payload of a jwt.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class TokenPayload(BaseModel):
@@ -15,8 +15,8 @@ class TokenPayload(BaseModel):
     """
 
     sub: str
-    permissions: List[str]
-    expire: datetime
+    permissions: List[str] = Field(list())
+    expire: datetime = Field(None, alias="exp")
 
     class Config:
         extra = "allow"
@@ -29,15 +29,4 @@ class TokenPayload(BaseModel):
             sub=self.sub,
             permissions=self.permissions,
             exp=int(self.expire.timestamp()),
-        )
-
-    @classmethod
-    def from_dict(cls, payload_dict: dict) -> TokenPayload:
-        """
-        Constructs a TokenPayload from a dictionary produced by `jwt.decode()`.
-        """
-        return cls(
-            sub=payload_dict["sub"],
-            permissions=payload_dict.get("permissions", list()),
-            expire=datetime.fromtimestamp(payload_dict["exp"], tz=timezone.utc),
         )
