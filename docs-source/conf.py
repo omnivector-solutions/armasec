@@ -33,9 +33,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-author = ", ".join(project_metadata['authors'])
+author = ", ".join([f"`{a}`_" for a in project_metadata['authors']])
 project = project_metadata['name']
-copyright = project_metadata.get('copyright', datetime.datetime.now().year)
+copyright = project_metadata.get('copyright', str(datetime.datetime.now().year))
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
