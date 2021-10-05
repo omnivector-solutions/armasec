@@ -15,7 +15,7 @@
 .. image:: https://img.shields.io/pypi/l/armasec?style=plastic
    :alt: license
 
-.. figure:: docs-source/_static/logo.png
+.. figure:: https://github.com/omnivector-solutions/armasec/blob/main/docs-source/_static/logo.png?raw=true
    :alt: Logo
    :align: center
    :width: 80px

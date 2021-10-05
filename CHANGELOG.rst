@@ -7,6 +7,11 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <http://keepachangelog.com/>`_
 and this project adheres to `Semantic Versioning <http://semver.org/`_.
 
+v0.7.2 - 2021-10-06
+===================
+- Covers changes for v0.7.1 as well (debugging README render on pypi)
+- Fixed broken logo link in README
+
 v0.7.0 - 2021-09-27
 ===================
 - Added support for different permission modes SOME and ALL
