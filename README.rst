@@ -15,7 +15,7 @@
 .. image:: https://img.shields.io/pypi/l/armasec?style=plastic
    :alt: license
 
-.. figure:: _static/logo.png
+.. figure:: docs-source/_static/logo.png
    :alt: Logo
    :align: center
    :width: 80px
