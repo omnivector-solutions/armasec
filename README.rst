@@ -48,7 +48,7 @@ Documentation
 =============
 
 Documentation is hosted hosted on ``github.io`` at
-`the Armasec homepage <https://omnivector-solutions.github.io/armasec/`_
+`the Armasec homepage <https://omnivector-solutions.github.io/armasec/>`_
 
 
 Quickstart
