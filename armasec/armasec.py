@@ -5,7 +5,7 @@ This module defines the core Armasec class.
 from functools import lru_cache
 from typing import Callable, Optional
 
-from armasec.token_security import TokenSecurity
+from armasec.token_security import PermissionMode, TokenSecurity
 from armasec.utilities import noop
 
 
@@ -44,16 +44,39 @@ class Armasec:
         self.debug_exceptions = debug_exceptions
 
     @lru_cache(maxsize=128)
-    def lockdown(self, *scopes: str) -> TokenSecurity:
+    def lockdown(
+        self,
+        *scopes: str,
+        permission_mode: PermissionMode = PermissionMode.ALL,
+    ) -> TokenSecurity:
         """
         Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
-        the number of TokenSecurity instances initialized.
+        the number of TokenSecurity instances initialized. Applies supplied permission_mode when
+        checking token permssions against TokenSecurity scopes.
         """
         return TokenSecurity(
             self.domain,
             audience=self.audience,
             algorithm=self.algorithm,
             scopes=scopes,
+            permission_mode=permission_mode,
             debug_logger=self.debug_logger,
             debug_exceptions=self.debug_exceptions,
         )
+
+    def lockdown_all(self, *scopes: str) -> TokenSecurity:
+        """
+        Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
+        the number of TokenSecurity instances initialized. Requires all the scopes in the
+        TokenSecurity instance to be included in the token permissions. This is just a wrapper
+        around `lockdown()` with default permission_mode and is only included for symmetry.
+        """
+        return self.lockdown(*scopes, permission_mode=PermissionMode.ALL)
+
+    def lockdown_some(self, *scopes: str) -> TokenSecurity:
+        """
+        Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
+        the number of TokenSecurity instances initialized. Requires at least one permission in the
+        token to match a scope attached to the TokenSecurity instance.
+        """
+        return self.lockdown(*scopes, permission_mode=PermissionMode.SOME)

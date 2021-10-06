@@ -5,7 +5,11 @@ from fastapi import FastAPI, Depends
 
 
 app = FastAPI()
-armasec = Armasec(os.environ.get("ARMASEC_DOMAIN"), audience=os.environ.get("ARMASEC_AUDIENCE"))
+armasec = Armasec(
+    os.environ.get("ARMASEC_DOMAIN"),
+    audience=os.environ.get("ARMASEC_AUDIENCE"),
+    debug_exceptions=True,
+)
 
 @app.get("/stuff", dependencies=[Depends(armasec.lockdown("read:stuff"))])
 async def check_access():

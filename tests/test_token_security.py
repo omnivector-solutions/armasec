@@ -10,7 +10,7 @@ import httpx
 import pytest
 import starlette
 
-from armasec.token_security import TokenSecurity
+from armasec.token_security import PermissionMode, TokenSecurity
 
 
 @pytest.fixture
@@ -28,13 +28,25 @@ async def build_secure_endpoint(app, rs256_domain, mock_openid_server, rs256_jwk
     valid token that includes the supplied scopes.
     """
 
-    def _helper(path: str, scopes: Optional[List[str]] = None):
+    def _helper(
+        path: str,
+        scopes: Optional[List[str]] = None,
+        permission_mode: PermissionMode = PermissionMode.ALL,
+    ):
         """
         Adds a route onto the app at the provide path. If scopes are provided, they are supplied
-        to the injected TokenSecurity that is added to the route.
+        to the injected TokenSecurity that is added to the route. Uses supplied permission_mode if
+        supplied
         """
 
-        @app.get(path, dependencies=[fastapi.Depends(TokenSecurity(rs256_domain, scopes=scopes))])
+        @app.get(
+            path,
+            dependencies=[
+                fastapi.Depends(
+                    TokenSecurity(rs256_domain, scopes=scopes, permission_mode=permission_mode)
+                ),
+            ],
+        )
         async def _():
             return dict(good="to go")
 
@@ -82,7 +94,7 @@ async def test_injector_requires_correctly_encoded_token(client):
 
 @pytest.mark.asyncio
 @pytest.mark.freeze_time("2021-09-16 20:56:00")
-async def test_injector_requires_scopes(client, build_secure_endpoint, build_rs256_token):
+async def test_injector_requires_all_scopes(client, build_secure_endpoint, build_rs256_token):
     """
     This test verifies that access is granted to requests with valid auth headers where the token
     carries all of the scopes required by the endpoint.
@@ -101,3 +113,61 @@ async def test_injector_requires_scopes(client, build_secure_endpoint, build_rs2
     response = await client.get("/requires_read_more", headers=headers)
     assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
     assert "Not authorized" in response.text
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-27 22:22:00")
+async def test_injector_requires_some_scopes(client, build_secure_endpoint, build_rs256_token):
+    """
+    This test verifies that access is granted to requests with valid auth headers where the token
+    carries some of the scopes required by the endpoint.
+    """
+    exp = datetime(2021, 9, 28, 22, 22, 0, tzinfo=timezone.utc)
+    token = build_rs256_token(
+        claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
+    )
+    headers = {"Authorization": f"bearer {token}"}
+
+    build_secure_endpoint(
+        "/requires_read_all",
+        scopes=["read:all"],
+        permission_mode=PermissionMode.SOME,
+    )
+    response = await client.get("/requires_read_all", headers=headers)
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    token = build_rs256_token(
+        claim_overrides=dict(sub="me", permissions=["read:something-else"], exp=exp.timestamp()),
+    )
+    headers = {"Authorization": f"bearer {token}"}
+    build_secure_endpoint(
+        "/requires_read_more",
+        scopes=["read:all", "read:more"],
+        permission_mode=PermissionMode.SOME,
+    )
+    response = await client.get("/requires_read_more", headers=headers)
+    assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
+    assert "Not authorized" in response.text
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-27 22:22:00")
+async def test_injector_raises_error_on_unknown_permission_mode(
+    client, build_secure_endpoint, build_rs256_token
+):
+    """
+    This test verifies that a request is unauthorized if an unkown permission mode is set.
+    """
+    exp = datetime(2021, 9, 28, 22, 22, 0, tzinfo=timezone.utc)
+    token = build_rs256_token(
+        claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
+    )
+    headers = {"Authorization": f"bearer {token}"}
+
+    build_secure_endpoint(
+        "/requires_read_all",
+        scopes=["read:all"],
+        permission_mode="Not a real permission",  # type: ignore
+    )
+    response = await client.get("/requires_read_all", headers=headers)
+    assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
