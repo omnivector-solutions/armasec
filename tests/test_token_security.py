@@ -101,7 +101,7 @@ async def test_injector_requires_all_scopes(client, build_secure_endpoint, build
     """
     exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
     token = build_rs256_token(
-        claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
+        claim_overrides=dict(sub="me", permissions=["read:all", "read:other"], exp=exp.timestamp()),
     )
     headers = {"Authorization": f"bearer {token}"}
 
@@ -124,7 +124,7 @@ async def test_injector_requires_some_scopes(client, build_secure_endpoint, buil
     """
     exp = datetime(2021, 9, 28, 22, 22, 0, tzinfo=timezone.utc)
     token = build_rs256_token(
-        claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
+        claim_overrides=dict(sub="me", permissions=["read:all", "read:other"], exp=exp.timestamp()),
     )
     headers = {"Authorization": f"bearer {token}"}
 
