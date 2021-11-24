@@ -126,7 +126,9 @@ class TokenSecurity(APIKeyBase):
                     """
                 )
                 self.debug_logger(message)
-                AuthorizationError.require_condition(token_permissions == my_permissions, message)
+                AuthorizationError.require_condition(
+                    my_permissions - token_permissions == set(), message
+                )
             elif self.permission_mode == PermissionMode.SOME:
                 message = unwrap(
                     f"""
