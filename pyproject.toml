@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "armasec"
-version = "0.7.3"
+version = "0.8.0"
 description = "Injectable FastAPI auth via OIDC"
 authors = ["Omnivector Solutions <info@omnivector.solutions>"]
 license = "MIT"
@@ -14,7 +14,7 @@ python-jose = {extras = ["cryptography"], version = "^3.2.0"}
 fastapi = "^0.68.0"
 httpx = "^0.18.2"
 snick = "^1.0.0"
-py-buzz = "^2.1.3"
+py-buzz = "^3.0.0"
 
 # These must be included as a main dependency for the pytest extension to work out of the box
 respx = "^0.17.1"
@@ -32,13 +32,12 @@ mypy = "^0.910"
 isort = "^5.9.3"
 pytest-sugar = "^0.9.4"
 black = "^21.7b0"
-flake8 = "^3.9.2"
 python-dotenv = "^0.19.0"
 pytest-cov = "^2.12.1"
 uvicorn = "^0.15.0"
 loguru = "^0.5.3"
 Sphinx = "^4.2.0"
-sphinx-view = "^0.3.0"
+pyproject-flake8 = "^0.0.1-alpha.2"
 
 [tool.poetry.plugins.pytest11]
 pytest_armasec = "armasec.pytest_extension"
@@ -67,6 +66,10 @@ line-length = 100
 line_length = 100
 multi_line_output = 3
 include_trailing_comma = true
+
+[tool.flake8]
+max-line-length = 100
+max-complexity = 40
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
