@@ -127,7 +127,8 @@ class TokenSecurity(APIKeyBase):
                 )
                 self.debug_logger(message)
                 AuthorizationError.require_condition(
-                    my_permissions - token_permissions == set(), message
+                    my_permissions - token_permissions == set(),
+                    message,
                 )
             elif self.permission_mode == PermissionMode.SOME:
                 message = unwrap(

@@ -2,9 +2,9 @@
 Provides some utility functions.
 """
 from traceback import format_tb
-from types import TracebackType
 from typing import Callable
 
+from buzz import DoExceptParams
 from snick import dedent
 
 
@@ -15,9 +15,7 @@ def noop(*args, **kwargs):
     pass
 
 
-def log_error(
-    logger: Callable[..., None], err: Exception, final_message: str, trace: TracebackType
-):
+def log_error(logger: Callable[..., None], dep: DoExceptParams):
     """
     Logs an en error with the supplied message, a string representation of the error, and its
     traceback. If the logger supplied is noop, do nothing. Pass as a partial when using the Buzz
@@ -45,8 +43,8 @@ def log_error(
 
     logger(
         message_template.format(
-            final_message=final_message,
-            err=str(err),
-            trace="\n".join(format_tb(trace)),
+            final_message=dep.final_message,
+            err=str(dep.err),
+            trace="\n".join(format_tb(dep.trace)),
         )
     )

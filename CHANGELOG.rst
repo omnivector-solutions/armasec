@@ -10,6 +10,11 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v0.8.0 - 2022-02-22
+===================
+- Updated to use py-buzz 3.0
+- Changed to use pyproject-flake8 for linting
+
 v0.7.3 - 2021-11-16
 ===================
 - Fixed faulty set logic in lockdown_all()
