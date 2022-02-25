@@ -22,7 +22,7 @@ pytest = "^6.2.5"
 auto-name-enum = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
-ipython = "^7.27.0"
+ipython = "^7.31.1"
 pytest-freezegun = "^0.4.2"
 asgi-lifespan = "^1.0.1"
 httpx = "^0.18.2"
