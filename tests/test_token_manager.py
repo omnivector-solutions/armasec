@@ -123,7 +123,6 @@ def test_extract_token_payload__fails_without_audience(
             aud="some-audience",
         ),
     )
-    print("TOKEN: ", token)
     with pytest.raises(AuthenticationError):
         manager.extract_token_payload({"Authorization": f"bearer {token}"})
 

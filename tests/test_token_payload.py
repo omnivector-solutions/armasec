@@ -16,11 +16,13 @@ def test_to_dict():
         sub="someone",
         permissions=["a", "b", "c"],
         expire=exp,
+        client_id="some-fake-id",
     )
     assert payload.to_dict() == dict(
         sub="someone",
         permissions=["a", "b", "c"],
         exp=int(exp.timestamp()),
+        client_id="some-fake-id",
     )
 
 
@@ -36,8 +38,10 @@ def test_from_dict():
             sub="someone",
             permissions=["a", "b", "c"],
             exp=int(exp.timestamp()),
+            azp="some-fake-id",
         ),
     )
     assert payload.sub == "someone"
     assert payload.permissions == ["a", "b", "c"]
     assert payload.expire == exp
+    assert payload.client_id == "some-fake-id"

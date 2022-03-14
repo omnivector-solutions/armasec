@@ -17,6 +17,7 @@ class TokenPayload(BaseModel):
     sub: str
     permissions: List[str] = Field(list())
     expire: datetime = Field(None, alias="exp")
+    client_id: str = Field(None, alias="azp")
 
     class Config:
         extra = "allow"
@@ -29,4 +30,5 @@ class TokenPayload(BaseModel):
             sub=self.sub,
             permissions=self.permissions,
             exp=int(self.expire.timestamp()),
+            client_id=self.client_id,
         )
