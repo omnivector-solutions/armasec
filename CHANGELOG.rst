@@ -10,6 +10,11 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v0.9.0 - 2022-03-14
+===================
+- Included ``client_id`` in TokenPayload (loaded from ``azp`` claim)
+- Upgraded ``black`` to ^22.0
+
 v0.8.0 - 2022-02-22
 ===================
 - Updated to use py-buzz 3.0

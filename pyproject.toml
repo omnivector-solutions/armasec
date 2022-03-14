@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "armasec"
-version = "0.8.0"
+version = "0.9.0"
 description = "Injectable FastAPI auth via OIDC"
 authors = ["Omnivector Solutions <info@omnivector.solutions>"]
 license = "MIT"
@@ -31,7 +31,7 @@ pytest-random-order = "^1.0.4"
 mypy = "^0.910"
 isort = "^5.9.3"
 pytest-sugar = "^0.9.4"
-black = "^21.7b0"
+black = "^22.0"
 python-dotenv = "^0.19.0"
 pytest-cov = "^2.12.1"
 uvicorn = "^0.15.0"
