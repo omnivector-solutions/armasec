@@ -10,6 +10,10 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v0.10.0 - 2022-04-26
+====================
+- Added support for python 3.6
+
 v0.9.0 - 2022-03-14
 ===================
 - Included ``client_id`` in TokenPayload (loaded from ``azp`` claim)

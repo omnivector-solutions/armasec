@@ -1,3 +1,6 @@
+# Pyenv files
+.python-version
+
 ## Custom OmniVector Section
 *.env
 

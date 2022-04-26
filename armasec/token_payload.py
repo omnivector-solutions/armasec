@@ -1,7 +1,6 @@
 """
 This module defines a pydantic schema for the payload of a jwt.
 """
-from __future__ import annotations
 
 from datetime import datetime
 from typing import List
