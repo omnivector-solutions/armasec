@@ -10,6 +10,10 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v0.10.1 - 2022-05-04
+====================
+- Added ``use_https`` flag
+
 v0.10.0 - 2022-04-26
 ====================
 - Added support for python 3.6
