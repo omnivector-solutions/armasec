@@ -21,13 +21,23 @@ def test_config__is_lazy_loaded(rs256_domain, mock_openid_server):
     assert not mock_openid_server.openid_config_route.called
 
 
-def test_build_openid_config_url():
+def test_build_openid_config_url__default_protocol():
     """
-    Verify that the openid config url is built correctly.
+    Verify that the openid config url is built correctly using the default protocol.
     """
     assert (
         OpenidConfigLoader.build_openid_config_url("my.domain")
         == "https://my.domain/.well-known/openid-configuration"
+    )
+
+
+def test_build_openid_config_url__with_other_protocol():
+    """
+    Verify that the openid config url is built correctly using a non-default protocol.
+    """
+    assert (
+        OpenidConfigLoader.build_openid_config_url("my.domain", use_https=False)
+        == "http://my.domain/.well-known/openid-configuration"
     )
 
 
