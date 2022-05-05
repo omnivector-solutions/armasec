@@ -34,11 +34,14 @@ class OpenidConfigLoader:
         self.debug_logger = debug_logger if debug_logger else noop
 
     @staticmethod
-    def build_openid_config_url(domain):
+    def build_openid_config_url(domain: str, use_https: bool = True):
         """
         Builds a url for an openid configuration given a domain.
+
+        If ``use_https`` is not truthy, the url will be built with ``http`` instead.
         """
-        return f"https://{domain}/.well-known/openid-configuration"
+        protocol = "https" if use_https else "http"
+        return f"{protocol}://{domain}/.well-known/openid-configuration"
 
     def _load_openid_resource(self, url: str):
         """
