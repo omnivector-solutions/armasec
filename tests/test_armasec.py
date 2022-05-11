@@ -55,7 +55,7 @@ async def client(app):
 @pytest.mark.freeze_time("2021-09-20 11:02:00")
 async def test_lockdown__with_no_scopes(
     mock_openid_server,
-    rs256_domain,
+    rs256_domain_config,
     build_rs256_token,
     build_secure_endpoint,
     app,
@@ -65,7 +65,7 @@ async def test_lockdown__with_no_scopes(
     Test that lockdown works correctly when supplied no scopes.
     """
 
-    armasec = Armasec(rs256_domain, audience="https://this.api")
+    armasec = Armasec(domains_config=[rs256_domain_config])
 
     exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
     token = build_rs256_token(claim_overrides=dict(sub="me", exp=exp.timestamp()))
@@ -82,7 +82,7 @@ async def test_lockdown__with_no_scopes(
 @pytest.mark.freeze_time("2021-09-20 11:02:00")
 async def test_lockdown__with_scopes(
     mock_openid_server,
-    rs256_domain,
+    rs256_domain_config,
     build_rs256_token,
     build_secure_endpoint,
     app,
@@ -92,7 +92,7 @@ async def test_lockdown__with_scopes(
     Test that lockdown works correctly when supplied with scopes.
     """
 
-    armasec = Armasec(rs256_domain, audience="https://this.api")
+    armasec = Armasec(domains_config=[rs256_domain_config])
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown("read:more"))
 
     good_token = build_rs256_token(
@@ -125,7 +125,7 @@ async def test_lockdown__with_scopes(
 @pytest.mark.freeze_time("2021-09-22 22:54:00")
 async def test_lockdown__with_all_scopes(
     mock_openid_server,
-    rs256_domain,
+    rs256_domain_config,
     build_rs256_token,
     build_secure_endpoint,
     app,
@@ -135,7 +135,7 @@ async def test_lockdown__with_all_scopes(
     Test that lockdown works correctly requiring all scopes.
     """
 
-    armasec = Armasec(rs256_domain, audience="https://this.api")
+    armasec = Armasec(domains_config=[rs256_domain_config])
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown_all("read:one", "read:more"))
 
     good_token = build_rs256_token(
@@ -169,7 +169,7 @@ async def test_lockdown__with_all_scopes(
 @pytest.mark.freeze_time("2021-09-22 22:54:00")
 async def test_lockdown__with_some_scopes(
     mock_openid_server,
-    rs256_domain,
+    rs256_domain_config,
     build_rs256_token,
     build_secure_endpoint,
     app,
@@ -179,7 +179,7 @@ async def test_lockdown__with_some_scopes(
     Test that lockdown works correctly requiring some scopes.
     """
 
-    armasec = Armasec(rs256_domain, audience="https://this.api")
+    armasec = Armasec(domains_config=[rs256_domain_config])
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown_some("read:one", "read:more"))
 
     good_token = build_rs256_token(
