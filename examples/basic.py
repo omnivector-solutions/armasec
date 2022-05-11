@@ -12,10 +12,6 @@ armasec = Armasec(
             domain=os.environ.get("ARMASEC_DOMAIN"),
             audience=os.environ.get("ARMASEC_AUDIENCE"),
         ),
-        DomainConfig(
-            domain="omnivector.us.auth0.com",
-            audience="blablabla",
-        ),
     ],
     debug_exceptions=True,
 )
