@@ -89,6 +89,8 @@ class TokenSecurity(APIKeyBase):
         the TokenDecoder, and the TokenManager if they are not already initialized.
         """
 
+        token_payload = None
+
         try:
             token_payload = self._extract_token_payload_from_manager(request)
         except AttributeError:
