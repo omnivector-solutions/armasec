@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 class DomainConfig(BaseModel):
     """
-    This model provides a specification for the input domains from which to authenticate against.
+    This model provides a specification for the input domains to authenticate against.
     It expects the domain indeed and the audience to refer to.
     """
 
