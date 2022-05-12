@@ -43,7 +43,9 @@ async def build_secure_endpoint(app, rs256_domain_config, mock_openid_server, rs
             path,
             dependencies=[
                 fastapi.Depends(
-                    TokenSecurity([rs256_domain_config], scopes=scopes, permission_mode=permission_mode)
+                    TokenSecurity(
+                        [rs256_domain_config], scopes=scopes, permission_mode=permission_mode
+                    )
                 ),
             ],
         )
