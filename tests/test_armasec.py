@@ -207,3 +207,65 @@ async def test_lockdown__with_some_scopes(
         headers={"Authorization": f"bearer {bad_token}"},
     )
     assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-20 11:02:00")
+async def test_lockdown__with_two_domains__secondary_one_is_mocked(
+    mock_openid_server,
+    rs256_domain_config,
+    rs256_secondary_domain_config,
+    build_rs256_token,
+    build_secure_endpoint,
+    app,
+    client,
+):
+    """
+    Test that lockdown works correctly when supplied two domains to the Armasec class. The secondary
+    input domain is the one to match the tokens and authenticate the incoming token.
+    """
+
+    armasec = Armasec(domains_config=[rs256_secondary_domain_config, rs256_domain_config])
+
+    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    token = build_rs256_token(
+        claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
+    )
+    build_secure_endpoint("/secured-no-scopes", armasec.lockdown("read:stuff"))
+
+    response = await client.get("/secured-no-scopes", headers={"Authorization": f"bearer {token}"})
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    response = await client.get("/secured-no-scopes")
+    assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-20 11:02:00")
+async def test_lockdown__with_two_domains__first_one_is_mocked(
+    mock_openid_server,
+    rs256_domain_config,
+    rs256_secondary_domain_config,
+    build_rs256_token,
+    build_secure_endpoint,
+    app,
+    client,
+):
+    """
+    Test that lockdown works correctly when supplied two domains to the Armasec class. The first
+    input domain is the one to match the tokens and authenticate the incoming token.
+    """
+
+    armasec = Armasec(domains_config=[rs256_domain_config, rs256_secondary_domain_config])
+
+    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    token = build_rs256_token(
+        claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
+    )
+    build_secure_endpoint("/secured-no-scopes", armasec.lockdown("read:stuff"))
+
+    response = await client.get("/secured-no-scopes", headers={"Authorization": f"bearer {token}"})
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    response = await client.get("/secured-no-scopes")
+    assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
