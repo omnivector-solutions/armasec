@@ -20,7 +20,7 @@ class Armasec:
 
     def __init__(
         self,
-        domains_config: List[DomainConfig],
+        domain_configs: List[DomainConfig],
         debug_logger: Optional[Callable[[str], None]] = noop,
         debug_exceptions: bool = False,
     ):
@@ -28,13 +28,13 @@ class Armasec:
         Stores initialization values for the TokenSecurity. All are passed through.
 
         Args:
-            domains_config:   List of domain configuration to authenticate the tokens against.
+            domain_configs:   List of domain configuration to authenticate the tokens against.
             debug_logger:     A callable, that if provided, will allow debug logging. Should be
                               passed as a logger method like `logger.debug`
             debug_exceptions: If True, raise original exceptions. Should only be used in a testing
                               or debugging context.
         """
-        self.domains_config = domains_config
+        self.domain_configs = domain_configs
         self.debug_logger = debug_logger
         self.debug_exceptions = debug_exceptions
 
@@ -50,7 +50,7 @@ class Armasec:
         checking token permssions against TokenSecurity scopes.
         """
         return TokenSecurity(
-            domains_config=self.domains_config,
+            domain_configs=self.domain_configs,
             scopes=scopes,
             permission_mode=permission_mode,
             debug_logger=self.debug_logger,

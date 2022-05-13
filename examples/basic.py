@@ -7,7 +7,7 @@ from fastapi import FastAPI, Depends
 
 app = FastAPI()
 armasec = Armasec(
-    domains_config=[
+    domain_configs=[
         DomainConfig(
             domain=os.environ.get("ARMASEC_DOMAIN"),
             audience=os.environ.get("ARMASEC_AUDIENCE"),

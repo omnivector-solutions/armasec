@@ -65,7 +65,7 @@ async def test_lockdown__with_no_scopes(
     Test that lockdown works correctly when supplied no scopes.
     """
 
-    armasec = Armasec(domains_config=[rs256_domain_config])
+    armasec = Armasec(domain_configs=[rs256_domain_config])
 
     exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
     token = build_rs256_token(claim_overrides=dict(sub="me", exp=exp.timestamp()))
@@ -92,7 +92,7 @@ async def test_lockdown__with_scopes(
     Test that lockdown works correctly when supplied with scopes.
     """
 
-    armasec = Armasec(domains_config=[rs256_domain_config])
+    armasec = Armasec(domain_configs=[rs256_domain_config])
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown("read:more"))
 
     good_token = build_rs256_token(
@@ -135,7 +135,7 @@ async def test_lockdown__with_all_scopes(
     Test that lockdown works correctly requiring all scopes.
     """
 
-    armasec = Armasec(domains_config=[rs256_domain_config])
+    armasec = Armasec(domain_configs=[rs256_domain_config])
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown_all("read:one", "read:more"))
 
     good_token = build_rs256_token(
@@ -179,7 +179,7 @@ async def test_lockdown__with_some_scopes(
     Test that lockdown works correctly requiring some scopes.
     """
 
-    armasec = Armasec(domains_config=[rs256_domain_config])
+    armasec = Armasec(domain_configs=[rs256_domain_config])
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown_some("read:one", "read:more"))
 
     good_token = build_rs256_token(
@@ -225,7 +225,7 @@ async def test_lockdown__with_two_domains__secondary_one_is_mocked(
     input domain is the one to match the tokens and authenticate the incoming token.
     """
 
-    armasec = Armasec(domains_config=[rs256_secondary_domain_config, rs256_domain_config])
+    armasec = Armasec(domain_configs=[rs256_secondary_domain_config, rs256_domain_config])
 
     exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
     token = build_rs256_token(
@@ -256,7 +256,7 @@ async def test_lockdown__with_two_domains__first_one_is_mocked(
     input domain is the one to match the tokens and authenticate the incoming token.
     """
 
-    armasec = Armasec(domains_config=[rs256_domain_config, rs256_secondary_domain_config])
+    armasec = Armasec(domain_configs=[rs256_domain_config, rs256_secondary_domain_config])
 
     exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
     token = build_rs256_token(
