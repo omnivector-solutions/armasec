@@ -5,6 +5,8 @@ This module defines the core Armasec class.
 from functools import lru_cache
 from typing import Callable, List, Optional
 
+from fastapi import HTTPException, status
+
 from armasec.schemas import DomainConfig
 from armasec.token_security import PermissionMode, TokenSecurity
 from armasec.utilities import noop
@@ -20,9 +22,10 @@ class Armasec:
 
     def __init__(
         self,
-        domain_configs: List[DomainConfig],
+        domain_configs: Optional[List[DomainConfig]] = None,
         debug_logger: Optional[Callable[[str], None]] = noop,
         debug_exceptions: bool = False,
+        **kargs,
     ):
         """
         Stores initialization values for the TokenSecurity. All are passed through.
@@ -33,8 +36,19 @@ class Armasec:
                               passed as a logger method like `logger.debug`
             debug_exceptions: If True, raise original exceptions. Should only be used in a testing
                               or debugging context.
+            kargs:             Arguments compatible to instantiate the DomainConfig model.
         """
-        self.domain_configs = domain_configs
+        primary_domain_config = DomainConfig(**kargs)
+        if primary_domain_config.domain:
+            self.domain_configs = [primary_domain_config]
+        elif domain_configs is not None:
+            self.domain_configs = domain_configs
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="No domain was input.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
         self.debug_logger = debug_logger
         self.debug_exceptions = debug_exceptions
 

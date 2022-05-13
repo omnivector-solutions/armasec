@@ -8,6 +8,7 @@ import fastapi
 import httpx
 import pytest
 import starlette
+from fastapi import HTTPException
 
 from armasec import Armasec, TokenSecurity
 
@@ -55,7 +56,7 @@ async def client(app):
 @pytest.mark.freeze_time("2021-09-20 11:02:00")
 async def test_lockdown__with_no_scopes(
     mock_openid_server,
-    rs256_domain_config,
+    rs256_domain,
     build_rs256_token,
     build_secure_endpoint,
     app,
@@ -65,7 +66,7 @@ async def test_lockdown__with_no_scopes(
     Test that lockdown works correctly when supplied no scopes.
     """
 
-    armasec = Armasec(domain_configs=[rs256_domain_config])
+    armasec = Armasec(domain=rs256_domain, audience="https://this.api")
 
     exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
     token = build_rs256_token(claim_overrides=dict(sub="me", exp=exp.timestamp()))
@@ -82,7 +83,7 @@ async def test_lockdown__with_no_scopes(
 @pytest.mark.freeze_time("2021-09-20 11:02:00")
 async def test_lockdown__with_scopes(
     mock_openid_server,
-    rs256_domain_config,
+    rs256_domain,
     build_rs256_token,
     build_secure_endpoint,
     app,
@@ -92,7 +93,7 @@ async def test_lockdown__with_scopes(
     Test that lockdown works correctly when supplied with scopes.
     """
 
-    armasec = Armasec(domain_configs=[rs256_domain_config])
+    armasec = Armasec(domain=rs256_domain, audience="https://this.api")
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown("read:more"))
 
     good_token = build_rs256_token(
@@ -125,7 +126,7 @@ async def test_lockdown__with_scopes(
 @pytest.mark.freeze_time("2021-09-22 22:54:00")
 async def test_lockdown__with_all_scopes(
     mock_openid_server,
-    rs256_domain_config,
+    rs256_domain,
     build_rs256_token,
     build_secure_endpoint,
     app,
@@ -135,7 +136,7 @@ async def test_lockdown__with_all_scopes(
     Test that lockdown works correctly requiring all scopes.
     """
 
-    armasec = Armasec(domain_configs=[rs256_domain_config])
+    armasec = Armasec(domain=rs256_domain, audience="https://this.api")
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown_all("read:one", "read:more"))
 
     good_token = build_rs256_token(
@@ -169,7 +170,7 @@ async def test_lockdown__with_all_scopes(
 @pytest.mark.freeze_time("2021-09-22 22:54:00")
 async def test_lockdown__with_some_scopes(
     mock_openid_server,
-    rs256_domain_config,
+    rs256_domain,
     build_rs256_token,
     build_secure_endpoint,
     app,
@@ -179,7 +180,7 @@ async def test_lockdown__with_some_scopes(
     Test that lockdown works correctly requiring some scopes.
     """
 
-    armasec = Armasec(domain_configs=[rs256_domain_config])
+    armasec = Armasec(domain=rs256_domain, audience="https://this.api")
     build_secure_endpoint("/secured-with-scopes", armasec.lockdown_some("read:one", "read:more"))
 
     good_token = build_rs256_token(
@@ -269,3 +270,80 @@ async def test_lockdown__with_two_domains__first_one_is_mocked(
 
     response = await client.get("/secured-no-scopes")
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-20 11:02:00")
+async def test_lockdown__with_two_domains__check_if_passing_domain_takes_precedence_over_the_domain_configs_list(
+    mock_openid_server,
+    rs256_domain,
+    rs256_secondary_domain_config,
+    build_rs256_token,
+    build_secure_endpoint,
+    app,
+    client,
+):
+    """
+    Test if the Armasec class works properly when both domain_configs and domain are inputted. The
+    expected behaviour is the domain itself to take precedence over the domain config list.
+    """
+
+    armasec = Armasec(
+        domain_configs=[rs256_secondary_domain_config],
+        domain=rs256_domain,
+        audience="https://this.api",
+    )
+
+    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    token = build_rs256_token(
+        claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
+    )
+    build_secure_endpoint("/secured-no-scopes", armasec.lockdown("read:stuff"))
+
+    response = await client.get("/secured-no-scopes", headers={"Authorization": f"bearer {token}"})
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    response = await client.get("/secured-no-scopes")
+    assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-20 11:02:00")
+async def test_lockdown__check_if_its_possible_to_pass_only_one_domain_config_as_a_list(
+    mock_openid_server,
+    rs256_domain_config,
+    build_rs256_token,
+    build_secure_endpoint,
+    app,
+    client,
+):
+    """
+    Test if the Armasec class works properly only when the domain config list is provided.
+    """
+
+    armasec = Armasec(domain_configs=[rs256_domain_config])
+
+    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    token = build_rs256_token(
+        claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
+    )
+    build_secure_endpoint("/secured-no-scopes", armasec.lockdown("read:stuff"))
+
+    response = await client.get("/secured-no-scopes", headers={"Authorization": f"bearer {token}"})
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    response = await client.get("/secured-no-scopes")
+    assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.freeze_time("2021-09-20 11:02:00")
+def test_armasec__no_domain_was_inputted():
+    """
+    Test if error is raised when neither domain nor domain_configs are provided to Armasec's class.
+    """
+
+    with pytest.raises(HTTPException) as err:
+        Armasec()
+
+    assert err.value.status_code == starlette.status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert err.value.detail == "No domain was input."

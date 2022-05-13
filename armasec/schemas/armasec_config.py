@@ -12,7 +12,7 @@ class DomainConfig(BaseModel):
     It expects the domain indeed and the audience to refer to.
     """
 
-    domain: str = Field(..., description="The OIDC domain where resources are loaded.")
+    domain: str = Field(str(), description="The OIDC domain where resources are loaded.")
     audience: Optional[str] = Field(None, description="Optional designation of the token audience.")
     algorithm: str = Field(
         "RS256", description="The the algorithm to use for decoding. Defaults to RS256."
