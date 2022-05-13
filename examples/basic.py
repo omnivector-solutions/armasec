@@ -11,6 +11,6 @@ armasec = Armasec(
     debug_exceptions=True,
 )
 
-@app.get("/stuff", dependencies=[Depends(armasec.lockdown("read:stuff"))])
+@app.get("/stuff", dependencies=[Depends(armasec.lockdown("jobbergate:applications:view"))])
 async def check_access():
     return dict(message="Successfully authenticated!")
