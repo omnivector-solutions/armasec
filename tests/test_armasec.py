@@ -274,7 +274,7 @@ async def test_lockdown__with_two_domains__first_one_is_mocked(
 
 @pytest.mark.asyncio
 @pytest.mark.freeze_time("2021-09-20 11:02:00")
-async def test_lockdown__with_two_domains__check_if_passing_domain_takes_precedence_over_the_domain_configs_list(
+async def test_lockdown__with_two_domains__check_if_passing_domain_takes_precedence_over_the_domain_configs_list(  # noqa
     mock_openid_server,
     rs256_domain,
     rs256_secondary_domain_config,
