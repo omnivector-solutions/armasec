@@ -8,9 +8,8 @@ app = FastAPI()
 armasec = Armasec(
     domain=os.environ.get("ARMASEC_DOMAIN"),
     audience=os.environ.get("ARMASEC_AUDIENCE"),
-    debug_exceptions=True,
 )
 
-@app.get("/stuff", dependencies=[Depends(armasec.lockdown("jobbergate:applications:view"))])
+@app.get("/stuff", dependencies=[Depends(armasec.lockdown("read:stuff"))])
 async def check_access():
     return dict(message="Successfully authenticated!")
