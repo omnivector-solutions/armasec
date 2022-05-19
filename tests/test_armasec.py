@@ -347,3 +347,92 @@ def test_armasec__no_domain_was_inputted():
 
     assert err.value.status_code == starlette.status.HTTP_422_UNPROCESSABLE_ENTITY
     assert err.value.detail == "No domain was input."
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@pytest.mark.parametrize(
+    "key_value_pairs_to_match",
+    [
+        {"custom-key": "custom-value"},
+        {"custom-key-1": "custom-value-1", "custom-key-2": "custom-value-2"},
+        {"custom-key": ["custom-value"]},
+        {"custom-key": ["custom-value-1", "custom-value-2"]},
+        {"custom-key": True},
+        {"custom-key": 1},
+        {"custom-key": 1.0},
+        {"custom-key": {"another-custom-key": "custom-value"}},
+    ],
+)
+async def test_lockdown__test_match_keys__check_if_can_authorize(
+    key_value_pairs_to_match,
+    mock_openid_server,
+    rs256_domain_config,
+    build_rs256_token,
+    build_secure_endpoint,
+    app,
+    client,
+):
+    """
+    Test that lockdown works correctly when supplied two domains to the Armasec class. The first
+    input domain is the one to match the tokens and authenticate the incoming token.
+    """
+    rs256_domain_config.match_keys = key_value_pairs_to_match
+
+    armasec = Armasec(domain_configs=[rs256_domain_config])
+
+    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    token = build_rs256_token(
+        claim_overrides=dict(
+            sub="me", exp=exp.timestamp(), permissions=["read:stuff"], **key_value_pairs_to_match
+        )
+    )
+    build_secure_endpoint("/secured-no-scopes", armasec.lockdown("read:stuff"))
+
+    response = await client.get("/secured-no-scopes", headers={"Authorization": f"bearer {token}"})
+    assert response.status_code == starlette.status.HTTP_200_OK
+
+    response = await client.get("/secured-no-scopes")
+    assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.asyncio
+@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@pytest.mark.parametrize(
+    "key_value_pairs_to_match",
+    [
+        {"custom-key": "custom-value"},
+        {"custom-key-1": "custom-value-1", "custom-key-2": "custom-value-2"},
+        {"custom-key": ["custom-value"]},
+        {"custom-key": ["custom-value-1", "custom-value-2"]},
+        {"custom-key": True},
+        {"custom-key": 1},
+        {"custom-key": 1.0},
+        {"custom-key": {"another-custom-key": "custom-value"}},
+    ],
+)
+async def test_lockdown__test_match_keys__check_if_cannot_authorize(
+    key_value_pairs_to_match,
+    mock_openid_server,
+    rs256_domain_config,
+    build_rs256_token,
+    build_secure_endpoint,
+    app,
+    client,
+):
+    """
+    Test that lockdown works correctly when supplied two domains to the Armasec class. The first
+    input domain is the one to match the tokens and authenticate the incoming token.
+    """
+    rs256_domain_config.match_keys = key_value_pairs_to_match
+
+    armasec = Armasec(domain_configs=[rs256_domain_config])
+
+    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    token = build_rs256_token(
+        claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
+    )
+    build_secure_endpoint("/secured-no-scopes", armasec.lockdown("read:stuff"))
+
+    response = await client.get("/secured-no-scopes", headers={"Authorization": f"bearer {token}"})
+    assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
