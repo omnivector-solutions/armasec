@@ -55,6 +55,20 @@ def test__load_openid_resource__success(mock_openid_server):
         assert loader._load_openid_resource("https://my.domain/blah") == dict(foo="bar")
 
 
+def test__load_openid_resource__with_http(mock_openid_server):
+    """
+    Verify that the helper method can fetch json data via a GET call to a url.
+    """
+    loader = OpenidConfigLoader("my.domain", use_https=False)
+    with respx.mock:
+        route = respx.get("http://my.domain/blah")
+        route.return_value = httpx.Response(
+            starlette.status.HTTP_200_OK,
+            json=dict(foo="bar"),
+        )
+        assert loader._load_openid_resource("http://my.domain/blah") == dict(foo="bar")
+
+
 def test__load_openid_resource__fails_on_failed_request(mock_openid_server):
     """
     Verify that the helper method throws an exception if the GET request fails.

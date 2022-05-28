@@ -10,6 +10,10 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v0.10.2 - 2022-05-28
+====================
+- Exposed ``use_https`` in TokenSecurity and Armasec classes.
+
 v0.10.1 - 2022-05-04
 ====================
 - Added ``use_https`` flag
