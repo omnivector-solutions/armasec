@@ -18,7 +18,12 @@ class OpenidConfigLoader:
     _config: Optional[OpenidConfig] = None
     _jwks: Optional[JWKs] = None
 
-    def __init__(self, domain: str, debug_logger: Optional[Callable[..., None]] = None):
+    def __init__(
+        self,
+        domain: str,
+        use_https: bool = True,
+        debug_logger: Optional[Callable[..., None]] = None,
+    ):
         """
         Initializes a base TokenManager.
 
@@ -27,10 +32,12 @@ class OpenidConfigLoader:
             secret:                  The secret key needed to decode a token
             domain:                  The domain of the OIDC provider. This is to construct the
                                      openid-configuration url
+            use_https:               If falsey, use ``http`` instead of ``https`` (the default).
             debug_logger:            A callable, that if provided, will allow debug logging. Should
                                      be passed as a logger method like `logger.debug`
         """
         self.domain = domain
+        self.use_https = use_https
         self.debug_logger = debug_logger if debug_logger else noop
 
     @staticmethod
@@ -67,7 +74,9 @@ class OpenidConfigLoader:
         """
         if not self._config:
             self.debug_logger("Fetching openid configration")
-            data = self._load_openid_resource(self.build_openid_config_url(self.domain))
+            data = self._load_openid_resource(
+                self.build_openid_config_url(self.domain, self.use_https)
+            )
             with AuthenticationError.handle_errors(
                 message="openid config data was invalid",
                 do_except=partial(log_error, self.debug_logger),

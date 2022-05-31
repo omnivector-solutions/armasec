@@ -20,6 +20,7 @@ class Armasec:
     def __init__(
         self,
         domain: str,
+        use_https: bool = True,
         audience: Optional[str] = None,
         algorithm: str = "RS256",
         debug_logger: Optional[Callable[[str], None]] = noop,
@@ -30,6 +31,8 @@ class Armasec:
 
         Args:
             domain:           The OIDC domain where resources are loaded
+            use_https:        If falsey, use ``http`` when pulling openid config from the OIDC
+                              server instead of ``https`` (the default).
             audience:         Optional designation of the token audience.
             algorithm:        The the algorithm to use for decoding. Defaults to RS256.
             debug_logger:     A callable, that if provided, will allow debug logging. Should be
@@ -38,6 +41,7 @@ class Armasec:
                               or debugging context.
         """
         self.domain = domain
+        self.use_https = use_https
         self.audience = audience
         self.algorithm = algorithm
         self.debug_logger = debug_logger
@@ -56,6 +60,7 @@ class Armasec:
         """
         return TokenSecurity(
             self.domain,
+            use_https=self.use_https,
             audience=self.audience,
             algorithm=self.algorithm,
             scopes=scopes,

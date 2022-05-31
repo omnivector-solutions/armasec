@@ -34,6 +34,7 @@ class TokenSecurity(APIKeyBase):
     def __init__(
         self,
         domain: str,
+        use_https: bool = True,
         audience: Optional[str] = None,
         algorithm: str = "RS256",
         scopes: Optional[Iterable[str]] = None,
@@ -46,6 +47,8 @@ class TokenSecurity(APIKeyBase):
 
         Args:
             domain:           The OIDC domain where resources are loaded
+            use_https:        If falsey, use ``http`` when pulling openid config from the OIDC
+                              server instead of ``https`` (the default).
             audience:         Optional designation of the token audience.
             algorithm:        The the algorithm to use for decoding. Defaults to RS256.
             scopes:           Optional permissions scopes that should be checked
@@ -55,6 +58,7 @@ class TokenSecurity(APIKeyBase):
                               or debugging context.
         """
         self.domain = domain
+        self.use_https = use_https
         self.audience = audience
         self.algorithm = algorithm
         self.scopes = scopes
@@ -82,7 +86,9 @@ class TokenSecurity(APIKeyBase):
         """
         if self.manager is None:
             self.debug_logger("Lazy loading TokenManager")
-            loader = OpenidConfigLoader(self.domain, debug_logger=self.debug_logger)
+            loader = OpenidConfigLoader(
+                self.domain, use_https=self.use_https, debug_logger=self.debug_logger
+            )
             decoder = TokenDecoder(loader.jwks, self.algorithm, debug_logger=self.debug_logger)
             self.manager = TokenManager(
                 loader.config,
