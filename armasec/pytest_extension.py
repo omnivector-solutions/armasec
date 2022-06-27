@@ -14,6 +14,7 @@ from jose import jwt
 from snick import dedent, strip_whitespace
 
 from armasec.openid_config_loader import OpenidConfigLoader
+from armasec.schemas.armasec_config import DomainConfig
 from armasec.schemas.jwks import JWK, JWKs
 from armasec.schemas.openid_config import OpenidConfig
 
@@ -25,6 +26,14 @@ def rs256_domain():
     The value here doesn't really have anything to do with an actual domain name.
     """
     return "armasec.dev"
+
+
+@pytest.fixture()
+def rs256_domain_config(rs256_domain):
+    """
+    Return the DomainConfig model for the default rs256 domain.
+    """
+    return DomainConfig(domain=rs256_domain, audience="https://this.api")
 
 
 @pytest.fixture()

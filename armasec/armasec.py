@@ -3,8 +3,9 @@ This module defines the core Armasec class.
 """
 
 from functools import lru_cache
-from typing import Callable, Optional
+from typing import Callable, List, Optional
 
+from armasec.schemas import DomainConfig
 from armasec.token_security import PermissionMode, TokenSecurity
 from armasec.utilities import noop
 
@@ -19,10 +20,7 @@ class Armasec:
 
     def __init__(
         self,
-        domain: str,
-        use_https: bool = True,
-        audience: Optional[str] = None,
-        algorithm: str = "RS256",
+        domains_config: List[DomainConfig],
         debug_logger: Optional[Callable[[str], None]] = noop,
         debug_exceptions: bool = False,
     ):
@@ -30,20 +28,13 @@ class Armasec:
         Stores initialization values for the TokenSecurity. All are passed through.
 
         Args:
-            domain:           The OIDC domain where resources are loaded
-            use_https:        If falsey, use ``http`` when pulling openid config from the OIDC
-                              server instead of ``https`` (the default).
-            audience:         Optional designation of the token audience.
-            algorithm:        The the algorithm to use for decoding. Defaults to RS256.
+            domains_config:   List of domain configuration to authenticate the tokens against.
             debug_logger:     A callable, that if provided, will allow debug logging. Should be
                               passed as a logger method like `logger.debug`
             debug_exceptions: If True, raise original exceptions. Should only be used in a testing
                               or debugging context.
         """
-        self.domain = domain
-        self.use_https = use_https
-        self.audience = audience
-        self.algorithm = algorithm
+        self.domains_config = domains_config
         self.debug_logger = debug_logger
         self.debug_exceptions = debug_exceptions
 
@@ -59,10 +50,7 @@ class Armasec:
         checking token permssions against TokenSecurity scopes.
         """
         return TokenSecurity(
-            self.domain,
-            use_https=self.use_https,
-            audience=self.audience,
-            algorithm=self.algorithm,
+            domains_config=self.domains_config,
             scopes=scopes,
             permission_mode=permission_mode,
             debug_logger=self.debug_logger,

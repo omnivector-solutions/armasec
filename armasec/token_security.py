@@ -1,18 +1,32 @@
-from typing import Callable, Iterable, Optional
+from typing import Callable, Iterable, List, Optional
 
 from auto_name_enum import AutoNameEnum, auto
 from fastapi import HTTPException, status
 from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.api_key import APIKeyBase
+from pydantic import BaseModel
 from snick import unwrap
 from starlette.requests import Request
 
-from armasec.exceptions import AuthorizationError
+from armasec.exceptions import AuthenticationError, AuthorizationError
 from armasec.openid_config_loader import OpenidConfigLoader
+from armasec.schemas import DomainConfig
 from armasec.token_decoder import TokenDecoder
 from armasec.token_manager import TokenManager
 from armasec.token_payload import TokenPayload
 from armasec.utilities import noop
+
+
+class ManagerConfig(BaseModel):
+    """
+    Model class to represent a TokenManager instance and its domain configuration for easier mapping
+    """
+
+    manager: TokenManager
+    domain_config: DomainConfig
+
+    class Config:
+        arbitrary_types_allowed = True
 
 
 class PermissionMode(AutoNameEnum):
@@ -33,10 +47,7 @@ class TokenSecurity(APIKeyBase):
 
     def __init__(
         self,
-        domain: str,
-        use_https: bool = True,
-        audience: Optional[str] = None,
-        algorithm: str = "RS256",
+        domain_configs: List[DomainConfig],
         scopes: Optional[Iterable[str]] = None,
         permission_mode: PermissionMode = PermissionMode.ALL,
         debug_logger: Optional[Callable[..., None]] = None,
@@ -46,21 +57,14 @@ class TokenSecurity(APIKeyBase):
         Initializes the TokenSecurity instance.
 
         Args:
-            domain:           The OIDC domain where resources are loaded
-            use_https:        If falsey, use ``http`` when pulling openid config from the OIDC
-                              server instead of ``https`` (the default).
-            audience:         Optional designation of the token audience.
-            algorithm:        The the algorithm to use for decoding. Defaults to RS256.
+            domain_configs:   List of domain configuration to authenticate the tokens against.
             scopes:           Optional permissions scopes that should be checked
             debug_logger:     A callable, that if provided, will allow debug logging. Should be
                               passed as a logger method like `logger.debug`
             debug_exceptions: If True, raise original exceptions. Should only be used in a testing
                               or debugging context.
         """
-        self.domain = domain
-        self.use_https = use_https
-        self.audience = audience
-        self.algorithm = algorithm
+        self.domain_configs = domain_configs
         self.scopes = scopes
         self.permission_mode = permission_mode
 
@@ -76,7 +80,7 @@ class TokenSecurity(APIKeyBase):
         self.scheme_name = self.__class__.__name__
 
         # This will be lazy loaded at the first request call
-        self.manager = None
+        self.managers: List[ManagerConfig] = list()
 
     async def __call__(self, request: Request) -> TokenPayload:
         """
@@ -84,21 +88,15 @@ class TokenSecurity(APIKeyBase):
         is injected to a route endpoint via the Depends() method. Lazily loads the OIDC config,
         the TokenDecoder, and the TokenManager if they are not already initialized.
         """
-        if self.manager is None:
-            self.debug_logger("Lazy loading TokenManager")
-            loader = OpenidConfigLoader(
-                self.domain, use_https=self.use_https, debug_logger=self.debug_logger
-            )
-            decoder = TokenDecoder(loader.jwks, self.algorithm, debug_logger=self.debug_logger)
-            self.manager = TokenManager(
-                loader.config,
-                decoder,
-                audience=self.audience,
-                debug_logger=self.debug_logger,
-            )
 
         try:
-            token_payload = self.manager.extract_token_payload(request.headers)
+            token_payload = self._extract_token_payload_from_manager(request)
+        except AttributeError:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not authorized",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
         except Exception as err:
             if self.debug_exceptions:
                 raise err
@@ -157,5 +155,74 @@ class TokenSecurity(APIKeyBase):
                     detail="Not authorized",
                     headers={"WWW-Authenticate": "Bearer"},
                 )
+
+        return token_payload
+
+    def _load_all_managers(self) -> None:
+        if len(self.managers) == 0:
+            for domain_config in self.domain_configs:
+                try:
+                    manager = self._load_manager(domain_config)
+                    self.managers.append(
+                        ManagerConfig(manager=manager, domain_config=domain_config)
+                    )
+                except AuthenticationError:
+                    self.debug_logger(f"Failed to match JWK against domain {domain_config.domain}")
+                except Exception as err:
+                    if self.debug_exceptions:
+                        self.debug_logger(f"Exception caught: {err.__class__.__name__}")
+
+        AuthenticationError.require_condition(
+            len(self.managers) > 0,
+            "Not authenticated: couldn't load any TokenManager instance",
+        )
+
+    def _load_manager(self, domain_config: DomainConfig) -> TokenManager:
+        self.debug_logger(f"Lazy loading TokenManager for domain {domain_config.domain}")
+        loader = OpenidConfigLoader(domain_config.domain, use_https=domain_config.use_https, debug_logger=self.debug_logger)
+        decoder = TokenDecoder(loader.jwks, domain_config.algorithm, debug_logger=self.debug_logger)
+        return TokenManager(
+            loader.config,
+            decoder,
+            audience=domain_config.audience,
+            debug_logger=self.debug_logger,
+        )
+
+    def _extract_token_payload_from_manager(self, request: Request) -> TokenPayload:
+        token_payload = None
+
+        self._load_all_managers()
+
+        for manager_config in self.managers:
+            try:
+                token_payload = manager_config.manager.extract_token_payload(request.headers)
+            except Exception as err:
+                self.debug_logger(f"Exception caught: {err.__class__.__name__}")
+            else:
+                AuthenticationError.require_condition(
+                    token_payload is not None,
+                    "Not authenticated: could not find matching JWK"
+                    " with any input domain or token is malformed",
+                )
+                message = "Not authorized: token doesn't contain necessary key-value pairs"
+                for key_to_match, value_to_match in manager_config.domain_config.match_keys.items():
+                    if isinstance(value_to_match, bool):
+                        AuthorizationError.require_condition(
+                            getattr(token_payload, key_to_match) is value_to_match, message
+                        )
+                    elif isinstance(value_to_match, (str, int, float)):
+                        AuthorizationError.require_condition(
+                            getattr(token_payload, key_to_match) == value_to_match,
+                            message,
+                        )
+                    else:
+                        AuthorizationError.require_condition(
+                            set(getattr(token_payload, key_to_match)) & set(value_to_match),
+                            message,
+                        )
+                break
+
+        # make static type analyzer happy :)
+        assert token_payload is not None
 
         return token_payload

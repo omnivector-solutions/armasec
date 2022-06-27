@@ -9,12 +9,12 @@ app = FastAPI()
 armasec = Armasec(
     domains_config=[
         DomainConfig(
-            domain=os.environ.get("ARMASEC_DOMAIN"),
-            audience=os.environ.get("ARMASEC_AUDIENCE"),
+            domain=os.environ.get("ARMASEC_DOMAIN_1"),
+            audience=os.environ.get("ARMASEC_AUDIENCE_1"),
         ),
         DomainConfig(
-            domain="omnivector.us.auth0.com",
-            audience="blablabla",
+            domain=os.environ.get("ARMASEC_DOMAIN_2"),
+            audience=os.environ.get("ARMASEC_AUDIENCE_2"),
         ),
     ],
     debug_exceptions=True,
