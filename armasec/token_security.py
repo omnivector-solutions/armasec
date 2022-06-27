@@ -179,7 +179,9 @@ class TokenSecurity(APIKeyBase):
 
     def _load_manager(self, domain_config: DomainConfig) -> TokenManager:
         self.debug_logger(f"Lazy loading TokenManager for domain {domain_config.domain}")
-        loader = OpenidConfigLoader(domain_config.domain, use_https=domain_config.use_https, debug_logger=self.debug_logger)
+        loader = OpenidConfigLoader(
+            domain_config.domain, use_https=domain_config.use_https, debug_logger=self.debug_logger
+        )
         decoder = TokenDecoder(loader.jwks, domain_config.algorithm, debug_logger=self.debug_logger)
         return TokenManager(
             loader.config,

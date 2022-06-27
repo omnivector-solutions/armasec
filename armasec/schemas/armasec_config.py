@@ -22,7 +22,7 @@ class DomainConfig(BaseModel):
         description=(
             "If falsey, use ``http`` when pulling openid config "
             "from the OIDC server instead of ``https`` (the default)."
-        )
+        ),
     )
     match_keys: Dict[
         str, Union[str, List[Any], Dict[Any, Any], Set[Any], bool, int, float]
