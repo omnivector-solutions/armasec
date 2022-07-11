@@ -10,6 +10,10 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v0.11.0 - 2022-07-11
+====================
+- Refactored code for supporting multiple OIDC domains.
+
 v0.10.2 - 2022-05-28
 ====================
 - Exposed ``use_https`` in TokenSecurity and Armasec classes.
