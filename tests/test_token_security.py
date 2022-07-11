@@ -22,7 +22,7 @@ async def app():
 
 
 @pytest.fixture
-async def build_secure_endpoint(app, rs256_domain, mock_openid_server, rs256_jwk):
+async def build_secure_endpoint(app, rs256_domain_config, mock_openid_server, rs256_jwk):
     """
     Provides a method that dynamically builds a GET route on the app that requires a header with a
     valid token that includes the supplied scopes.
@@ -43,7 +43,9 @@ async def build_secure_endpoint(app, rs256_domain, mock_openid_server, rs256_jwk
             path,
             dependencies=[
                 fastapi.Depends(
-                    TokenSecurity(rs256_domain, scopes=scopes, permission_mode=permission_mode)
+                    TokenSecurity(
+                        [rs256_domain_config], scopes=scopes, permission_mode=permission_mode
+                    )
                 ),
             ],
         )

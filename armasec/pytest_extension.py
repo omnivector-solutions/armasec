@@ -3,8 +3,9 @@ This module provides a pytest plugin for testing.
 """
 
 from collections import namedtuple
+from contextlib import _GeneratorContextManager, contextmanager
 from datetime import datetime
-from typing import Optional
+from typing import Callable, Optional
 
 import httpx
 import pytest
@@ -14,6 +15,7 @@ from jose import jwt
 from snick import dedent, strip_whitespace
 
 from armasec.openid_config_loader import OpenidConfigLoader
+from armasec.schemas.armasec_config import DomainConfig
 from armasec.schemas.jwks import JWK, JWKs
 from armasec.schemas.openid_config import OpenidConfig
 
@@ -25,6 +27,14 @@ def rs256_domain():
     The value here doesn't really have anything to do with an actual domain name.
     """
     return "armasec.dev"
+
+
+@pytest.fixture()
+def rs256_domain_config(rs256_domain):
+    """
+    Return the DomainConfig model for the default rs256 domain.
+    """
+    return DomainConfig(domain=rs256_domain, audience="https://this.api")
 
 
 @pytest.fixture()
@@ -194,26 +204,47 @@ def rs256_openid_config(rs256_iss, rs256_jwks_uri):
     )
 
 
+def build_mock_openid_server(
+    domain, openid_config, jwk, jwks_uri
+) -> Callable[[str, OpenidConfig, JWK, str], _GeneratorContextManager]:
+    """
+    Build a helper function to mock the routes used to load the openid-configuration.
+    """
+
+    @contextmanager
+    def _helper(
+        domain: str = domain,
+        openid_config: OpenidConfig = openid_config,
+        jwk: JWK = jwk,
+        jwks_uri: str = jwks_uri,
+    ):
+        MockOpenidRoutes = namedtuple("MockOpenidRoutes", ["openid_config_route", "jwks_route"])
+        with respx.mock:
+            openid_config_route = respx.get(
+                OpenidConfigLoader.build_openid_config_url(domain),
+            )
+            openid_config_route.return_value = httpx.Response(
+                starlette.status.HTTP_200_OK,
+                json=openid_config.dict(),
+            )
+
+            jwks = JWKs(keys=[jwk])
+            jwks_route = respx.get(jwks_uri)
+            jwks_route.return_value = httpx.Response(
+                starlette.status.HTTP_200_OK,
+                json=jwks.dict(),
+            )
+            yield MockOpenidRoutes(openid_config_route, jwks_route)
+
+    return _helper
+
+
 @pytest.fixture
 def mock_openid_server(rs256_domain, rs256_openid_config, rs256_jwk, rs256_jwks_uri):
     """
     Mock routes that would be used in loading an openid-configuration and jwks from a typical
     openid server.
     """
-    MockOpenidRoutes = namedtuple("MockOpenidRoutes", ["openid_config_route", "jwks_route"])
-    with respx.mock:
-        openid_config_route = respx.get(
-            OpenidConfigLoader.build_openid_config_url(rs256_domain),
-        )
-        openid_config_route.return_value = httpx.Response(
-            starlette.status.HTTP_200_OK,
-            json=rs256_openid_config.dict(),
-        )
-
-        jwks = JWKs(keys=[rs256_jwk])
-        jwks_route = respx.get(rs256_jwks_uri)
-        jwks_route.return_value = httpx.Response(
-            starlette.status.HTTP_200_OK,
-            json=jwks.dict(),
-        )
-        yield MockOpenidRoutes(openid_config_route, jwks_route)
+    builder = build_mock_openid_server(rs256_domain, rs256_openid_config, rs256_jwk, rs256_jwks_uri)
+    with builder() as constructed_builder:
+        yield constructed_builder
