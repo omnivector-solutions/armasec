@@ -10,6 +10,10 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v0.11.1 - 2022-08-30
+====================
+- Loosened requirements for urls in schemas (to allow no TLD).
+
 v0.11.0 - 2022-07-11
 ====================
 - Refactored code for supporting multiple OIDC domains.

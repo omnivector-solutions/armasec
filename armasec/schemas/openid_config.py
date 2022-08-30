@@ -1,7 +1,7 @@
 """
 This module provides a pydantic schema describing openid-configuration data.
 """
-from pydantic import BaseModel, HttpUrl
+from pydantic import AnyHttpUrl, BaseModel
 
 
 class OpenidConfig(BaseModel):
@@ -11,8 +11,8 @@ class OpenidConfig(BaseModel):
     validation and item access.
     """
 
-    issuer: HttpUrl
-    jwks_uri: HttpUrl
+    issuer: AnyHttpUrl
+    jwks_uri: AnyHttpUrl
 
     class Config:
         extra = "allow"
