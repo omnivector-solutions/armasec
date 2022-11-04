@@ -10,6 +10,10 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v0.11.2 - 2022-11-04
+====================
+- Loosened constraints in dependencies.
+
 v0.11.1 - 2022-08-30
 ====================
 - Loosened requirements for urls in schemas (to allow no TLD).
