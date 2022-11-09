@@ -9,6 +9,7 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 
 Unreleased
 ==========
+- Loosened version constraints on fastapi.
 
 v0.11.2 - 2022-11-04
 ====================
