@@ -10,6 +10,10 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v0.12.0 - 2023-07-25
+====================
+- Added support for pytest 7.x
+
 v0.11.3 - 2022-11-10
 ====================
 - Loosened version constraints on fastapi.

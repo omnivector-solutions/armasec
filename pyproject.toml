@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "armasec"
-version = "0.11.3"
+version = "0.12.0"
 description = "Injectable FastAPI auth via OIDC"
 authors = ["Omnivector Solutions <info@omnivector.solutions>"]
 license = "MIT"
@@ -18,7 +18,7 @@ py-buzz = "^3.1"
 
 # These must be included as a main dependency for the pytest extension to work out of the box
 respx = "^0"
-pytest = "^6"
+pytest = ">=6, <8"
 auto-name-enum = "^2"
 
 [tool.poetry.dev-dependencies]
