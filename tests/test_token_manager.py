@@ -1,6 +1,6 @@
-from datetime import datetime, timezone
-
+import pendulum
 import pytest
+from plummet import frozen_time
 
 from armasec.exceptions import AuthenticationError
 from armasec.schemas.jwks import JWKs
@@ -19,7 +19,7 @@ def manager(rs256_openid_config, rs256_jwk):
     return TokenManager(rs256_openid_config, decoder)
 
 
-@pytest.mark.freeze_time("2021-08-12 16:38:00")
+@frozen_time("2021-08-12 16:38:00")
 def test_unpack_token_from_header__success(manager):
     """
     This test verifies that the ``unpack_token_from_header()`` method can successfully unpack a jwt
@@ -65,15 +65,15 @@ def test_unpack_token_from_header__fail_for_invalid_scheme(manager):
         manager.unpack_token_from_header(dict(Authorization="carrier xxxxxxxxxxxx"))
 
 
-@pytest.mark.freeze_time("2021-09-16 20:56:00")
+@frozen_time("2021-09-16 20:56:00")
 def test_extract_token_payload__success(manager, build_rs256_token):
     """
     This test verifies that the ``extract_token_payload()`` method successfully decodes a jwt and
     produces a TokenPayload instance from the contents.
     """
-    exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
     token = build_rs256_token(
-        claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
+        claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.int_timestamp),
     )
     token_payload = manager.extract_token_payload({"Authorization": f"bearer {token}"})
     assert token_payload.sub == "me"
@@ -81,7 +81,7 @@ def test_extract_token_payload__success(manager, build_rs256_token):
     assert token_payload.expire == exp
 
 
-@pytest.mark.freeze_time("2021-09-16 20:56:00")
+@frozen_time("2021-09-16 20:56:00")
 def test_extract_token_payload__with_audience_succeeds(
     build_rs256_token, rs256_openid_config, rs256_jwk
 ):
@@ -92,7 +92,7 @@ def test_extract_token_payload__with_audience_succeeds(
     jwks = JWKs(keys=[rs256_jwk])
     decoder = TokenDecoder(jwks)
     manager = TokenManager(rs256_openid_config, decoder, audience="some-audience")
-    exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(
             sub="me",
@@ -104,7 +104,7 @@ def test_extract_token_payload__with_audience_succeeds(
     assert token_payload.sub == "me"
 
 
-@pytest.mark.freeze_time("2021-09-16 20:56:00")
+@frozen_time("2021-09-16 20:56:00")
 def test_extract_token_payload__fails_without_audience(
     build_rs256_token, rs256_openid_config, rs256_jwk
 ):
@@ -115,7 +115,7 @@ def test_extract_token_payload__fails_without_audience(
     jwks = JWKs(keys=[rs256_jwk])
     decoder = TokenDecoder(jwks)
     manager = TokenManager(rs256_openid_config, decoder)
-    exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(
             sub="me",
@@ -127,7 +127,7 @@ def test_extract_token_payload__fails_without_audience(
         manager.extract_token_payload({"Authorization": f"bearer {token}"})
 
 
-@pytest.mark.freeze_time("2021-09-16 20:56:00")
+@frozen_time("2021-09-16 20:56:00")
 def test_extract_token_payload__fails_with_bad_audience(
     build_rs256_token, rs256_openid_config, rs256_jwk
 ):
@@ -138,7 +138,7 @@ def test_extract_token_payload__fails_with_bad_audience(
     jwks = JWKs(keys=[rs256_jwk])
     decoder = TokenDecoder(jwks)
     manager = TokenManager(rs256_openid_config, decoder, audience="other-audience")
-    exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(
             sub="me",

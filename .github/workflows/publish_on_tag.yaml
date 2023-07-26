@@ -14,8 +14,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.8.10
-      - uses: Gr1N/setup-poetry@v7
+          python-version: 3.8.17
+      - uses: Gr1N/setup-poetry@v8
       - name: login
         run: poetry config http-basic.pypi __token__ ${{ secrets.OMNIVECTOR_PYPI_TOKEN }}
       - name: build

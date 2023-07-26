@@ -1,14 +1,14 @@
 """
 Test the Armasec convenience class.
 """
-from datetime import datetime, timezone
-
 import asgi_lifespan
 import fastapi
 import httpx
+import pendulum
 import pytest
 import starlette
 from fastapi import HTTPException
+from plummet import frozen_time
 
 from armasec import Armasec, TokenSecurity
 
@@ -52,8 +52,7 @@ async def client(app):
             yield client
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@frozen_time("2021-09-20 11:02:00")
 async def test_lockdown__with_no_scopes(
     mock_openid_server,
     rs256_domain,
@@ -68,7 +67,7 @@ async def test_lockdown__with_no_scopes(
 
     armasec = Armasec(domain=rs256_domain, audience="https://this.api")
 
-    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-21 11:02:00", tz="UTC")
     token = build_rs256_token(claim_overrides=dict(sub="me", exp=exp.timestamp()))
     build_secure_endpoint("/secured-no-scopes", armasec.lockdown())
 
@@ -79,8 +78,7 @@ async def test_lockdown__with_no_scopes(
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@frozen_time("2021-09-20 11:02:00")
 async def test_lockdown__with_scopes(
     mock_openid_server,
     rs256_domain,
@@ -99,7 +97,7 @@ async def test_lockdown__with_scopes(
     good_token = build_rs256_token(
         claim_overrides=dict(
             sub="me",
-            exp=datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc).timestamp(),
+            exp=pendulum.parse("2021-09-21 11:02:00", tz="UTC").timestamp(),
             permissions=["read:more"],
         ),
     )
@@ -112,7 +110,7 @@ async def test_lockdown__with_scopes(
     bad_token = build_rs256_token(
         claim_overrides=dict(
             sub="me",
-            exp=datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc).timestamp(),
+            exp=pendulum.parse("2021-09-21 11:02:00", tz="UTC").timestamp(),
         ),
     )
     response = await client.get(
@@ -122,8 +120,7 @@ async def test_lockdown__with_scopes(
     assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-22 22:54:00")
+@frozen_time("2021-09-22 22:54:00")
 async def test_lockdown__with_all_scopes(
     mock_openid_server,
     rs256_domain,
@@ -142,7 +139,7 @@ async def test_lockdown__with_all_scopes(
     good_token = build_rs256_token(
         claim_overrides=dict(
             sub="me",
-            exp=datetime(2021, 9, 23, 22, 54, 0, tzinfo=timezone.utc).timestamp(),
+            exp=pendulum.parse("2021-09-23 22:54:00", tz="UTC").timestamp(),
             permissions=["read:one", "read:more"],
         ),
     )
@@ -155,7 +152,7 @@ async def test_lockdown__with_all_scopes(
     bad_token = build_rs256_token(
         claim_overrides=dict(
             sub="me",
-            exp=datetime(2021, 9, 23, 22, 54, 0, tzinfo=timezone.utc).timestamp(),
+            exp=pendulum.parse("2021-09-23 22:54:00", tz="UTC").timestamp(),
             permissions=["read:one"],
         ),
     )
@@ -166,8 +163,7 @@ async def test_lockdown__with_all_scopes(
     assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-22 22:54:00")
+@frozen_time("2021-09-22 22:54:00")
 async def test_lockdown__with_some_scopes(
     mock_openid_server,
     rs256_domain,
@@ -186,7 +182,7 @@ async def test_lockdown__with_some_scopes(
     good_token = build_rs256_token(
         claim_overrides=dict(
             sub="me",
-            exp=datetime(2021, 9, 23, 22, 54, 0, tzinfo=timezone.utc).timestamp(),
+            exp=pendulum.parse("2021-09-23 22:54:00", tz="UTC").timestamp(),
             permissions=["read:one"],
         ),
     )
@@ -199,7 +195,7 @@ async def test_lockdown__with_some_scopes(
     bad_token = build_rs256_token(
         claim_overrides=dict(
             sub="me",
-            exp=datetime(2021, 9, 23, 22, 54, 0, tzinfo=timezone.utc).timestamp(),
+            exp=pendulum.parse("2021-09-23 22:54:00", tz="UTC").timestamp(),
             permissions=[],
         ),
     )
@@ -210,8 +206,7 @@ async def test_lockdown__with_some_scopes(
     assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@frozen_time("2021-09-20 11:02:00")
 async def test_lockdown__with_two_domains__secondary_one_is_mocked(
     mock_openid_server,
     rs256_domain_config,
@@ -228,7 +223,7 @@ async def test_lockdown__with_two_domains__secondary_one_is_mocked(
 
     armasec = Armasec(domain_configs=[rs256_secondary_domain_config, rs256_domain_config])
 
-    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-21 11:02:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
     )
@@ -241,8 +236,7 @@ async def test_lockdown__with_two_domains__secondary_one_is_mocked(
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@frozen_time("2021-09-20 11:02:00")
 async def test_lockdown__with_two_domains__first_one_is_mocked(
     mock_openid_server,
     rs256_domain_config,
@@ -259,7 +253,7 @@ async def test_lockdown__with_two_domains__first_one_is_mocked(
 
     armasec = Armasec(domain_configs=[rs256_domain_config, rs256_secondary_domain_config])
 
-    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-21 11:02:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
     )
@@ -272,8 +266,7 @@ async def test_lockdown__with_two_domains__first_one_is_mocked(
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@frozen_time("2021-09-20 11:02:00")
 async def test_lockdown__with_two_domains__check_if_passing_domain_takes_precedence_over_the_domain_configs_list(  # noqa
     mock_openid_server,
     rs256_domain,
@@ -294,7 +287,7 @@ async def test_lockdown__with_two_domains__check_if_passing_domain_takes_precede
         audience="https://this.api",
     )
 
-    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-21 11:02:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
     )
@@ -307,8 +300,7 @@ async def test_lockdown__with_two_domains__check_if_passing_domain_takes_precede
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@frozen_time("2021-09-20 11:02:00")
 async def test_lockdown__check_if_its_possible_to_pass_only_one_domain_config_as_a_list(
     mock_openid_server,
     rs256_domain_config,
@@ -323,7 +315,7 @@ async def test_lockdown__check_if_its_possible_to_pass_only_one_domain_config_as
 
     armasec = Armasec(domain_configs=[rs256_domain_config])
 
-    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-21 11:02:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
     )
@@ -336,7 +328,7 @@ async def test_lockdown__check_if_its_possible_to_pass_only_one_domain_config_as
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
 
 
-@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@frozen_time("2021-09-20 11:02:00")
 def test_armasec__no_domain_was_inputted():
     """
     Test if error is raised when neither domain nor domain_configs are provided to Armasec's class.
@@ -349,8 +341,7 @@ def test_armasec__no_domain_was_inputted():
     assert err.value.detail == "No domain was input."
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@frozen_time("2021-09-20 11:02:00")
 @pytest.mark.parametrize(
     "key_value_pairs_to_match",
     [
@@ -381,7 +372,7 @@ async def test_lockdown__test_match_keys__check_if_can_authorize(
 
     armasec = Armasec(domain_configs=[rs256_domain_config])
 
-    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-21 11:02:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(
             sub="me", exp=exp.timestamp(), permissions=["read:stuff"], **key_value_pairs_to_match
@@ -396,8 +387,7 @@ async def test_lockdown__test_match_keys__check_if_can_authorize(
     assert response.status_code == starlette.status.HTTP_401_UNAUTHORIZED
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-20 11:02:00")
+@frozen_time("2021-09-20 11:02:00")
 @pytest.mark.parametrize(
     "key_value_pairs_to_match",
     [
@@ -428,7 +418,7 @@ async def test_lockdown__test_match_keys__check_if_cannot_authorize(
 
     armasec = Armasec(domain_configs=[rs256_domain_config])
 
-    exp = datetime(2021, 9, 21, 11, 2, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-21 11:02:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(sub="me", exp=exp.timestamp(), permissions=["read:stuff"])
     )

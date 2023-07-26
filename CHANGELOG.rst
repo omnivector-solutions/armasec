@@ -10,6 +10,15 @@ and this project adheres to `Semantic Versioning <http://semver.org/`_.
 Unreleased
 ==========
 
+v1.0.0 - 2023-07-26
+====================
+- Dropped support for Python 3.6 and 3.7
+- Added support for pytest 7.x
+- Replaced pytest-freezegun with plummet for unit tests
+- Added pendulum to increase readability of timestamps in unit tests
+- Used pytest-asyncio auto mode for async tests and fixtures
+
+
 v0.11.3 - 2022-11-10
 ====================
 - Loosened version constraints on fastapi.
