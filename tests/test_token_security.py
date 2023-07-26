@@ -1,14 +1,15 @@
 """
 Verify that the TokenSecurity functions as expected with FastAPI's dependeny injection on endpoints
 """
-from datetime import datetime, timezone
 from typing import List, Optional
 
 import asgi_lifespan
 import fastapi
 import httpx
+import pendulum
 import pytest
 import starlette
+from plummet import frozen_time
 
 from armasec.token_security import PermissionMode, TokenSecurity
 
@@ -67,14 +68,13 @@ async def client(app, build_secure_endpoint):
             yield client
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-16 20:56:00")
+@frozen_time("2021-09-16 20:56:00")
 async def test_injector_allows_authorized_request(client, build_rs256_token):
     """
     This test verifies that access is granted to requests with valid auth headers on endpoints that
     are secured by armasec's injectable security instances.
     """
-    exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
     )
@@ -83,7 +83,6 @@ async def test_injector_allows_authorized_request(client, build_rs256_token):
     assert response.status_code == starlette.status.HTTP_200_OK
 
 
-@pytest.mark.asyncio
 async def test_injector_requires_correctly_encoded_token(client):
     """
     This test verifies that access is denied to requests when the jwt is invalid.
@@ -94,14 +93,13 @@ async def test_injector_requires_correctly_encoded_token(client):
     assert "Not authenticated" in response.text
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-16 20:56:00")
+@frozen_time("2021-09-16 20:56:00")
 async def test_injector_requires_all_scopes(client, build_secure_endpoint, build_rs256_token):
     """
     This test verifies that access is granted to requests with valid auth headers where the token
     carries all of the scopes required by the endpoint.
     """
-    exp = datetime(2021, 9, 17, 20, 56, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(sub="me", permissions=["read:all", "read:other"], exp=exp.timestamp()),
     )
@@ -117,14 +115,13 @@ async def test_injector_requires_all_scopes(client, build_secure_endpoint, build
     assert "Not authorized" in response.text
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-27 22:22:00")
+@frozen_time("2021-09-27 22:22:00")
 async def test_injector_requires_some_scopes(client, build_secure_endpoint, build_rs256_token):
     """
     This test verifies that access is granted to requests with valid auth headers where the token
     carries some of the scopes required by the endpoint.
     """
-    exp = datetime(2021, 9, 28, 22, 22, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-28 22:22:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(sub="me", permissions=["read:all", "read:other"], exp=exp.timestamp()),
     )
@@ -152,15 +149,14 @@ async def test_injector_requires_some_scopes(client, build_secure_endpoint, buil
     assert "Not authorized" in response.text
 
 
-@pytest.mark.asyncio
-@pytest.mark.freeze_time("2021-09-27 22:22:00")
+@frozen_time("2021-09-27 22:22:00")
 async def test_injector_raises_error_on_unknown_permission_mode(
     client, build_secure_endpoint, build_rs256_token
 ):
     """
     This test verifies that a request is unauthorized if an unkown permission mode is set.
     """
-    exp = datetime(2021, 9, 28, 22, 22, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-09-28 22:22:00", tz="UTC")
     token = build_rs256_token(
         claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
     )

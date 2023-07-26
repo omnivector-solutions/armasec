@@ -1,17 +1,16 @@
-from datetime import datetime, timezone
-
-import pytest
+import pendulum
+from plummet import frozen_time
 
 from armasec.token_payload import TokenPayload
 
 
-@pytest.mark.freeze_time("2021-08-12 16:38:00")
+@frozen_time("2021-08-12 16:38:00")
 def test_to_dict():
     """
     This test verifies that the `to_dict()` method produces a dictionary representation of the
     TokenPayload instance's data.
     """
-    exp = datetime(2021, 8, 13, 16, 38, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-08-13 16:38:00", tz="UTC")
     payload = TokenPayload(
         sub="someone",
         permissions=["a", "b", "c"],
@@ -26,13 +25,13 @@ def test_to_dict():
     )
 
 
-@pytest.mark.freeze_time("2021-08-12 16:38:00")
+@frozen_time("2021-08-12 16:38:00")
 def test_from_dict():
     """
     This test verifies that a TokenPayload instance can be correctly initialized with the data
     embedded in a properly constructed and valid jwt.
     """
-    exp = datetime(2021, 8, 13, 16, 38, 0, tzinfo=timezone.utc)
+    exp = pendulum.parse("2021-08-13 16:38:00", tz="UTC")
     payload = TokenPayload(
         **dict(
             sub="someone",
