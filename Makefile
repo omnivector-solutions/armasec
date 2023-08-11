@@ -31,12 +31,10 @@ publish: install
 	git push origin v$(poetry version --short)
 
 docs: install
-	cd docs
-	poetry run mkdocs build
+	poetry run mkdocs build --config-file=docs/mkdocs.yaml
 
 docs-serve: install
-	cd docs
-	poetry run mkdocs serve
+	poetry run mkdocs serve --config-file=docs/mkdocs.yaml
 
 clean: clean-eggs clean-build
 	@find . -iname '*.pyc' -delete
