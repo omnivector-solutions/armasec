@@ -1,5 +1,5 @@
-![Build Status](https://github.com/omnivector-solutions/armasec/actions/workflows/main.yaml/badge.svg)
-![Documentation Status](https://github.com/omnivector-solutions/armasec/actions/workflows/docs.yml/badge.svg)
+[![Build Status](https://github.com/omnivector-solutions/armasec/actions/workflows/test_on_push.yaml/badge.svg)](https://github.com/omnivector-solutions/armasec/actions/workflows/test_on_push.yaml)
+[![Build Documentation](https://github.com/omnivector-solutions/armasec/actions/workflows/build_docs.yaml/badge.svg)](https://github.com/omnivector-solutions/armasec/actions/workflows/build_docs.yaml)
 
 
 ![Python Versions](https://img.shields.io/pypi/pyversions/armasec?label=python-versions&logo=python&style=plastic)
@@ -9,7 +9,8 @@
 
 > An [Omnivector Solutions](https://www.omnivector.io/) initiative
 >
-> [![omnivector-logo](https://github.com/omnivector-solutions/blob/main/docs/source/images/omnivector-logo-text.png)](https://www.omnivector.io/)
+> [![omnivector-logo](https://github.com/omnivector-solutions/armasec/blob/main/docs/source/images/omnivector-logo-text.png)](https://www.omnivector.io/)
+
 
 
 # Armasec
