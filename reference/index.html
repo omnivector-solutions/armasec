@@ -1,0 +1,4803 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../tutorials/getting_started_with_keycloak/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
+    
+    
+      
+        <title>Reference - armasec documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.eebd395e.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="armasec documentation" class="md-header__button md-logo" aria-label="armasec documentation" data-md-component="logo">
+      
+  <img src="../images/omnivector-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            armasec documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/omnivector-solutions/armasec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="armasec documentation" class="md-nav__button md-logo" aria-label="armasec documentation" data-md-component="logo">
+      
+  <img src="../images/omnivector-logo.png" alt="logo">
+
+    </a>
+    armasec documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/omnivector-solutions/armasec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../minimal_example/" class="md-nav__link">
+        Minimal Example
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/getting_started_with_auth0/" class="md-nav__link">
+        Getting Started with Auth0
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/getting_started_with_keycloak/" class="md-nav__link">
+        Getting Started with Keycloak
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Reference
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.armasec" class="md-nav__link">
+    armasec
+  </a>
+  
+    <nav class="md-nav" aria-label="armasec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec" class="md-nav__link">
+    Armasec
+  </a>
+  
+    <nav class="md-nav" aria-label="Armasec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec.lockdown" class="md-nav__link">
+    lockdown()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec.lockdown_all" class="md-nav__link">
+    lockdown_all()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec.lockdown_some" class="md-nav__link">
+    lockdown_some()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.exceptions" class="md-nav__link">
+    exceptions
+  </a>
+  
+    <nav class="md-nav" aria-label="exceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.exceptions.ArmasecError" class="md-nav__link">
+    ArmasecError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.exceptions.AuthenticationError" class="md-nav__link">
+    AuthenticationError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.exceptions.AuthorizationError" class="md-nav__link">
+    AuthorizationError
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader" class="md-nav__link">
+    openid_config_loader
+  </a>
+  
+    <nav class="md-nav" aria-label="openid_config_loader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader" class="md-nav__link">
+    OpenidConfigLoader
+  </a>
+  
+    <nav class="md-nav" aria-label="OpenidConfigLoader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader.config" class="md-nav__link">
+    config
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader.jwks" class="md-nav__link">
+    jwks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader.build_openid_config_url" class="md-nav__link">
+    build_openid_config_url()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.pytest_extension" class="md-nav__link">
+    pytest_extension
+  </a>
+  
+    <nav class="md-nav" aria-label="pytest_extension">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.build_mock_openid_server" class="md-nav__link">
+    build_mock_openid_server()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.build_rs256_token" class="md-nav__link">
+    build_rs256_token()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.mock_openid_server" class="md-nav__link">
+    mock_openid_server()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_domain" class="md-nav__link">
+    rs256_domain()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_domain_config" class="md-nav__link">
+    rs256_domain_config()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_iss" class="md-nav__link">
+    rs256_iss()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_jwk" class="md-nav__link">
+    rs256_jwk()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_jwks_uri" class="md-nav__link">
+    rs256_jwks_uri()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_kid" class="md-nav__link">
+    rs256_kid()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_openid_config" class="md-nav__link">
+    rs256_openid_config()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_private_key" class="md-nav__link">
+    rs256_private_key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_public_key" class="md-nav__link">
+    rs256_public_key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_sub" class="md-nav__link">
+    rs256_sub()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.token_decoder" class="md-nav__link">
+    token_decoder
+  </a>
+  
+    <nav class="md-nav" aria-label="token_decoder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_decoder.TokenDecoder" class="md-nav__link">
+    TokenDecoder
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenDecoder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_decoder.TokenDecoder.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_decoder.TokenDecoder.decode" class="md-nav__link">
+    decode()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_decoder.TokenDecoder.get_decode_key" class="md-nav__link">
+    get_decode_key()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.token_manager" class="md-nav__link">
+    token_manager
+  </a>
+  
+    <nav class="md-nav" aria-label="token_manager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_manager.TokenManager" class="md-nav__link">
+    TokenManager
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenManager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_manager.TokenManager.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_manager.TokenManager.extract_token_payload" class="md-nav__link">
+    extract_token_payload()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_manager.TokenManager.unpack_token_from_header" class="md-nav__link">
+    unpack_token_from_header()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.token_payload" class="md-nav__link">
+    token_payload
+  </a>
+  
+    <nav class="md-nav" aria-label="token_payload">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_payload.TokenPayload" class="md-nav__link">
+    TokenPayload
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenPayload">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_payload.TokenPayload.to_dict" class="md-nav__link">
+    to_dict()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.token_security" class="md-nav__link">
+    token_security
+  </a>
+  
+    <nav class="md-nav" aria-label="token_security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.ManagerConfig" class="md-nav__link">
+    ManagerConfig
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.PermissionMode" class="md-nav__link">
+    PermissionMode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.TokenSecurity" class="md-nav__link">
+    TokenSecurity
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenSecurity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.TokenSecurity.__call__" class="md-nav__link">
+    __call__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.TokenSecurity.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.utilities" class="md-nav__link">
+    utilities
+  </a>
+  
+    <nav class="md-nav" aria-label="utilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.utilities.log_error" class="md-nav__link">
+    log_error()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.utilities.noop" class="md-nav__link">
+    noop()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.schemas.armasec_config" class="md-nav__link">
+    armasec_config
+  </a>
+  
+    <nav class="md-nav" aria-label="armasec_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.schemas.armasec_config.DomainConfig" class="md-nav__link">
+    DomainConfig
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.schemas.jwks" class="md-nav__link">
+    jwks
+  </a>
+  
+    <nav class="md-nav" aria-label="jwks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.schemas.jwks.JWK" class="md-nav__link">
+    JWK
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.schemas.jwks.JWKs" class="md-nav__link">
+    JWKs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.schemas.openid_config" class="md-nav__link">
+    openid_config
+  </a>
+  
+    <nav class="md-nav" aria-label="openid_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.schemas.openid_config.OpenidConfig" class="md-nav__link">
+    OpenidConfig
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.armasec" class="md-nav__link">
+    armasec
+  </a>
+  
+    <nav class="md-nav" aria-label="armasec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec" class="md-nav__link">
+    Armasec
+  </a>
+  
+    <nav class="md-nav" aria-label="Armasec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec.lockdown" class="md-nav__link">
+    lockdown()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec.lockdown_all" class="md-nav__link">
+    lockdown_all()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.armasec.Armasec.lockdown_some" class="md-nav__link">
+    lockdown_some()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.exceptions" class="md-nav__link">
+    exceptions
+  </a>
+  
+    <nav class="md-nav" aria-label="exceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.exceptions.ArmasecError" class="md-nav__link">
+    ArmasecError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.exceptions.AuthenticationError" class="md-nav__link">
+    AuthenticationError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.exceptions.AuthorizationError" class="md-nav__link">
+    AuthorizationError
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader" class="md-nav__link">
+    openid_config_loader
+  </a>
+  
+    <nav class="md-nav" aria-label="openid_config_loader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader" class="md-nav__link">
+    OpenidConfigLoader
+  </a>
+  
+    <nav class="md-nav" aria-label="OpenidConfigLoader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader.config" class="md-nav__link">
+    config
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader.jwks" class="md-nav__link">
+    jwks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.openid_config_loader.OpenidConfigLoader.build_openid_config_url" class="md-nav__link">
+    build_openid_config_url()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.pytest_extension" class="md-nav__link">
+    pytest_extension
+  </a>
+  
+    <nav class="md-nav" aria-label="pytest_extension">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.build_mock_openid_server" class="md-nav__link">
+    build_mock_openid_server()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.build_rs256_token" class="md-nav__link">
+    build_rs256_token()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.mock_openid_server" class="md-nav__link">
+    mock_openid_server()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_domain" class="md-nav__link">
+    rs256_domain()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_domain_config" class="md-nav__link">
+    rs256_domain_config()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_iss" class="md-nav__link">
+    rs256_iss()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_jwk" class="md-nav__link">
+    rs256_jwk()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_jwks_uri" class="md-nav__link">
+    rs256_jwks_uri()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_kid" class="md-nav__link">
+    rs256_kid()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_openid_config" class="md-nav__link">
+    rs256_openid_config()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_private_key" class="md-nav__link">
+    rs256_private_key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_public_key" class="md-nav__link">
+    rs256_public_key()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.pytest_extension.rs256_sub" class="md-nav__link">
+    rs256_sub()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.token_decoder" class="md-nav__link">
+    token_decoder
+  </a>
+  
+    <nav class="md-nav" aria-label="token_decoder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_decoder.TokenDecoder" class="md-nav__link">
+    TokenDecoder
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenDecoder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_decoder.TokenDecoder.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_decoder.TokenDecoder.decode" class="md-nav__link">
+    decode()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_decoder.TokenDecoder.get_decode_key" class="md-nav__link">
+    get_decode_key()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.token_manager" class="md-nav__link">
+    token_manager
+  </a>
+  
+    <nav class="md-nav" aria-label="token_manager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_manager.TokenManager" class="md-nav__link">
+    TokenManager
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenManager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_manager.TokenManager.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_manager.TokenManager.extract_token_payload" class="md-nav__link">
+    extract_token_payload()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_manager.TokenManager.unpack_token_from_header" class="md-nav__link">
+    unpack_token_from_header()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.token_payload" class="md-nav__link">
+    token_payload
+  </a>
+  
+    <nav class="md-nav" aria-label="token_payload">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_payload.TokenPayload" class="md-nav__link">
+    TokenPayload
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenPayload">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_payload.TokenPayload.to_dict" class="md-nav__link">
+    to_dict()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.token_security" class="md-nav__link">
+    token_security
+  </a>
+  
+    <nav class="md-nav" aria-label="token_security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.ManagerConfig" class="md-nav__link">
+    ManagerConfig
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.PermissionMode" class="md-nav__link">
+    PermissionMode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.TokenSecurity" class="md-nav__link">
+    TokenSecurity
+  </a>
+  
+    <nav class="md-nav" aria-label="TokenSecurity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.TokenSecurity.__call__" class="md-nav__link">
+    __call__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.token_security.TokenSecurity.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.utilities" class="md-nav__link">
+    utilities
+  </a>
+  
+    <nav class="md-nav" aria-label="utilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.utilities.log_error" class="md-nav__link">
+    log_error()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.utilities.noop" class="md-nav__link">
+    noop()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.schemas.armasec_config" class="md-nav__link">
+    armasec_config
+  </a>
+  
+    <nav class="md-nav" aria-label="armasec_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.schemas.armasec_config.DomainConfig" class="md-nav__link">
+    DomainConfig
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.schemas.jwks" class="md-nav__link">
+    jwks
+  </a>
+  
+    <nav class="md-nav" aria-label="jwks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.schemas.jwks.JWK" class="md-nav__link">
+    JWK
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#armasec.schemas.jwks.JWKs" class="md-nav__link">
+    JWKs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#armasec.schemas.openid_config" class="md-nav__link">
+    openid_config
+  </a>
+  
+    <nav class="md-nav" aria-label="openid_config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#armasec.schemas.openid_config.OpenidConfig" class="md-nav__link">
+    OpenidConfig
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="reference">Reference</h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.armasec" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.armasec</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module defines the core Armasec class.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.armasec.Armasec" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">Armasec</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>This is a factory class for TokenSecurity. It allows the machinery of armasec to be initialized
+correctly so that the factory method <code>lockdown</code> can initialize new instances of TokenSecurity
+to protect routes. It's not essential to use Armasec to secure routes, but it cuts down on the
+boilerplate necessary to do so.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.armasec.Armasec.__init__" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">__init__</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">domain_configs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">DomainConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">debug_logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">debug_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="o">**</span><span class="n">kargs</span><span class="p">:</span> <span class="nb">bool</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Stores initialization values for the TokenSecurity. All are passed through.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>domain_configs</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="armasec.schemas.DomainConfig" href="#armasec.schemas.armasec_config.DomainConfig">DomainConfig</a>]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>List of domain configuration to authenticate the tokens against.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>debug_logger</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Callable">Callable</span>[[str], None]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A callable, that if provided, will allow debug logging. Should be
+              passed as a logger method like <code>logger.debug</code></p>
+            </div>
+          </td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="armasec.utilities.noop" href="#armasec.utilities.noop">noop</a></code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>debug_exceptions</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If True, raise original exceptions. Should only be used in a testing
+              or debugging context.</p>
+            </div>
+          </td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>kargs</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Arguments compatible to instantiate the DomainConfig model.</p>
+            </div>
+          </td>
+          <td>
+                <code>{}</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.armasec.Armasec.lockdown" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">lockdown</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">lockdown</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="o">*</span><span class="n">scopes</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">permission_mode</span><span class="p">:</span> <span class="n">PermissionMode</span> <span class="o">=</span> <span class="n">PermissionMode</span><span class="o">.</span><span class="n">ALL</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenSecurity</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
+the number of TokenSecurity instances initialized. Applies supplied permission_mode when
+checking token permssions against TokenSecurity scopes.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>scopes</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A list of scopes needed to access the endpoint.</p>
+            </div>
+          </td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>permissions_mode</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If "ALL", all scopes listed are required for access. If "SOME", only
+one of the scopes listed are required for access.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.armasec.Armasec.lockdown_all" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">lockdown_all</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">lockdown_all</span><span class="p">(</span><span class="o">*</span><span class="n">scopes</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenSecurity</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
+the number of TokenSecurity instances initialized. Requires all the scopes in the
+TokenSecurity instance to be included in the token permissions. This is just a wrapper
+around <code>lockdown()</code> with default permission_mode and is only included for symmetry.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>scopes</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A list of the scopes needed to access the endpoint. All are required.</p>
+            </div>
+          </td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.armasec.Armasec.lockdown_some" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">lockdown_some</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">lockdown_some</span><span class="p">(</span><span class="o">*</span><span class="n">scopes</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenSecurity</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
+the number of TokenSecurity instances initialized. Requires at least one permission in the
+token to match a scope attached to the TokenSecurity instance.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>scopes</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A list of the scopes needed to access the endpoint. Only one is required.</p>
+            </div>
+          </td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.exceptions" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.exceptions</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.exceptions.ArmasecError" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">ArmasecError</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code>buzz.<span title="buzz.Buzz">Buzz</span></code></p>
+
+  
+      <p>A custom exception class used for checking conditions and handling other exceptions.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>status_code</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The HTTP status code indicated by the error. Set to 400.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.exceptions.AuthenticationError" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">AuthenticationError</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="armasec.exceptions.ArmasecError" href="#armasec.exceptions.ArmasecError">ArmasecError</a></code></p>
+
+  
+      <p>Indicates a failure to authenticate and decode jwt.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>status_code</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The HTTP status code indicated by the error. Set to 401.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.exceptions.AuthorizationError" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">AuthorizationError</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="armasec.exceptions.ArmasecError" href="#armasec.exceptions.ArmasecError">ArmasecError</a></code></p>
+
+  
+      <p>Indicates that the provided claims don't match the claims required for a protected endpoint.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>status_code</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The HTTP status code indicated by the error. Set to 403.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.openid_config_loader" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.openid_config_loader</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module provides the OpenidConfigLoader which is used to load openid-configuration data from an
+OIDC provider.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.openid_config_loader.OpenidConfigLoader" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">OpenidConfigLoader</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="armasec.openid_config_loader.OpenidConfigLoader.config" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">config</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">config</span><span class="p">:</span> <span class="n">OpenidConfig</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Retrive the openid config from an OIDC provider. Lazy loads the config so that API calls are
+deferred until the coniguration is needed.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="armasec.openid_config_loader.OpenidConfigLoader.jwks" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">jwks</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">jwks</span><span class="p">:</span> <span class="n">JWKs</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Retrives JWKs public keys from an OIDC provider. Lazy loads the jwks so that API calls are
+deferred until the jwks are needed.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.openid_config_loader.OpenidConfigLoader.__init__" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">__init__</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">use_https</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">debug_logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a base TokenManager.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>secret</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The secret key needed to decode a token</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>domain</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The domain of the OIDC provider. This is to construct the
+           openid-configuration url</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>use_https</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If falsey, use <code>http</code> instead of <code>https</code> (the default).</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>debug_logger</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Callable">Callable</span>[..., None]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A callable, that if provided, will allow debug logging. Should be passed
+           as a logger method like <code>logger.debug</code></p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.openid_config_loader.OpenidConfigLoader.build_openid_config_url" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">build_openid_config_url</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">build_openid_config_url</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_https</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Builds a url for an openid configuration given a domain.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>domain</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The domain of the OIDC provider for which to build a URL</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>use_https</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Use <code>https</code> for the URL by default. If falsey, use <code>http</code> instead.</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.pytest_extension" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.pytest_extension</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module provides a pytest plugin for testing.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.build_mock_openid_server" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">build_mock_openid_server</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">build_mock_openid_server</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">domain</span><span class="p">,</span> <span class="n">openid_config</span><span class="p">,</span> <span class="n">jwk</span><span class="p">,</span> <span class="n">jwks_uri</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OpenidConfig</span><span class="p">,</span> <span class="n">JWK</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">_GeneratorContextManager</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">]</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns a context manager that mocks opend-config routes.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>domain</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The domain of the openid server to mock.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>openid_config</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The config to return from the mocked config route.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>jwk</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The jwk to return from the mocked jwk route.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>jwks_uri</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The URL of the jwks route to mock.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[str, <a class="autorefs autorefs-internal" title="armasec.schemas.openid_config.OpenidConfig" href="#armasec.schemas.openid_config.OpenidConfig">OpenidConfig</a>, <a class="autorefs autorefs-internal" title="armasec.schemas.jwks.JWK" href="#armasec.schemas.jwks.JWK">JWK</a>, str], <span title="contextlib._GeneratorContextManager">_GeneratorContextManager</span>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A context manager that, while active, mocks the openid routes needed by Armasec.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.build_rs256_token" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">build_rs256_token</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">build_rs256_token</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">rs256_private_key</span><span class="p">,</span> <span class="n">rs256_iss</span><span class="p">,</span> <span class="n">rs256_sub</span><span class="p">,</span> <span class="n">rs256_kid</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns a helper method that can build a JWT.</p>
+<p>The JWT is signed with the private key provided by the rs256_private_key.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>rs256_private_key</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rs256_iss</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rs256_sub</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.mock_openid_server" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">mock_openid_server</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">mock_openid_server</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">rs256_domain</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">rs256_openid_config</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">rs256_jwk</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">rs256_jwks_uri</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that mocks an openid server using the extension fixtures.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>rs256_domain</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rs256_openid_config</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rs256_jwk</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rs256_jwks_uri</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_domain" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_domain</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_domain</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns a domain for use in other fixtures.</p>
+<p>The value here doesn't really have anything to do with an actual domain name.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_domain_config" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_domain_config</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_domain_config</span><span class="p">(</span><span class="n">rs256_domain</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns the DomainConfig model for the default rs256 domain.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>rs256_domain</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_iss" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_iss</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_iss</span><span class="p">(</span><span class="n">rs256_domain</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns an issuer claim for use in other fixtures.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>rs256_domain</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_jwk" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_jwk</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_jwk</span><span class="p">(</span><span class="n">rs256_kid</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns a JWK for use in other fixtures.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>rs256_kid</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_jwks_uri" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_jwks_uri</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_jwks_uri</span><span class="p">(</span><span class="n">rs256_domain</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns a jwks uri for use in other fixtures.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>rs256_jwks_uri</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_kid" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_kid</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_kid</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns a KID header value for use in other fixtures.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_openid_config" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_openid_config</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_openid_config</span><span class="p">(</span><span class="n">rs256_iss</span><span class="p">,</span> <span class="n">rs256_jwks_uri</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns an openid configuration for use in other fixtures.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>rs256_iss</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>rs256_jwks_uri</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An implicit fixture parameter.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_private_key" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_private_key</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_private_key</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns a pre-generated private key for RS256 hashing in other fixtures.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_public_key" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_public_key</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_public_key</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns a pre-generated public key for RS256 hashing in other fixtures.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.pytest_extension.rs256_sub" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">rs256_sub</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rs256_sub</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Provide a fixture that returns a sum claim for use in other fixtures.</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.token_decoder" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.token_decoder</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module provides an abstract base class for algorithmic token decoders</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.token_decoder.TokenDecoder" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">TokenDecoder</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Decoder class used to decode tokens given an algorithm and jwks.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.token_decoder.TokenDecoder.__init__" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">__init__</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">jwks</span><span class="p">:</span> <span class="n">JWKs</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">debug_logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">decode_options_override</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a TokenDecoder.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>algorithm</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The algorithm to use for decoding. Defaults to RS256.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;RS256&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>jwks</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="armasec.schemas.jwks.JWKs" href="#armasec.schemas.jwks.JWKs">JWKs</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>JSON web keys object holding the public keys for decoding.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>openid_config</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The openid_configuration needed for claims such as 'issuer'.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>debug_logger</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Callable">Callable</span>[..., None]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A callable, that if provided, will allow debug logging. Should
+                     be passed as a logger method like <code>logger.debug</code></p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>decode_options_override</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Options that can override the default behavior of the jwt
+                     decode method. For example, one can ignore token expiration by
+                     setting this to <code>{ "verify_exp": False }</code></p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.token_decoder.TokenDecoder.decode" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">decode</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">claims</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenPayload</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Decode a JWT into a TokenPayload while checking signatures and claims.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>token</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The token to decode.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>claims</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Additional claims to verify in the token.</p>
+            </div>
+          </td>
+          <td>
+                <code>{}</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.token_decoder.TokenDecoder.get_decode_key" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">get_decode_key</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_decode_key</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Search for a public keys within the JWKs that matches the incoming token.</p>
+<p>Compares the token's unverified header against available JWKs. Uses the matching JWK for the
+decode key.  Raise AuthenticationError if matching public key cannot be found.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>token</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The token to match against available JWKs.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.token_manager" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.token_manager</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module defines a TokenManager that can be used to extract token payloads from request headers.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.token_manager.TokenManager" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">TokenManager</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Handle auth via a TokenDecoder and manage extraction from request headers and serialization into
+TokenPayload instances.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.token_manager.TokenManager.__init__" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">__init__</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">openid_config</span><span class="p">:</span> <span class="n">OpenidConfig</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">token_decoder</span><span class="p">:</span> <span class="n">TokenDecoder</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">audience</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">debug_logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">decode_options_override</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Initialize a base TokenManager.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>openid_config</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="armasec.schemas.OpenidConfig" href="#armasec.schemas.openid_config.OpenidConfig">OpenidConfig</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The openid_configuration needed for claims such as 'issuer'.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>token_decoder</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="armasec.token_decoder.TokenDecoder" href="#armasec.token_decoder.TokenDecoder">TokenDecoder</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The decoder used to verify jwts</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>audience</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>An optional audience to check in decoded tokens.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>debug_logger</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Callable">Callable</span>[..., None]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A callable, that if provided, will allow debug logging. Should
+                     be passed as a logger method like <code>logger.debug</code></p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>decode_options_override</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Options that can override the default behavior of the jwt
+                     decode method. For example, one can ignore token expiration by
+                     setting this to <code>{ "verify_exp": False }</code></p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.token_manager.TokenManager.extract_token_payload" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">extract_token_payload</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">extract_token_payload</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">headers</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Headers</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenPayload</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Retrieve a token from a request header and decode it into a TokenPayload.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>headers</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="starlette.datastructures.Headers">Headers</span>, dict]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The headers from which to retrieve a JWT.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.token_manager.TokenManager.unpack_token_from_header" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">unpack_token_from_header</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">unpack_token_from_header</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">headers</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Headers</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Unpack a JWT from a request header.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>headers</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="starlette.datastructures.Headers">Headers</span>, dict]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The headers from which to unpack a JWT.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.token_payload" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.token_payload</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module defines a pydantic schema for the payload of a jwt.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.token_payload.TokenPayload" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">TokenPayload</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+  
+      <p>A convenience class that can be used to access parts of a decoded jwt.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>sub</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The "sub" claim from a JWT.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>permissions</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The permissions claims extracted from a JWT.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>expire</code></td>
+          <td>
+                <code><span title="datetime.datetime">datetime</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The "exp" claim extracted from a JWT.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>client_id</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The "azp" claim extracted from a JWT.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.token_payload.TokenPayload.to_dict" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">to_dict</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">to_dict</span><span class="p">()</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Convert a TokenPayload to the equivalent dictionary returned by <code>jwt.decode()</code>.</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.token_security" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.token_security</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module defines a TokenSecurity injectable that can be used enforce access on FastAPI routes.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.token_security.ManagerConfig" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">ManagerConfig</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+  
+      <p>Model class to represent a TokenManager instance and its domain configuration for easier mapping</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>manager</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="armasec.token_manager.TokenManager" href="#armasec.token_manager.TokenManager">TokenManager</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The TokenManager instance to use for decoding tokens.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>domain_config</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="armasec.schemas.DomainConfig" href="#armasec.schemas.armasec_config.DomainConfig">DomainConfig</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The DomainConfig for the openid server.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.token_security.PermissionMode" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">PermissionMode</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="auto_name_enum.AutoNameEnum">AutoNameEnum</span></code></p>
+
+  
+      <p>Endpoint permissions.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>ALL</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Require all listed permissions.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>SOME</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Require at least one of the listed permissions.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.token_security.TokenSecurity" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">TokenSecurity</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="fastapi.security.api_key.APIKeyBase">APIKeyBase</span></code></p>
+
+  
+      <p>An injectable Security class that returns a TokenPayload when used with Depends().</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>manager</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="armasec.token_manager.TokenManager" href="#armasec.token_manager.TokenManager">TokenManager</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The TokenManager to use for token validation and extraction.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.token_security.TokenSecurity.__call__" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">__call__</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__call__</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenPayload</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>This method is called by FastAPI's dependency injection system when a TokenSecurity instance
+is injected to a route endpoint via the Depends() method. Lazily loads the OIDC config,
+the TokenDecoder, and the TokenManager if they are not already initialized.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>request</code></td>
+          <td>
+                <code><span title="starlette.requests.Request">Request</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The FastAPI request to check for secure access.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h5 id="armasec.token_security.TokenSecurity.__init__" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">__init__</span>
+
+
+</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">domain_configs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DomainConfig</span><span class="p">],</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">scopes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">permission_mode</span><span class="p">:</span> <span class="n">PermissionMode</span> <span class="o">=</span> <span class="n">PermissionMode</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">debug_logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">debug_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes the TokenSecurity instance.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>domain_configs</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="armasec.schemas.DomainConfig" href="#armasec.schemas.armasec_config.DomainConfig">DomainConfig</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>List of domain configuration to authenticate the tokens against.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>scopes</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Iterable">Iterable</span>[str]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Optional permissions scopes that should be checked</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>permission_mode</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="armasec.token_security.PermissionMode" href="#armasec.token_security.PermissionMode">PermissionMode</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The PermissionMode to apply in the protected route.</p>
+            </div>
+          </td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="armasec.token_security.PermissionMode" href="#armasec.token_security.PermissionMode">PermissionMode</a>.<span title="armasec.token_security.PermissionMode.ALL">ALL</span></code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>debug_logger</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Callable">Callable</span>[..., None]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A callable, that if provided, will allow debug logging. Should be
+              passed as a logger method like <code>logger.debug</code></p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>debug_exceptions</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If True, raise original exceptions. Should only be used in a testing
+              or debugging context.</p>
+            </div>
+          </td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.utilities" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.utilities</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>Provides some utility functions.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.utilities.log_error" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">log_error</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">log_error</span><span class="p">(</span><span class="n">logger</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">dep</span><span class="p">:</span> <span class="n">DoExceptParams</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Logs an en error with the supplied message, a string representation of the error, and its
+traceback. If the logger supplied is noop, do nothing. Pass as a partial when using the Buzz
+<code>handle_errors</code> context manager::</p>
+<div class="language-text highlight"><pre><span></span><code>with Buzz.handle_errors(&quot;Boom!&quot;, do_except=partial(log_error, debug_logger)):
+    do_some_risky_stuff()
+</code></pre></div>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="armasec.utilities.noop" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">noop</span>
+
+
+</h4>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">noop</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>This is a no-op function that...does nothing.</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.schemas.armasec_config" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.schemas.armasec_config</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module provides a pydantic schema describing Armasec's configuration parameters.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.schemas.armasec_config.DomainConfig" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">DomainConfig</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+  
+      <p>This model provides a specification for the input domains to authenticate against.
+It expects the domain indeed and the audience to refer to.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>domain</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The OIDC domain from which resources are loaded.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>audience</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Optional designation of the token audience.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>algorithm</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The Algorithm to use for decoding. Defaults to RS256.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>use_https</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If true, use <code>https</code> for URLs. Otherwise use <code>http</code></p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>match_keys</code></td>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Union">Union</span>[str, <span title="typing.List">List</span>[<span title="typing.Any">Any</span>], <span title="typing.Dict">Dict</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>], <span title="typing.Set">Set</span>[<span title="typing.Any">Any</span>], bool, int, float]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Dictionary of k/v pairs to match in the token when decoding it.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.schemas.jwks" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.schemas.jwks</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module provides pydantic schemas for JSON Web Keys.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.schemas.jwks.JWK" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">JWK</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+  
+      <p>This Model provides a specification for the objects retrieved from JWK endpoints in OIDC
+providers. It also assists with validation and item access.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>alg</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The algorithm to use for hash validation.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>e</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The exponent parameter to use in RS256 hashing</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>kid</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The "kid" claim to uniquely identify the key.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>kty</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The "kty" claim to identify the type of the key.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>n</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The modulus parameter to use in RS256 hashing.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>use</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The claim that identifies the intended use of the public key.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>x5c</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The X.509 certificate chain parameter</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>x5c</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The X.509 certificate SHA-1 thumbprint parameter</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.schemas.jwks.JWKs" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">JWKs</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+  
+      <p>This Model provides a specification for the container object retrieved from JWK endpoints in
+OIDC providers. It also assists with validation and item access.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>keys</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="armasec.schemas.jwks.JWK" href="#armasec.schemas.jwks.JWK">JWK</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The list of JWKs contained within.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="armasec.schemas.openid_config" class="doc doc-heading">
+            <span class="doc doc-object-name doc-module-name">armasec.schemas.openid_config</span>
+
+
+</h3>
+
+  <div class="doc doc-contents first">
+  
+      <p>This module provides a pydantic schema describing openid-configuration data.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="armasec.schemas.openid_config.OpenidConfig" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">OpenidConfig</span>
+
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+  
+      <p>Provides a specification for the objects retrieved from openid_configuration endpoint of the
+OIDC providers. Only includes needed fields for supported Manager instances. Assists with
+validation and item access.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>issuer</code></td>
+          <td>
+                <code><span title="pydantic.AnyHttpUrl">AnyHttpUrl</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The URL of the issuer of the tokens.</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>jwks_uri</code></td>
+          <td>
+                <code><span title="pydantic.AnyHttpUrl">AnyHttpUrl</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The URI where JWKs can be foun don the OpenID server.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>
