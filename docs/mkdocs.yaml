@@ -10,6 +10,7 @@ theme:
     - navigation.expand
     - content.code.copy
   pallete:
+    # Dark/Light mode toggle is not working and can't figure out why
     - scheme: default
       toggle:
         icon: material/brightness-4
