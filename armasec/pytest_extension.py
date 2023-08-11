@@ -23,7 +23,8 @@ from armasec.schemas.openid_config import OpenidConfig
 @pytest.fixture()
 def rs256_domain():
     """
-    Return a domain for use in fixtures from the armasec pytest extension.
+    Provide a fixture that returns a domain for use in other fixtures.
+
     The value here doesn't really have anything to do with an actual domain name.
     """
     return "armasec.dev"
@@ -32,7 +33,10 @@ def rs256_domain():
 @pytest.fixture()
 def rs256_domain_config(rs256_domain):
     """
-    Return the DomainConfig model for the default rs256 domain.
+    Provide a fixture that returns the DomainConfig model for the default rs256 domain.
+
+    Args:
+        rs256_domain: An implicit fixture parameter.
     """
     return DomainConfig(domain=rs256_domain, audience="https://this.api")
 
@@ -40,7 +44,10 @@ def rs256_domain_config(rs256_domain):
 @pytest.fixture()
 def rs256_iss(rs256_domain):
     """
-    Return an issuer claim for use in fixtures from the armasec pytest extension.
+    Provide a fixture that returns an issuer claim for use in other fixtures.
+
+    Args:
+        rs256_domain: An implicit fixture parameter.
     """
     return f"https://{rs256_domain}"
 
@@ -48,7 +55,7 @@ def rs256_iss(rs256_domain):
 @pytest.fixture()
 def rs256_kid():
     """
-    Return a kid header value for use in fixtures from the armasec pytest extension.
+    Provide a fixture that returns a KID header value for use in other fixtures.
     """
     return "SAMPLE_KID"
 
@@ -56,7 +63,7 @@ def rs256_kid():
 @pytest.fixture()
 def rs256_sub():
     """
-    Return a sum claim for use in fixtures from the armasec pytest extension.
+    Provide a fixture that returns a sum claim for use in other fixtures.
     """
     return "SAMPLE_SUB"
 
@@ -64,7 +71,7 @@ def rs256_sub():
 @pytest.fixture()
 def rs256_private_key():
     """
-    This fixture provides a pre-generated private key for RS256 hashing.
+    Provide a fixture that returns a pre-generated private key for RS256 hashing in other fixtures.
     """
     return dedent(
         """
@@ -102,7 +109,7 @@ def rs256_private_key():
 @pytest.fixture()
 def rs256_public_key():
     """
-    This fixture provides a pre-generated public key for RS256 hashing.
+    Provide a fixture that returns a pre-generated public key for RS256 hashing in other fixtures.
     """
     return dedent(
         """
@@ -121,7 +128,10 @@ def rs256_public_key():
 @pytest.fixture()
 def rs256_jwk(rs256_kid):
     """
-    This fixture provides a jwk constructed from the rs256_public_key.
+    Provide a fixture that returns a JWK for use in other fixtures.
+
+    Args:
+        rs256_kid: An implicit fixture parameter.
     """
     return JWK(
         alg="RS256",
@@ -143,7 +153,14 @@ def rs256_jwk(rs256_kid):
 @pytest.fixture()
 def build_rs256_token(rs256_private_key, rs256_iss, rs256_sub, rs256_kid):
     """
-    This fixture provides a helper method that can build a jwt signed with the sample_private_key.
+    Provide a fixture that returns a helper method that can build a JWT.
+
+    The JWT is signed with the private key provided by the rs256_private_key.
+
+    Args:
+        rs256_private_key: An implicit fixture parameter.
+        rs256_iss:         An implicit fixture parameter.
+        rs256_sub:         An implicit fixture parameter.
     """
     base_claims = dict(
         iss=rs256_iss,
@@ -188,7 +205,10 @@ def build_rs256_token(rs256_private_key, rs256_iss, rs256_sub, rs256_kid):
 @pytest.fixture
 def rs256_jwks_uri(rs256_domain):
     """
-    Return a jwks uri for use in fixtures from the armasec pytest extension.
+    Provide a fixture that returns a jwks uri for use in other fixtures.
+
+    Args:
+        rs256_jwks_uri: An implicit fixture parameter.
     """
     return f"https://{rs256_domain}/.well-known/jwks.json"
 
@@ -196,7 +216,11 @@ def rs256_jwks_uri(rs256_domain):
 @pytest.fixture
 def rs256_openid_config(rs256_iss, rs256_jwks_uri):
     """
-    Return an openid configuration for use in fixtures from the armasec pytest extension.
+    Provide a fixture that returns an openid configuration for use in other fixtures.
+
+    Args:
+        rs256_iss:      An implicit fixture parameter.
+        rs256_jwks_uri: An implicit fixture parameter.
     """
     return OpenidConfig(
         issuer=rs256_iss,
@@ -208,7 +232,16 @@ def build_mock_openid_server(
     domain, openid_config, jwk, jwks_uri
 ) -> Callable[[str, OpenidConfig, JWK, str], _GeneratorContextManager]:
     """
-    Build a helper function to mock the routes used to load the openid-configuration.
+    Provide a fixture that returns a context manager that mocks opend-config routes.
+
+    Args:
+        domain:        The domain of the openid server to mock.
+        openid_config: The config to return from the mocked config route.
+        jwk:           The jwk to return from the mocked jwk route.
+        jwks_uri:      The URL of the jwks route to mock.
+
+    Returns:
+        A context manager that, while active, mocks the openid routes needed by Armasec.
     """
 
     @contextmanager
@@ -242,8 +275,13 @@ def build_mock_openid_server(
 @pytest.fixture
 def mock_openid_server(rs256_domain, rs256_openid_config, rs256_jwk, rs256_jwks_uri):
     """
-    Mock routes that would be used in loading an openid-configuration and jwks from a typical
-    openid server.
+    Provide a fixture that mocks an openid server using the extension fixtures.
+
+    Args:
+        rs256_domain:        An implicit fixture parameter.
+        rs256_openid_config: An implicit fixture parameter.
+        rs256_jwk:           An implicit fixture parameter.
+        rs256_jwks_uri:      An implicit fixture parameter.
     """
     builder = build_mock_openid_server(rs256_domain, rs256_openid_config, rs256_jwk, rs256_jwks_uri)
     with builder() as constructed_builder:

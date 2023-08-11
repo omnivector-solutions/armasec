@@ -1,3 +1,7 @@
+"""
+This module defines a TokenSecurity injectable that can be used enforce access on FastAPI routes.
+"""
+
 from typing import Callable, Iterable, List, Optional
 
 from auto_name_enum import AutoNameEnum, auto
@@ -20,6 +24,10 @@ from armasec.utilities import noop
 class ManagerConfig(BaseModel):
     """
     Model class to represent a TokenManager instance and its domain configuration for easier mapping
+
+    Attributes:
+        manager: The TokenManager instance to use for decoding tokens.
+        domain_config: The DomainConfig for the openid server.
     """
 
     manager: TokenManager
@@ -32,6 +40,10 @@ class ManagerConfig(BaseModel):
 class PermissionMode(AutoNameEnum):
     """
     Endpoint permissions.
+
+    Attributes:
+        ALL:  Require all listed permissions.
+        SOME: Require at least one of the listed permissions.
     """
 
     ALL = auto()
@@ -41,6 +53,9 @@ class PermissionMode(AutoNameEnum):
 class TokenSecurity(APIKeyBase):
     """
     An injectable Security class that returns a TokenPayload when used with Depends().
+
+    Attributes:
+        manager: The TokenManager to use for token validation and extraction.
     """
 
     manager: Optional[TokenManager]
@@ -59,6 +74,7 @@ class TokenSecurity(APIKeyBase):
         Args:
             domain_configs:   List of domain configuration to authenticate the tokens against.
             scopes:           Optional permissions scopes that should be checked
+            permission_mode:  The PermissionMode to apply in the protected route.
             debug_logger:     A callable, that if provided, will allow debug logging. Should be
                               passed as a logger method like `logger.debug`
             debug_exceptions: If True, raise original exceptions. Should only be used in a testing
@@ -87,6 +103,9 @@ class TokenSecurity(APIKeyBase):
         This method is called by FastAPI's dependency injection system when a TokenSecurity instance
         is injected to a route endpoint via the Depends() method. Lazily loads the OIDC config,
         the TokenDecoder, and the TokenManager if they are not already initialized.
+
+        Args:
+            request: The FastAPI request to check for secure access.
         """
 
         try:

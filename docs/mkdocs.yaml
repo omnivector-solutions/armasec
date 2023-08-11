@@ -1,0 +1,58 @@
+# Configuration for mkdocs
+
+site_name: armasec documentation
+repo_url: https://github.com/omnivector-solutions/armasec
+docs_dir: source
+theme:
+  name: material
+  logo: images/omnivector-logo.png
+  features:
+    - navigation.expand
+    - content.code.copy
+  pallete:
+    - scheme: default
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+watch:
+  - ../armasec
+plugins:
+  search:
+    lang: en
+  mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        paths: [..]
+        options:
+          heading_level: 3
+          show_root_heading: true
+          separate_signature: true
+          show_signature_annotations: true
+          show_source: false
+          docstring_style: google
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite:
+  - pymdownx.snippets:
+  - pymdownx.superfences:
+  - pymdownx.details:
+  - admonition:
+  - attr_list:
+extra_css:
+  - stylesheets/extra.css
+nav:
+  - Home: index.md
+  - Getting Started: getting_started.md
+  - Minimal Example: minimal_example.md
+  - Tutorials:
+    - Getting Started with Auth0: tutorials/getting_started_with_auth0.md
+    - Getting Started with Keycloak: tutorials/getting_started_with_keycloak.md
+  - Reference: reference.md
