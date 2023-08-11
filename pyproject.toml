@@ -1,12 +1,18 @@
 [tool.poetry]
 name = "armasec"
-version = "1.0.0"
+version = "1.1.0"
 description = "Injectable FastAPI auth via OIDC"
 authors = ["Omnivector Solutions <info@omnivector.solutions>"]
 license = "MIT"
-readme = "README.rst"
+readme = "README.md"
+homepage = "https://github.com/omnivector-solutions/armasec"
 repository = "https://github.com/omnivector-solutions/armasec"
 documentation = "https://omnivector-solutions.github.io/armasec"
+
+[tool.poetry.urls]
+CHANGELOG = "https://github.com/omnivector-solutions/armasec/blob/main/CHANGELOG.md"
+CONDUCT = "https://github.com/omnivector-solutions/armasec/blob/main/CONDUCT.md"
+CONTRIBUTING = "https://github.com/omnivector-solutions/armasec/blob/main/CONTRIBUTING.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -38,6 +44,10 @@ loguru = "^0.5.3"
 Sphinx = "^4"
 pyproject-flake8 = "^5"
 plummet = {extras = ["time-machine"], version = "^1.1.0"}
+grip = "^4.6.1"
+mkdocs-material = "^9.1.21"
+mkdocstrings = {extras = ["python"], version = "^0.22.0"}
+pygments = "^2.16.1"
 
 [tool.poetry.plugins.pytest11]
 pytest_armasec = "armasec.pytest_extension"

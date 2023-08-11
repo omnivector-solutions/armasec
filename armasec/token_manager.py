@@ -1,3 +1,7 @@
+"""
+This module defines a TokenManager that can be used to extract token payloads from request headers.
+"""
+
 from typing import Callable, Optional, Union
 
 from fastapi.security.utils import get_authorization_scheme_param
@@ -28,12 +32,12 @@ class TokenManager:
         decode_options_override: Optional[dict] = None,
     ):
         """
-        Initializes a base TokenManager.
+        Initialize a base TokenManager.
 
         Args:
-
             openid_config:           The openid_configuration needed for claims such as 'issuer'.
             token_decoder:           The decoder used to verify jwts
+            audience:                An optional audience to check in decoded tokens.
             debug_logger:            A callable, that if provided, will allow debug logging. Should
                                      be passed as a logger method like `logger.debug`
             decode_options_override: Options that can override the default behavior of the jwt
@@ -49,7 +53,10 @@ class TokenManager:
 
     def unpack_token_from_header(self, headers: Union[Headers, dict]) -> str:
         """
-        Unpacks a jwt from a request header.
+        Unpack a JWT from a request header.
+
+        Args:
+            headers: The headers from which to unpack a JWT.
         """
         self.debug_logger(f"Attempting to unpack token from headers {headers}")
         auth_str = headers.get(self.header_key)
@@ -75,7 +82,10 @@ class TokenManager:
 
     def extract_token_payload(self, headers: Union[Headers, dict]) -> TokenPayload:
         """
-        Retrieves a token from a request header and decodes it into a TokenPayload.
+        Retrieve a token from a request header and decode it into a TokenPayload.
+
+        Args:
+            headers: The headers from which to retrieve a JWT.
         """
         token = self.unpack_token_from_header(headers)
         token_payload = self.token_decoder.decode(token, audience=self.audience)

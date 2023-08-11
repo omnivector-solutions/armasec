@@ -11,6 +11,12 @@ from pydantic import BaseModel, Field
 class TokenPayload(BaseModel):
     """
     A convenience class that can be used to access parts of a decoded jwt.
+
+    Attributes:
+        sub:         The "sub" claim from a JWT.
+        permissions: The permissions claims extracted from a JWT.
+        expire:      The "exp" claim extracted from a JWT.
+        client_id:   The "azp" claim extracted from a JWT.
     """
 
     sub: str
@@ -23,7 +29,7 @@ class TokenPayload(BaseModel):
 
     def to_dict(self):
         """
-        Converts a TokenPayload to the equivalent dictionary returned by `jwt.decode()`.
+        Convert a TokenPayload to the equivalent dictionary returned by `jwt.decode()`.
         """
         return dict(
             sub=self.sub,

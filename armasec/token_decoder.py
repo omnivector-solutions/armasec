@@ -1,6 +1,7 @@
 """
 This module provides an abstract base class for algorithmic token decoders
 """
+
 from functools import partial
 from typing import Callable, Optional
 
@@ -30,7 +31,6 @@ class TokenDecoder:
         Initializes a TokenDecoder.
 
         Args:
-
             algorithm:               The algorithm to use for decoding. Defaults to RS256.
             jwks:                    JSON web keys object holding the public keys for decoding.
             openid_config:           The openid_configuration needed for claims such as 'issuer'.
@@ -47,9 +47,13 @@ class TokenDecoder:
 
     def get_decode_key(self, token: str) -> dict:
         """
-        Search for a public keys within the JWKs that matches the incoming token's unverified
-        header. Uses it for the decode key.  Raise AuthenticationError if matching public key cannot
-        be found.
+        Search for a public keys within the JWKs that matches the incoming token.
+
+        Compares the token's unverified header against available JWKs. Uses the matching JWK for the
+        decode key.  Raise AuthenticationError if matching public key cannot be found.
+
+        Args:
+            token: The token to match against available JWKs.
         """
         self.debug_logger("Getting decode key from JWKs")
         unverified_header = jwt.get_unverified_header(token)
@@ -70,7 +74,11 @@ class TokenDecoder:
 
     def decode(self, token: str, **claims) -> TokenPayload:
         """
-        Decodes a jwt into a TokenPayload while checking signatures and claims.
+        Decode a JWT into a TokenPayload while checking signatures and claims.
+
+        Args:
+            token:  The token to decode.
+            claims: Additional claims to verify in the token.
         """
         self.debug_logger(f"Attempting to decode '{token}'")
         self.debug_logger(f"  checking claims: {claims}")

@@ -2,6 +2,7 @@
 This module provides the OpenidConfigLoader which is used to load openid-configuration data from an
 OIDC provider.
 """
+
 from functools import partial
 from typing import Callable, Optional
 
@@ -28,13 +29,12 @@ class OpenidConfigLoader:
         Initializes a base TokenManager.
 
         Args:
-
-            secret:                  The secret key needed to decode a token
-            domain:                  The domain of the OIDC provider. This is to construct the
-                                     openid-configuration url
-            use_https:               If falsey, use ``http`` instead of ``https`` (the default).
-            debug_logger:            A callable, that if provided, will allow debug logging. Should
-                                     be passed as a logger method like `logger.debug`
+            secret:        The secret key needed to decode a token
+            domain:        The domain of the OIDC provider. This is to construct the
+                           openid-configuration url
+            use_https:     If falsey, use ``http`` instead of ``https`` (the default).
+            debug_logger:  A callable, that if provided, will allow debug logging. Should be passed
+                           as a logger method like `logger.debug`
         """
         self.domain = domain
         self.use_https = use_https
@@ -45,7 +45,9 @@ class OpenidConfigLoader:
         """
         Builds a url for an openid configuration given a domain.
 
-        If ``use_https`` is not truthy, the url will be built with ``http`` instead.
+        Args:
+            domain:    The domain of the OIDC provider for which to build a URL
+            use_https: Use `https` for the URL by default. If falsey, use `http` instead.
         """
         protocol = "https" if use_https else "http"
         return f"{protocol}://{domain}/.well-known/openid-configuration"

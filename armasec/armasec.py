@@ -36,7 +36,7 @@ class Armasec:
                               passed as a logger method like `logger.debug`
             debug_exceptions: If True, raise original exceptions. Should only be used in a testing
                               or debugging context.
-            kargs:             Arguments compatible to instantiate the DomainConfig model.
+            kargs:            Arguments compatible to instantiate the DomainConfig model.
         """
         primary_domain_config = DomainConfig(**kargs)
         if primary_domain_config.domain:
@@ -62,6 +62,11 @@ class Armasec:
         Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
         the number of TokenSecurity instances initialized. Applies supplied permission_mode when
         checking token permssions against TokenSecurity scopes.
+
+        Args:
+            scopes: A list of scopes needed to access the endpoint.
+            permissions_mode: If "ALL", all scopes listed are required for access. If "SOME", only
+                one of the scopes listed are required for access.
         """
         return TokenSecurity(
             domain_configs=self.domain_configs,
@@ -77,6 +82,9 @@ class Armasec:
         the number of TokenSecurity instances initialized. Requires all the scopes in the
         TokenSecurity instance to be included in the token permissions. This is just a wrapper
         around `lockdown()` with default permission_mode and is only included for symmetry.
+
+        Args:
+            scopes: A list of the scopes needed to access the endpoint. All are required.
         """
         return self.lockdown(*scopes, permission_mode=PermissionMode.ALL)
 
@@ -85,5 +93,8 @@ class Armasec:
         Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
         the number of TokenSecurity instances initialized. Requires at least one permission in the
         token to match a scope attached to the TokenSecurity instance.
+
+        Args:
+            scopes: A list of the scopes needed to access the endpoint. Only one is required.
         """
         return self.lockdown(*scopes, permission_mode=PermissionMode.SOME)

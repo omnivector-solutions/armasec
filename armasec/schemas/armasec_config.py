@@ -1,6 +1,7 @@
 """
 This module provides a pydantic schema describing Armasec's configuration parameters.
 """
+
 from typing import Any, Dict, List, Optional, Set, Union
 
 from pydantic import BaseModel, Field
@@ -10,6 +11,13 @@ class DomainConfig(BaseModel):
     """
     This model provides a specification for the input domains to authenticate against.
     It expects the domain indeed and the audience to refer to.
+
+    Attributes:
+        domain:     The OIDC domain from which resources are loaded.
+        audience:   Optional designation of the token audience.
+        algorithm:  The Algorithm to use for decoding. Defaults to RS256.
+        use_https:  If true, use `https` for URLs. Otherwise use `http`
+        match_keys: Dictionary of k/v pairs to match in the token when decoding it.
     """
 
     domain: str = Field(str(), description="The OIDC domain where resources are loaded.")
