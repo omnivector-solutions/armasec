@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v1.1.1 - 2023-08-14
+
+- Converted docs to use public branding images
+
 ## v1.1.0 - 2023-08-11
 
 - Converted docs build to use mkdocs-material
