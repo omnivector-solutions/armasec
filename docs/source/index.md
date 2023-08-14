@@ -1,6 +1,6 @@
 !!! example "An [Omnivector Solutions](https://www.omnivector.io/){:target="_blank"} initiative"
 
-    [![omnivector-logo](./images/omnivector-logo-text.png)](https://www.omnivector.io/){:target="_blank"}
+    [![omnivector-logo](https://omnivector-public-assets.s3.us-west-2.amazonaws.com/branding/omnivector-logo-text-black-horz.png)](https://www.omnivector.io/){:target="_blank"}
 
 
 # Armasec Documentation

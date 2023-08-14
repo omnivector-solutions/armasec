@@ -9,7 +9,7 @@
 
 > An [Omnivector Solutions](https://www.omnivector.io/) initiative
 >
-> [![omnivector-logo](https://github.com/omnivector-solutions/armasec/blob/main/docs/source/images/omnivector-logo-text.png)](https://www.omnivector.io/)
+> [![omnivector-logo](https://omnivector-public-assets.s3.us-west-2.amazonaws.com/branding/omnivector-logo-text-black-horz.png)](https://www.omnivector.io/)
 
 
 
@@ -19,7 +19,7 @@ Adding a security layer on top of your API can be difficult, especially when wor
 platform. It's hard enough to get your OIDC provider configured correctly. Armasec aims to take the
 pain out of securing your APIs routes.
 
-Armasec is an opinionated library that attemtps to use the most obvious and commonly used workflows
+Armasec is an opinionated library that attempts to use the most obvious and commonly used workflows
 when working with OIDC and making configuration as simple as possible.
 
 When using the
