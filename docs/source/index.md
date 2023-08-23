@@ -1,4 +1,4 @@
-!!! example "An [Omnivector Solutions](https://www.omnivector.io/){:target="_blank"} initiative"
+!!! example "An [Omnivector](https://www.omnivector.io/){:target="_blank"} initiative"
 
     [![omnivector-logo](https://omnivector-public-assets.s3.us-west-2.amazonaws.com/branding/omnivector-logo-text-black-horz.png)](https://www.omnivector.io/){:target="_blank"}
 
