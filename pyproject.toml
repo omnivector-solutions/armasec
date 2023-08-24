@@ -2,7 +2,7 @@
 name = "armasec"
 version = "1.1.1"
 description = "Injectable FastAPI auth via OIDC"
-authors = ["Omnivector Solutions <info@omnivector.solutions>"]
+authors = ["Omnivector Engineering Team <info@omnivector.solutions>"]
 license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/omnivector-solutions/armasec"

@@ -7,7 +7,7 @@
 ![License](https://img.shields.io/pypi/l/armasec?style=plastic)
 
 
-> An [Omnivector Solutions](https://www.omnivector.io/) initiative
+> An [Omnivector](https://www.omnivector.io/) initiative
 >
 > [![omnivector-logo](https://omnivector-public-assets.s3.us-west-2.amazonaws.com/branding/omnivector-logo-text-black-horz.png)](https://www.omnivector.io/)
 
