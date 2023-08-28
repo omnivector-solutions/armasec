@@ -3,7 +3,7 @@ PACKAGE_NAME:=armasec
 ROOT_DIR:=$(shell dirname $(shell pwd))
 
 install:
-	poetry install
+	poetry install --extras=cli
 
 test: install
 	poetry run pytest
@@ -12,16 +12,13 @@ mypy: install
 	poetry run mypy ${PACKAGE_NAME} --pretty
 
 lint: install
-	poetry run black --check ${PACKAGE_NAME} tests
-	poetry run isort --check ${PACKAGE_NAME} tests
-	poetry run pflake8 ${PACKAGE_NAME} tests
+	poetry run ruff check ${PACKAGE_NAME} tests cli
 
 qa: test mypy lint
 	echo "All quality checks pass!"
 
 format: install
-	poetry run black ${PACKAGE_NAME} tests
-	poetry run isort ${PACKAGE_NAME} tests
+	poetry run ruff check --fix ${PACKAGE_NAME} tests cli
 
 example: install
 	poetry run uvicorn --host 0.0.0.0 --app-dir=examples basic:app --reload
