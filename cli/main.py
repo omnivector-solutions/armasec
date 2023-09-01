@@ -11,7 +11,7 @@ from cli.schemas import TokenSet, Persona, CliContext
 from cli.cache import init_cache, load_tokens_from_cache, clear_token_cache
 from cli.format import terminal_message, render_json
 from cli.auth import fetch_auth_tokens, extract_persona
-from cli.config import OidcProvider, attach_settings, init_settings, dump_settings
+from cli.config import OidcProvider, attach_settings, init_settings, dump_settings, clear_settings
 from cli.client import attach_client
 from cli.logging import init_logs
 
@@ -106,6 +106,27 @@ def set_config(
         oidc_provider=provider,
     )
     dump_settings(settings)
+
+
+@app.command()
+@handle_abort
+@init_cache
+@attach_settings
+def show_config(ctx: typer.Context):
+    """
+    Show the current config.
+    """
+    render_json(ctx.obj.settings.dict())
+
+
+@app.command()
+@handle_abort
+@init_cache
+def clear_config():
+    """
+    Show the current config.
+    """
+    clear_settings()
 
 
 @app.command()

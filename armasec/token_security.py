@@ -89,7 +89,7 @@ class TokenSecurity(APIKeyBase):
 
         # Settings needed for FastAPI's APIKeyBase
         self.model: APIKey = APIKey(
-            **{"in": APIKeyIn.header},
+            **{"in": APIKeyIn.header},  # type: ignore[arg-type]
             name=TokenManager.header_key,
             description=self.__class__.__doc__,
         )
