@@ -120,12 +120,18 @@ def test_decode__missing_payload_claim_mapping(rs256_jwk, build_rs256_token):
         JWKs(keys=[rs256_jwk]),
         payload_claim_mapping=dict(foo="bar.baz"),
     )
-    with pytest.raises(PayloadMappingError, match="Failed to map decoded token.*No matching values"):
+    with pytest.raises(
+        PayloadMappingError,
+            match="Failed to map decoded token.*No matching values",
+    ):
         decoder.decode(token)
 
     decoder = TokenDecoder(
         JWKs(keys=[rs256_jwk]),
         payload_claim_mapping=dict(foo="bar-baz"),
     )
-    with pytest.raises(PayloadMappingError, match="Failed to map decoded token.*Bad jmespath expression"):
+    with pytest.raises(
+        PayloadMappingError,
+        match="Failed to map decoded token.*Bad jmespath expression",
+    ):
         decoder.decode(token)

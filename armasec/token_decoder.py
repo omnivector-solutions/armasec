@@ -7,7 +7,6 @@ from functools import partial
 from typing import Callable
 
 import jmespath
-import snick
 import buzz
 from jose import jwt
 
@@ -62,7 +61,7 @@ class TokenDecoder:
                                      }
                                      ```
 
-                                     The above example would result in a TokenPayload that looks like:
+                                     The above example would result in a TokenPayload like:
 
                                      ```
                                      TokenPayload(permissions=token["resource_access"]["default"]["roles"])
