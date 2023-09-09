@@ -164,7 +164,7 @@ armasec = Armasec(
     domain="localhost:8080/realms/master",
     audience="http://keycloak.local",
     use_https=False,
-    payload_claim_mapping=dict(permissions="""resource_access."armasec_tutorial".roles"""),
+    payload_claim_mapping=dict(permissions="resource_access.armasec_tutorial.roles"),
     debug_logger=print,
     debug_exceptions=True,
 )
@@ -176,6 +176,11 @@ async def check_access():
 
 Note in this example that the `use_https` flag must be set to false to allow a local server using
 unsecured HTTP.
+
+Also not that we need to add a `payload_claim_mapping` because Keycloak does not provide
+a permissions claim at the top level. This mapping copies the roles found at
+`resource_access.armasec_tutorial.roles` to a top-level attribute of the token payload
+called permissions.
 
 Copy the `example.py` app to a local source file called "example.py".
 
