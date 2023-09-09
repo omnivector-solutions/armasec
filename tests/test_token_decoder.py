@@ -5,7 +5,7 @@ from unittest import mock
 
 import pytest
 
-from armasec.exceptions import AuthenticationError
+from armasec.exceptions import AuthenticationError, PayloadMappingError
 from armasec.schemas.jwks import JWK, JWKs
 from armasec.token_decoder import TokenDecoder
 
@@ -105,7 +105,10 @@ def test_decode__with_payload_claim_mapping(rs256_jwk, build_rs256_token):
 
 def test_decode__missing_payload_claim_mapping(rs256_jwk, build_rs256_token):
     """
-    Verify that an RS256Decoder skips missing claim mapping and does not crash.
+    Verify that an RS256Decoder throws an error if mapping failed.
+
+    There will be an error if there is a missing claim mapping.
+    There will be an error if the jmespath expression is invalid.
     """
     token = build_rs256_token(
         claim_overrides=dict(
@@ -117,8 +120,12 @@ def test_decode__missing_payload_claim_mapping(rs256_jwk, build_rs256_token):
         JWKs(keys=[rs256_jwk]),
         payload_claim_mapping=dict(foo="bar.baz"),
     )
-    token_payload = decoder.decode(token)
-    assert token_payload.sub == "test_decode-test-sub"
-    assert token_payload.client_id == "some-fake-id"
-    with pytest.raises(AttributeError, match="has no attribute 'foo'"):
-        token_payload.foo
+    with pytest.raises(PayloadMappingError, match="Failed to map decoded token.*No matching values"):
+        decoder.decode(token)
+
+    decoder = TokenDecoder(
+        JWKs(keys=[rs256_jwk]),
+        payload_claim_mapping=dict(foo="bar-baz"),
+    )
+    with pytest.raises(PayloadMappingError, match="Failed to map decoded token.*Bad jmespath expression"):
+        decoder.decode(token)
