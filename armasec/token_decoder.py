@@ -1,10 +1,13 @@
 """
 This module provides an abstract base class for algorithmic token decoders
 """
+from __future__ import annotations
 
 from functools import partial
-from typing import Callable, Optional
+from typing import Callable
 
+import jmespath
+import snick
 from jose import jwt
 
 from armasec.exceptions import AuthenticationError
@@ -24,8 +27,10 @@ class TokenDecoder:
         self,
         jwks: JWKs,
         algorithm: str = "RS256",
-        debug_logger: Optional[Callable[..., None]] = None,
-        decode_options_override: Optional[dict] = None,
+        debug_logger: Callable[..., None] | None = None,
+        decode_options_override: dict | None = None,
+        payload_claim_mapping: dict | None = None,
+
     ):
         """
         Initializes a TokenDecoder.
@@ -39,11 +44,34 @@ class TokenDecoder:
             decode_options_override: Options that can override the default behavior of the jwt
                                      decode method. For example, one can ignore token expiration by
                                      setting this to `{ "verify_exp": False }`
+            payload_claim_mapping:   Optional mappings that are applied to map claims to top-level
+                                     properties of TokenPayload using a dict format of:
+
+                                     ```
+                                     {
+                                         "TokenPayload.top-level-attribute": "decoded-token-JMESPath"
+                                     }
+                                     ```
+
+                                     Consider this example:
+
+                                     ```
+                                     {
+                                          "permissions": "resource_access.default.roles"
+                                     }
+                                     ```
+
+                                     The above example would result in a TokenPayload that looks like:
+
+                                     ```
+                                     TokenPayload(permissions=token["resource_access"]["default"]["roles"])
+                                     ```
         """
         self.algorithm = algorithm
         self.jwks = jwks
         self.debug_logger = debug_logger if debug_logger else noop
         self.decode_options_override = decode_options_override if decode_options_override else {}
+        self.payload_claim_mapping = payload_claim_mapping if payload_claim_mapping else {}
 
     def get_decode_key(self, token: str) -> dict:
         """
@@ -95,7 +123,22 @@ class TokenDecoder:
                     **claims,
                 )
             )
-            self.debug_logger(f"Payload dictionary is {payload_dict}")
+            self.debug_logger(f"Raw payload dictionary is {payload_dict}")
+            for (payload_key, token_jmespath) in self.payload_claim_mapping.items():
+                mapped_value = jmespath.search(token_jmespath, payload_dict)
+                if mapped_value is None:
+                    self.debug_logger(
+                        snick.unwrap(
+                            f"""
+                            Attempted to map {token_jmespath} from token,
+                            but found no matching values. Skipping.
+                            """
+                        )
+                    )
+                    continue
+                payload_dict[payload_key] = mapped_value
+
+            self.debug_logger(f"Mapped payload dictionary is {payload_dict}")
             self.debug_logger("Attempting to convert to TokenPayload")
             token_payload = TokenPayload(**payload_dict)
             self.debug_logger(f"Built token_payload as {token_payload}")

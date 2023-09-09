@@ -201,7 +201,12 @@ class TokenSecurity(APIKeyBase):
         loader = OpenidConfigLoader(
             domain_config.domain, use_https=domain_config.use_https, debug_logger=self.debug_logger
         )
-        decoder = TokenDecoder(loader.jwks, domain_config.algorithm, debug_logger=self.debug_logger)
+        decoder = TokenDecoder(
+            loader.jwks,
+            domain_config.algorithm,
+            debug_logger=self.debug_logger,
+            payload_claim_mapping=domain_config.payload_claim_mapping,
+        )
         return TokenManager(
             loader.config,
             decoder,
