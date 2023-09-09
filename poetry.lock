@@ -2387,6 +2387,18 @@ doc = ["cairosvg (>=2.5.2,<3.0.0)", "mdx-include (>=1.4.1,<2.0.0)", "mkdocs (>=1
 test = ["black (>=22.3.0,<23.0.0)", "coverage (>=6.2,<7.0)", "isort (>=5.0.6,<6.0.0)", "mypy (==0.910)", "pytest (>=4.4.0,<8.0.0)", "pytest-cov (>=2.10.0,<5.0.0)", "pytest-sugar (>=0.9.4,<0.10.0)", "pytest-xdist (>=1.32.0,<4.0.0)", "rich (>=10.11.0,<14.0.0)", "shellingham (>=1.3.0,<2.0.0)"]
 
 [[package]]
+name = "types-jmespath"
+version = "1.0.2.7"
+description = "Typing stubs for jmespath"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-jmespath-1.0.2.7.tar.gz", hash = "sha256:d1d3ff9eff8a4abbb4f78e35a02c9efa5743b042d66d21414227c1a1978d71c8"},
+    {file = "types_jmespath-1.0.2.7-py3-none-any.whl", hash = "sha256:dfa091f4f4e54f2e74e5667c6ff1d300a24399b43707a3c44254438aa76f3729"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.7.1"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -2543,4 +2555,4 @@ cli = ["loguru", "pendulum", "pyperclip", "rich", "typer"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "dbbf01aa602e12c81f823655bd864c27aef617b024daea2a1b4211558a17eddc"
+content-hash = "2cf26dfb691190fbbd14b7e4b64c8074bd808a7f9a81c6a9a906acd7066e1393"
