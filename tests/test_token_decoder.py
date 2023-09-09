@@ -79,3 +79,46 @@ def test_decode__fails_when_jwt_decode_throws_an_error(rs256_jwk):
     with mock.patch("jose.jwt.decode", side_effect=Exception("BOOM!")):
         with pytest.raises(AuthenticationError, match="Failed to decode token string"):
             decoder.decode("doesn't matter what token we pass here")
+
+
+def test_decode__with_payload_claim_mapping(rs256_jwk, build_rs256_token):
+    """
+    Verify that an RS256Decoder applies a payload_claim_mapping to a valid jwt.
+    """
+    token = build_rs256_token(
+        claim_overrides=dict(
+            sub="test_decode-test-sub",
+            azp="some-fake-id",
+            permissions=[],
+            resource_access=dict(default=dict(roles=["read:stuff", "write:stuff"])),
+        ),
+    )
+    decoder = TokenDecoder(
+        JWKs(keys=[rs256_jwk]),
+        payload_claim_mapping=dict(permissions="resource_access.default.roles"),
+    )
+    token_payload = decoder.decode(token)
+    assert token_payload.sub == "test_decode-test-sub"
+    assert token_payload.client_id == "some-fake-id"
+    assert token_payload.permissions == ["read:stuff", "write:stuff"]
+
+
+def test_decode__missing_payload_claim_mapping(rs256_jwk, build_rs256_token):
+    """
+    Verify that an RS256Decoder skips missing claim mapping and does not crash.
+    """
+    token = build_rs256_token(
+        claim_overrides=dict(
+            sub="test_decode-test-sub",
+            azp="some-fake-id",
+        ),
+    )
+    decoder = TokenDecoder(
+        JWKs(keys=[rs256_jwk]),
+        payload_claim_mapping=dict(foo="bar.baz"),
+    )
+    token_payload = decoder.decode(token)
+    assert token_payload.sub == "test_decode-test-sub"
+    assert token_payload.client_id == "some-fake-id"
+    with pytest.raises(AttributeError, match="has no attribute 'foo'"):
+        token_payload.foo
