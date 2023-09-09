@@ -8,9 +8,10 @@ from typing import Callable
 
 import jmespath
 import snick
+import buzz
 from jose import jwt
 
-from armasec.exceptions import AuthenticationError
+from armasec.exceptions import AuthenticationError, PayloadMappingError
 from armasec.schemas.jwks import JWKs
 from armasec.token_payload import TokenPayload
 from armasec.utilities import log_error, noop
@@ -30,7 +31,6 @@ class TokenDecoder:
         debug_logger: Callable[..., None] | None = None,
         decode_options_override: dict | None = None,
         payload_claim_mapping: dict | None = None,
-
     ):
         """
         Initializes a TokenDecoder.
@@ -45,13 +45,14 @@ class TokenDecoder:
                                      decode method. For example, one can ignore token expiration by
                                      setting this to `{ "verify_exp": False }`
             payload_claim_mapping:   Optional mappings that are applied to map claims to top-level
-                                     properties of TokenPayload using a dict format of:
+                                     attribute of TokenPayload using a dict format of:
 
                                      ```
                                      {
-                                         "TokenPayload.top-level-attribute": "decoded-token-JMESPath"
+                                         "top_level+attribute": "decoded.token.JMESPath"
                                      }
                                      ```
+                                     The values _must_ be a valid JMESPath.
 
                                      Consider this example:
 
@@ -66,6 +67,7 @@ class TokenDecoder:
                                      ```
                                      TokenPayload(permissions=token["resource_access"]["default"]["roles"])
                                      ```
+                                     Raises a 500 if the path does not match
         """
         self.algorithm = algorithm
         self.jwks = jwks
@@ -124,21 +126,21 @@ class TokenDecoder:
                 )
             )
             self.debug_logger(f"Raw payload dictionary is {payload_dict}")
+
+        with PayloadMappingError.handle_errors(
+            "Failed to map decoded token to payload",
+            do_except=partial(log_error, self.debug_logger),
+        ):
             for (payload_key, token_jmespath) in self.payload_claim_mapping.items():
                 mapped_value = jmespath.search(token_jmespath, payload_dict)
-                if mapped_value is None:
-                    self.debug_logger(
-                        snick.unwrap(
-                            f"""
-                            Attempted to map {token_jmespath} from token,
-                            but found no matching values. Skipping.
-                            """
-                        )
-                    )
-                    continue
+                buzz.require_condition(
+                    mapped_value is not None,
+                    f"No matching values found for claim mapping {token_jmespath} -> {payload_key}",
+                    raise_exc_class=KeyError,
+                )
                 payload_dict[payload_key] = mapped_value
-
             self.debug_logger(f"Mapped payload dictionary is {payload_dict}")
+
             self.debug_logger("Attempting to convert to TokenPayload")
             token_payload = TokenPayload(**payload_dict)
             self.debug_logger(f"Built token_payload as {token_payload}")
