@@ -40,7 +40,7 @@ cli = ["typer", "loguru", "rich", "pendulum", "pyperclip"]
 
 
 [tool.poetry.group.dev.dependencies]
-ipython = "^7"
+ipython = ">=7,<9"
 asgi-lifespan = "^1.0.1"
 pytest-asyncio = "^0"
 pytest-random-order = "^1.0.4"
