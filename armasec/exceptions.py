@@ -33,3 +33,14 @@ class AuthorizationError(ArmasecError):
     """
 
     status_code: int = starlette.status.HTTP_403_FORBIDDEN
+
+
+class PayloadMappingError(ArmasecError):
+    """
+    Indicates that the configured payload_claim_mapping did not match a path in the token.
+
+    Attributes:
+        status_code: The HTTP status code indicated by the error. Set to 500.
+    """
+
+    status_code: int = starlette.status.HTTP_500_INTERNAL_SERVER_ERROR
