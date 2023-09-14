@@ -10,8 +10,8 @@ import snick
 import typer
 from loguru import logger
 
-from cli.exceptions import Abort
-from cli.config import Settings
+from armasec_cli.exceptions import Abort
+from armasec_cli.config import Settings
 
 
 def build_client(settings: Settings):

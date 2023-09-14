@@ -5,9 +5,9 @@ from functools import wraps
 
 from loguru import logger
 
-from cli.schemas import TokenSet
-from cli.exceptions import Abort
-from cli.config import cache_dir
+from armasec_cli.schemas import TokenSet
+from armasec_cli.exceptions import Abort
+from armasec_cli.config import cache_dir
 
 
 def init_cache(func):

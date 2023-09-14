@@ -12,13 +12,13 @@ mypy: install
 	poetry run mypy ${PACKAGE_NAME} --pretty
 
 lint: install
-	poetry run ruff check ${PACKAGE_NAME} tests cli
+	poetry run ruff check ${PACKAGE_NAME} tests armasec_cli
 
 qa: test mypy lint
 	echo "All quality checks pass!"
 
 format: install
-	poetry run ruff check --fix ${PACKAGE_NAME} tests cli
+	poetry run ruff check --fix ${PACKAGE_NAME} tests armasec_cli
 
 example: install
 	poetry run uvicorn --host 0.0.0.0 --app-dir=examples basic:app --reload

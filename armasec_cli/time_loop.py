@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import pendulum
 from rich.progress import Progress
 
-from cli.exceptions import ArmasecCliError
+from armasec_cli.exceptions import ArmasecCliError
 
 
 @dataclass

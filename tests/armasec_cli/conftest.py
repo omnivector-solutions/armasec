@@ -4,7 +4,7 @@ import pytest
 from jose import jwt
 from typer import Context
 
-from cli.schemas import CliContext
+from armasec_cli.schemas import CliContext
 
 
 @pytest.fixture
@@ -40,7 +40,7 @@ def make_token():
 
 @pytest.fixture
 def override_cache_dir(tmp_path, mocker):
-    with mocker.patch("cli.cache.cache_dir", new=tmp_path):
+    with mocker.patch("armasec_cli.cache.cache_dir", new=tmp_path):
         token_path = tmp_path / "token"
         token_path.mkdir()
         yield
