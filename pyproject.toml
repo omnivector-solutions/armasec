@@ -34,6 +34,7 @@ loguru = {version = "^0.5.3", optional = true}
 rich = {version = "^13.5.2", optional = true}
 pendulum = {version = "^2.1.2", optional = true}
 pyperclip = {version = "^1.8.2", optional = true}
+jmespath = "^1.0.1"
 
 [tool.poetry.extras]
 cli = ["typer", "loguru", "rich", "pendulum", "pyperclip"]
@@ -58,6 +59,7 @@ pygments = "^2.16.1"
 plummet = {extras = ["time-machine"], version = "^1.2.1"}
 pytest-mock = "^3.11.1"
 ruff = "^0.0.286"
+types-jmespath = "^1.0.2.7"
 
 
 [tool.poetry.scripts]
