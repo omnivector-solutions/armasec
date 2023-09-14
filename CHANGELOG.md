@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v1.2.1 - 2023-09-14
+
+- Fixed CLI sub-package problem with installing via pip
+
 ## v1.2.0 - 2023-09-14
 
 - Added payload_claim_mapping to allow mapping claims to payload items
