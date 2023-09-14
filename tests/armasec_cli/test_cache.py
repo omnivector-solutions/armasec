@@ -1,14 +1,14 @@
 import pytest
 
-from cli.cache import (
+from armasec_cli.cache import (
     _get_token_paths,
     load_tokens_from_cache,
     save_tokens_to_cache,
     clear_token_cache,
     init_cache,
 )
-from cli.exceptions import Abort
-from cli.schemas import TokenSet
+from armasec_cli.exceptions import Abort
+from armasec_cli.schemas import TokenSet
 
 
 @pytest.mark.usefixtures("override_cache_dir")
@@ -125,7 +125,7 @@ def test_clear_token_cache__does_not_fail_if_no_tokens_are_in_cache():
 @pytest.mark.usefixtures("override_cache_dir")
 def test_init_cache__success(tmp_path, mocker):
     new_cache_dir = tmp_path / "cache"
-    with mocker.patch("cli.cache.cache_dir", new=new_cache_dir):
+    with mocker.patch("armasec_cli.cache.cache_dir", new=new_cache_dir):
         @init_cache
         def _helper():
             assert new_cache_dir.exists()

@@ -5,8 +5,8 @@ import httpx
 import pydantic
 import pytest
 
-from cli.exceptions import Abort
-from cli.client import _deserialize_request_model, make_request
+from armasec_cli.exceptions import Abort
+from armasec_cli.client import _deserialize_request_model, make_request
 
 
 DEFAULT_DOMAIN = "https://dummy-domain.com"

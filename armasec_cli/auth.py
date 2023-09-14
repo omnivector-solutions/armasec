@@ -9,14 +9,14 @@ from loguru import logger
 from jose import jwt
 from pydantic import ValidationError
 
-from cli.exceptions import Abort, ArmasecCliError
-from cli.schemas import DeviceCodeData, TokenSet, IdentityData
-from cli.cache import load_tokens_from_cache, save_tokens_to_cache
-from cli.client import make_request
-from cli.config import OidcProvider
-from cli.schemas import Persona, CliContext
-from cli.format import terminal_message
-from cli.time_loop import TimeLoop
+from armasec_cli.exceptions import Abort, ArmasecCliError
+from armasec_cli.schemas import DeviceCodeData, TokenSet, IdentityData
+from armasec_cli.cache import load_tokens_from_cache, save_tokens_to_cache
+from armasec_cli.client import make_request
+from armasec_cli.config import OidcProvider
+from armasec_cli.schemas import Persona, CliContext
+from armasec_cli.format import terminal_message
+from armasec_cli.time_loop import TimeLoop
 
 
 def extract_persona(token_set: TokenSet | None = None):

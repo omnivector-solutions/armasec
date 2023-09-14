@@ -6,14 +6,14 @@ import pyperclip
 import snick
 import typer
 
-from cli.exceptions import Abort, handle_abort
-from cli.schemas import TokenSet, Persona, CliContext
-from cli.cache import init_cache, load_tokens_from_cache, clear_token_cache
-from cli.format import terminal_message, render_json
-from cli.auth import fetch_auth_tokens, extract_persona
-from cli.config import OidcProvider, attach_settings, init_settings, dump_settings, clear_settings
-from cli.client import attach_client
-from cli.logging import init_logs
+from armasec_cli.exceptions import Abort, handle_abort
+from armasec_cli.schemas import TokenSet, Persona, CliContext
+from armasec_cli.cache import init_cache, load_tokens_from_cache, clear_token_cache
+from armasec_cli.format import terminal_message, render_json
+from armasec_cli.auth import fetch_auth_tokens, extract_persona
+from armasec_cli.config import OidcProvider, attach_settings, init_settings, dump_settings, clear_settings
+from armasec_cli.client import attach_client
+from armasec_cli.logging import init_logs
 
 
 app = typer.Typer()

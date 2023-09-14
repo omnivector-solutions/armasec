@@ -3,7 +3,7 @@ from typing import Optional
 import httpx
 from pydantic import BaseModel
 
-from cli.config import Settings
+from armasec_cli.config import Settings
 
 
 class TokenSet(BaseModel):

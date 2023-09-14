@@ -1,6 +1,6 @@
 import pytest
 
-from cli.exceptions import Abort
+from armasec_cli.exceptions import Abort
 
 
 def test_Abort_handle_errors():

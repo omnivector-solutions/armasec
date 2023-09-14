@@ -4,18 +4,18 @@ import plummet
 import pytest
 from jose import ExpiredSignatureError
 
-from cli.auth import (
+from armasec_cli.auth import (
     fetch_auth_tokens,
     init_persona,
     refresh_access_token,
     validate_token_and_extract_identity,
 )
-from cli.cache import _get_token_paths
-from cli.schemas import TokenSet, CliContext
-from cli.exceptions import Abort
-from cli.time_loop import Tick
-from cli.config import init_settings
-from cli.client import build_client
+from armasec_cli.cache import _get_token_paths
+from armasec_cli.schemas import TokenSet, CliContext
+from armasec_cli.exceptions import Abort
+from armasec_cli.time_loop import Tick
+from armasec_cli.config import init_settings
+from armasec_cli.client import build_client
 
 
 def test_validate_token_and_extract_identity__success(make_token):
@@ -305,6 +305,6 @@ def test_fetch_auth_tokens__raises_Abort_when_it_times_out_waiting_for_the_user(
         elapsed=pendulum.Duration(seconds=1),
         total_elapsed=pendulum.Duration(seconds=1),
     )
-    mocker.patch("cli.auth.TimeLoop", return_value=[one_tick])
+    mocker.patch("armasec_cli.auth.TimeLoop", return_value=[one_tick])
     with pytest.raises(Abort, match="not completed in time"):
         fetch_auth_tokens(cli_context)

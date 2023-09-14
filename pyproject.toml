@@ -9,6 +9,11 @@ homepage = "https://github.com/omnivector-solutions/armasec"
 repository = "https://github.com/omnivector-solutions/armasec"
 documentation = "https://omnivector-solutions.github.io/armasec"
 
+packages = [
+    { include = "armasec"},
+    { include = "armasec_cli"},
+]
+
 [tool.poetry.urls]
 CHANGELOG = "https://github.com/omnivector-solutions/armasec/blob/main/CHANGELOG.md"
 CONDUCT = "https://github.com/omnivector-solutions/armasec/blob/main/CONDUCT.md"
@@ -63,7 +68,7 @@ types-jmespath = "^1.0.2.7"
 
 
 [tool.poetry.scripts]
-armasec = {callable = "cli.main:app", extras = ["cli"]}
+armasec = {callable = "armasec_cli.main:app", extras = ["cli"]}
 
 [tool.poetry.plugins.pytest11]
 pytest_armasec = "armasec.pytest_extension"

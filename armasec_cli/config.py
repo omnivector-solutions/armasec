@@ -8,7 +8,7 @@ from auto_name_enum import AutoNameEnum, auto
 from loguru import logger
 from pydantic import BaseModel, ValidationError
 
-from cli.exceptions import Abort
+from armasec_cli.exceptions import Abort
 
 cache_dir: Path = Path.home() / ".local/share/armasec-cli"
 settings_path = cache_dir / "armasec.json"
