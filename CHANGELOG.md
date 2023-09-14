@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v1.2.0 - 2023-09-14
+
+- Added payload_claim_mapping to allow mapping claims to payload items
+- Added optional CLI for trying out logins and exploring tokens
+
 ## v1.1.1 - 2023-08-14
 
 - Converted docs to use public branding images

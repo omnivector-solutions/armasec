@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "armasec"
-version = "1.1.1"
+version = "1.2.0"
 description = "Injectable FastAPI auth via OIDC"
 authors = ["Omnivector Engineering Team <info@omnivector.solutions>"]
 license = "MIT"
