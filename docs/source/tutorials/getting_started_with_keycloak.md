@@ -97,33 +97,14 @@ Click the "Save" button to add the role to the client.
 ![Save role](../images/keycloak-08.png){: .framed-image}
 _Save role_
 
+Finally, we need to set up an "Audience" mapper to set the audience claim in the token that our
+example app will check for.
 
-CHANGE ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-Next, we need to set up a Mapper that will put the roles inside of the "permissions" claim in the
-issued tokens. Navigate back to the "armasec_tutorial" client and open the "Mappers" tab. Click the
+Navigate back to the "armasec_tutorial" client and open the "Mappers" tab. Click the
 "Create" button to add a new mapper.
 
 ![Mappers](../images/keycloak-09.png){: .framed-image}
 _Mappers_
-
-In the form, there's a few things to set:
-
-| _Field_          | _Value_          |
-| -----------------| ---------------- |
-| Name             | permissions      |
-| Mapper Type      | User Client Role |
-| Client ID        | armasec_tutorial |
-| Token Claim Name | Permissions      |
-| Claim JSON Type  | String           |
-
-Set the fields as specified above and click the "Save" button to create the new mapper
-
-![Permissions mapper](../images/keycloak-10.png){: .framed-image}
-_Permissions mapper_
-CHANGE ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-Finally, we need to set up an "Audience" mapper to set the audience claim in the token that our
-example app will check for.
 
 Create a new mapper with the following settings:
 
