@@ -1,0 +1,105 @@
+"""
+This module provides the OpenidConfigLoader which is used to load openid-configuration data from an
+OIDC provider.
+"""
+
+from functools import partial
+from typing import Callable, Optional
+from http import HTTPStatus
+
+import httpx
+
+from armasec_core.exceptions import AuthenticationError
+from armasec_core.schemas.jwks import JWKs
+from armasec_core.schemas.openid_config import OpenidConfig
+from armasec_core.utilities import log_error, noop
+
+
+class OpenidConfigLoader:
+    _config: Optional[OpenidConfig] = None
+    _jwks: Optional[JWKs] = None
+
+    def __init__(
+        self,
+        domain: str,
+        use_https: bool = True,
+        debug_logger: Optional[Callable[..., None]] = None,
+    ):
+        """
+        Initializes a base TokenManager.
+
+        Args:
+            secret:        The secret key needed to decode a token
+            domain:        The domain of the OIDC provider. This is to construct the
+                           openid-configuration url
+            use_https:     If falsey, use ``http`` instead of ``https`` (the default).
+            debug_logger:  A callable, that if provided, will allow debug logging. Should be passed
+                           as a logger method like `logger.debug`
+        """
+        self.domain = domain
+        self.use_https = use_https
+        self.debug_logger = debug_logger if debug_logger else noop
+
+    @staticmethod
+    def build_openid_config_url(domain: str, use_https: bool = True):
+        """
+        Builds a url for an openid configuration given a domain.
+
+        Args:
+            domain:    The domain of the OIDC provider for which to build a URL
+            use_https: Use `https` for the URL by default. If falsey, use `http` instead.
+        """
+        protocol = "https" if use_https else "http"
+        return f"{protocol}://{domain}/.well-known/openid-configuration"
+
+    def _load_openid_resource(self, url: str):
+        """
+        Helper method to load data from an openid connect resource.
+        """
+        self.debug_logger(f"Attempting to fetch from openid resource '{url}'")
+        with AuthenticationError.handle_errors(
+            message=f"Call to url {url} failed",
+            do_except=partial(log_error, self.debug_logger),
+        ):
+            response = httpx.get(url)
+        AuthenticationError.require_condition(
+            response.status_code == HTTPStatus.OK,
+            f"Didn't get a success status code from url {url}: {response.status_code}",
+        )
+        return response.json()
+
+    @property
+    def config(self) -> OpenidConfig:
+        """
+        Retrive the openid config from an OIDC provider. Lazy loads the config so that API calls are
+        deferred until the coniguration is needed.
+        """
+        if not self._config:
+            self.debug_logger("Fetching openid configration")
+            data = self._load_openid_resource(
+                self.build_openid_config_url(self.domain, self.use_https)
+            )
+            with AuthenticationError.handle_errors(
+                message="openid config data was invalid",
+                do_except=partial(log_error, self.debug_logger),
+            ):
+                self._config = OpenidConfig(**data)
+
+        return self._config
+
+    @property
+    def jwks(self) -> JWKs:
+        """
+        Retrives JWKs public keys from an OIDC provider. Lazy loads the jwks so that API calls are
+        deferred until the jwks are needed.
+        """
+        if not self._jwks:
+            self.debug_logger("Fetching jwks")
+            data = self._load_openid_resource(self.config.jwks_uri)
+            with AuthenticationError.handle_errors(
+                message="jwks data was invalid",
+                do_except=partial(log_error, self.debug_logger),
+            ):
+                self._jwks = JWKs(**data)
+
+        return self._jwks

@@ -1,0 +1,77 @@
+[tool.poetry]
+name = "armasec-core"
+version = "1.2.1"
+description = "Injectable FastAPI auth via OIDC"
+authors = ["Omnivector Engineering Team <info@omnivector.solutions>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/omnivector-solutions/armasec"
+repository = "https://github.com/omnivector-solutions/armasec"
+documentation = "https://omnivector-solutions.github.io/armasec"
+
+packages = [
+    { include = "armasec_core"},
+]
+
+[tool.poetry.urls]
+CHANGELOG = "https://github.com/omnivector-solutions/armasec/blob/main/armasec-core/CHANGELOG.md"
+CONDUCT = "https://github.com/omnivector-solutions/armasec/blob/main/CONDUCT.md"
+CONTRIBUTING = "https://github.com/omnivector-solutions/armasec/blob/main/CONTRIBUTING.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+python-jose = {extras = ["cryptography"], version = "^3.2"}
+pydantic = "<2.0"
+httpx = "^0"
+snick = "^1.3"
+py-buzz = "^4.1"
+
+# These must be included as a main dependency for the pytest extension to work out of the box
+respx = "^0"
+pytest = ">=6, <8"
+auto-name-enum = "^2"
+jmespath = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+ipython = ">=7,<9"
+asgi-lifespan = "^1.0.1"
+pytest-asyncio = "^0"
+pytest-random-order = "^1.0.4"
+mypy = "^1.5"
+pytest-sugar = "^0.9.4"
+python-dotenv = "^0.19"
+pytest-cov = "^4"
+loguru = "^0.5.3"
+grip = "^4.6.1"
+plummet = {extras = ["time-machine"], version = "^1.2.1"}
+pytest-mock = "^3.11.1"
+ruff = "^0.1.5"
+types-jmespath = "^1.0.2.7"
+
+
+[tool.poetry.plugins.pytest11]
+pytest_armasec = "armasec_core.pytest_extension"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+# Unfortunately, pytest-cov breaks when we add armasec.pytest_extension as a pytest plugin
+# TODO: Figure out why this is and how to fix it
+addopts = "--random-order"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[[tool.mypy.overrides]]
+module = [
+    "jose",
+    "buzz",
+    "snick",
+    "auto_name_enum",
+]
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 100
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
