@@ -7,25 +7,43 @@ You will need:
 
 * Docker installed (or an existing Keycloak server)
 * Python 3.8+ installed
-* Python packages `armasec` and `uvicorn` installed
+
+
+## Installing python packages
+
+The first thing you will need to do is to install some neeeded python dependencies. In
+order to run the example API, you will need the the `uvicorn` package installed. You
+will also be using the Armasec CLI to verify that you can log in. For this, you will
+need the `armasec` package with the `cli` extra. For this tutorial, it will be best to
+work in a new virtual environment. To bootstrap it, run the following commands:
+
+```bash
+python -m venv env
+source env/bin/activate
+pip install uvicorn armasec[cli]
+```
+
+When the commands finish running, your environment will be ready to complete this guide.
 
 
 ## Start your Keycloak server
 
-If you want to try the example locally without an existing Keycloak server, you can start a new one
-using Docker with the following command:
+If you want to try the example locally without an existing Keycloak server, you will
+need to start a new one. Docker is the easiest way to get Keycloak up and running. To
+start the Keycloak server in Docker, run the following command:
 
 ```bash
-docker run -p 8080:8080 -e KEYCLOAK_ADMIN="admin" -e KEYCLOAK_ADMIN_PASSWORD="admin" keycloak/keycloak:18.0.0 start-dev
+docker run -p 8080:8080 -e KEYCLOAK_ADMIN="admin" -e KEYCLOAK_ADMIN_PASSWORD="admin" keycloak/keycloak:22.0.5 start-dev
 ```
 
-This will start a server who's admin UI is available at localhost:8080.
+This will start a new Keycloak server with an admin UI available at localhost:8080.
+A new `admin` user will automatically be created with the password "admin".
 
 
-Open a browser and load the address `localhost:8080`. Then, click on the "Administration Console" to
-log in.
+Open a browser and load the address `localhost:8080`. Then, click on the "Administration
+Console" to log in.
 
-![Log-in to admin console](../images/keycloak-01.png){: .framed-image}
+![Log-in to admin console](../images/keycloak-login-admin.png){: .framed-image}
 _Log-in to admin console_
 
 The sign-in credentials for the admin account are:
@@ -35,102 +53,148 @@ The sign-in credentials for the admin account are:
 | Username | admin   |
 | Password | admin   |
 
-After you log in, you will load the "Master" realm.
+After you log in, the UI will automatically load the "Master" realm.
 
 
 ## Set up your "Master" realm
 
-First, we need to change the lifespan for tokens. By default they expire after 1 minute, but that's
-not so friendly for a tutorial, so we will lengthen the lifespan to 5 minutes.
+First, you should change the lifespan for tokens. By default they expire after 1 minute,
+but that's not so friendly for a tutorial, so you should lengthen the lifespan to 15
+minutes.
 
-Go to the "Tokens" tab of your "Master" realm and set the "Access Token Lifespan" to 5 minutes.
+Click on the "Realm settings" section in the side-nav, and then go to the "Tokens" tab.
+Find the "Access Token Lifespan" setting, and change it to 15 minutes.
 
-![Realm settings](../images/keycloak-02.png){: .framed-image}
-_Ream settings_
+![Realm settings](../images/keycloak-access-token-lifespan.png){: .framed-image}
+_Realm settings_
 
-Click "Save" at the bottom after you change the value. All of the rest of the settings can be left as they are.
+Click "Save" at the bottom after you change the value. All of the rest of the settings
+can be left as they are.
 
 
 ## Set up a client
 
-We will need a client that is configured with our permissions. To do this, navigate to the "Clients"
-tab in the nav bar and click the "Create" button:
+You will need a client that is configured for the tutorial. To do this, navigate to
+the "Clients" tab in the nav bar and click the "Create client" button in the
+"Clients list" tab:
 
-![Clients](../images/keycloak-03.png){: .framed-image}
-_Clients_
+![Create the client](../images/keycloak-create-client.png){: .framed-image}
+_Create the client_
 
-For this tutorial, we will use the name "armasec_tutorial". Click "Save" to create the new client.
+A creation wizard will load starting with the "General Settings" tab. For this tutorial,
+use the name "armasec_tutorial". Click the "Next" button to go on to the next page.
 
-[TODO]: # (Take new screenshots with "armasec_tutorial" instead of "armasec-tutorial")
+![Name the client](../images/keycloak-name-client.png){: .framed-image}
+_Name the client_
 
-![Create client](../images/keycloak-04.png){: .framed-image}
-_Create client_
 
-Now we need to set the following values for the new client:
+In the "Capability config" page, select the
+"OAuth 2.0 Device Authorization Grant" setting. This will be needed to log in via the
+Armasec CLI later. Click the "Next" button to go on to the next page.
 
-| _Field_                  | _Value_      |
-| ------------------------ | ------------ |
-| Access Type              | Confidential |
-| Service Accounts Enabled | ON           |
-| Valid Redirect URIs      | *            |
+![Device Auth](../images/keycloak-device-auth.png){: .framed-image}
+_Device auth_
 
-The service account produce a token using the client secret over an API request to Keycloak.
+Finally, in the "Login settings" page, put "\*" in the "Valid redirect URIs" setting.
+Click the "Save" button to finish creating the new client.
 
-![Client settings](../images/keycloak-05.png){: .framed-image}
-_Client settings_
+![Redirect URIs](../images/keycloak-redirect-uris.png){: .framed-image}
+_Redirect URIs_
 
-Next, we need to save the "Client Secret" for later when we request a token. Navigate to the
-"Credentials" tab and copy the value found in the "Secret" field.
+Once the new client is created, you will be redirected to the "Client details" page.
 
-![Secrets](../images/keycloak-06.png){: .framed-image}
-_Secrets_
+This tutorial demonstrates how to set up role-based access on an API endpoint. So, the
+next step is to create a role that the API will require users to have in order to access
+an endpoint.
 
-Next, we need to create the "Roles" that Armasec uses for the "permissions" claim inside the tokens.
-Navigate to the "Roles" tab for the client and click the "Add Role" button.
+Click on the "Roles" tab of the "Client Details" page, and then click the "Create role"
+button.
 
-![Add role](../images/keycloak-07.png){: .framed-image}
-_Add role_
+![Create Role](../images/keycloak-create-role.png){: .framed-image}
+_Create Role_
 
-Fill the "Role Name" field with "read:stuff". There's no need to add a description at this time.
-Click the "Save" button to add the role to the client.
+The name is not important as long as it matches on your API endpoint. For this tutorial,
+name the role "read:stuff" and then click the "Save" button.
 
-![Save role](../images/keycloak-08.png){: .framed-image}
-_Save role_
+![Name Role](../images/keycloak-name-role.png){: .framed-image}
+_Name Role_
 
-Finally, we need to set up an "Audience" mapper to set the audience claim in the token that our
-example app will check for.
 
-Navigate back to the "armasec_tutorial" client and open the "Mappers" tab. Click the
-"Create" button to add a new mapper.
+The final step for our new client is to set up an "Audience" mapper to set the audience
+claim in the token that our example app will check for.
 
-![Mappers](../images/keycloak-09.png){: .framed-image}
-_Mappers_
+Navigate back to the "Client details" for our "armasec_tutorial" client and open the
+"Client scopes" tab. To add a new mapper for our client, click the link for
+"armasec_tutorial-dedicated" scope.
 
-Create a new mapper with the following settings:
+![Client Scopes](../images/keycloak-client-scopes.png){: .framed-image}
+_Client Scopes_
 
-| _Field_                  | _Value_               |
-| ------------------------ | --------------------- |
-| Name                     | audience              |
-| Mapper Type              | Audience              |
-| Included Custom Audience | http://keycloak.local |
-| Add to ID token          | ON                    |
+The "Mappers" tab will load by default. Click the "Configure a new mapper" button.
 
-Click "Save" to create the new mapper.
+![Configure New Mapper](../images/keycloak-configure-mapper.png){: .framed-image}
+_Configure Mapper_
 
-![Audience mapper](../images/keycloak-15.png){: .framed-image}
-_Audience mapper_
+Select the "Audience" mapper from the list that is shown.
 
-Now, for the purposes of this tutorial, we will be getting a token via a request with a
-"Service Account Role". We need to add the role we created above to the "Service Account Role" so
-that the token issued later includes the needed permissions.
+![Select Audience](../images/keycloak-select-audience.png){: .framed-image}
+_Select Audience_
 
-Navigate to the "Service Account Roles" tab. Then, select "armasec_tutorial" for the "Client Roles"
-field. Select the "read:stuff" role and add it with the "Add selected >>" button.
+The "Add mapper" form will be loaded next. In this form, name the mapper "Audience" and
+set the "Included Custom Audience" field to "http://keycloak.local". Make sure
+"Add to ID token" is selected. Finally, click "Save" to finish adding the new mapper.
 
-![Add role](../images/keycloak-11.png){: .framed-image}
-_Add role_
+![Mapper Settings](../images/keycloak-mapper-settings.png){: .framed-image}
+_Mapper Settings_
 
-Now your client should be all set up and ready to go.
+The last step in configuring keycloak is setting up a user that will be accessing the
+protected endpoint.
+
+Navigate to the "Users" section using the side-nav and click the "Add user" button to
+get started.
+
+![Add User](../images/keycloak-add-user.png){: .framed-image}
+_Add User_
+
+In the "Create user" form that is opened next, name your user "local-user" and provide
+a fake email address like "local-user@keycloak.local". Click "Create" to create the new
+user.
+
+![Create User](../images/keycloak-create-user.png){: .framed-image}
+_Create User_
+
+Next, we need to assign the user a password that they will use to log in. Open the
+"Credentials" tab in the "User details" page for your new user. Click the "Set password"
+button.
+
+![Set Password](../images/keycloak-set-password.png){: .framed-image}
+_Set Password_
+
+In the form that opens, use "local" for the password (and confirmation). Make sure to
+turn off the "Temporary" flag so that the user will not have to change their password
+in this tutoria. Then, click the "Save" button to finish setting up the user
+credentials.
+
+![Save Password](../images/keycloak-save-password.png){: .framed-image}
+_Save Password_
+
+Next, we need to add the "read:stuff" role that we created before to your new user. Open
+the "Role mapping" tab in the "User details" page for your new user. Click the
+"Assign role" button.
+
+![Assign Role](../images/keycloak-assign-role.png){: .framed-image}
+_Assign Role_
+
+In the "Assign roles to local-user" dialog that opens, click the drop down that shows
+"Filter by realm roles" and switch the setting to "Filter by clients". Find the
+"read:stuff" role that was assigned to the "armasec_tutorial" client, select it, and
+click the "Assign" button to assign this role to your new user.
+
+![Select Role](../images/keycloak-select-role.png){: .framed-image}
+_Select Role_
+
+Now your client should be all set up and ready to go! Log out of the admin portal before
+you go on so that you are ready to log in with your new user later on in the tutorial.
 
 
 ## Start up the example app
@@ -155,8 +219,8 @@ async def check_access():
     return dict(message="Successfully authenticated!")
 ```
 
-Note in this example that the `use_https` flag must be set to false to allow a local server using
-unsecured HTTP.
+Note in this example that the `use_https` flag must be set to false to allow a local
+server using unsecured HTTP.
 
 Also not that we need to add a `payload_claim_mapping` because Keycloak does not provide
 a permissions claim at the top level. This mapping copies the roles found at
@@ -165,10 +229,10 @@ called permissions.
 
 Copy the `example.py` app to a local source file called "example.py".
 
-Start it up with uvicorn (running in the background):
+Start it up with uvicorn:
 
 ```bash
-python -m uvicorn --host 0.0.0.0 example:app
+python -m uvicorn --host 0.0.0.0 --port 5000 example:app
 ```
 
 Once it is up and running, hit `<ctrl-z>` and type the command `bg` to put the uvicorn
@@ -176,20 +240,94 @@ process into the background. You should make sure to kill the process when you c
 the tutorial.
 
 
-## Get the test token
+## Login via Armasec CLI
 
-We will use `curl` to get an example token to test out our route's security. You will
-need to replace `$CLIENT_SECRET` with the secret variable we noted earlier.
-Alternatively, you can set a shell variable with this value and use the command
-directly.
-
+Next, you will log in using the Armasec CLI to get an API token to access your example
+API. In your terminal, type the following command to start the login process:
 
 ```bash
-curl -d "client_id=armasec_tutorial&client_secret=$CLIENT_SECRET&grant_type=client_credentials" -X POST "http://localhost:8080/realms/master/protocol/openid-connect/token"
+armasec login
 ```
 
-You should see a JSON blob printed out that includes an `access_token` attribute along
-with other metadata about the token.
+The CLI will show a box prompting you to complete the login process in a browser:
+
+```
+╭─────────────────────────────────────────── Waiting for login ───────────────────────────────────────────╮
+│                                                                                                         │
+│   To complete login, please open the following link in a browser:                                       │
+│                                                                                                         │
+│     http://localhost:8080/realms/master/device?user_code=TQOL-RIYP                                      │
+│                                                                                                         │
+│   Waiting up to 6.0 minutes for you to complete the process...                                          │
+│                                                                                                         │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Waiting for web login... ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   2% 0:04:56
+```
+
+Open the provided link in the browser and log in using the "local-user" that you
+created.
+
+![Log in](../images/keycloak-log-in.png){: .framed-image}
+_Log in_
+
+You will then be prompted with a question asking if you want to grant access. Click
+"Yes" to complete the log in process. The browser will show a message confirming that
+you are now logged in. You may close that browser tab.
+
+Notice in the terminal, a message is now printed showing that your user was logged in:
+
+```bash
+╭────────────────────────────────────────────── Logged in! ───────────────────────────────────────────────╮
+│                                                                                                         │
+│   User was logged in with email 'local-user@keycloak.local'                                             │
+│                                                                                                         │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+
+## Fetch the auth token
+
+Next, you will use the Armasec CLI to fetch the token for the logged in user. To do
+this, you will use the `show-token` subcommand. In a terminal, type (the prefix flag
+includes the "Bearer" type indicator for the token):
+
+```bash
+armasec show-token --prefix
+```
+
+The Armasec CLI will print out a box showing the auth token for your user:
+
+```bash
+╭───────────────────────────────────────────── Access Token ──────────────────────────────────────────────╮
+│                                                                                                         │
+│ Bearer                                                                                                  │
+│ eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3dzlNZ0FSNExXbXNuTE9vYTJKTkE4WXZkVUFZX25jZnNvcTU0c3d │
+│ kbERzIn0.eyJleHAiOjE3MDA1OTE2OTAsImlhdCI6MTcwMDU5MTYzMCwiYXV0aF90aW1lIjoxNzAwNTkxNjI4LCJqdGkiOiI0ZTNmN2 │
+│ U4Ni00ZTJhLTQwZDAtOWQ3ZS0zZTRmYjNkMzk1YWYiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsI │
+│ mF1ZCI6WyJodHRwOi8va2V5Y2xvYWsubG9jYWwiLCJhY2NvdW50Il0sInN1YiI6IjMxMzY1ZWYyLTZmYjYtNGVhOS04MmE2LWUwMTli │
+│ YjYwNmFkOSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFybWFzZWNfdHV0b3JpYWwiLCJzZXNzaW9uX3N0YXRlIjoiYTc2ZWEzYTEtZGE │
+│ 3MC00Mzg2LWFiZTMtZjFjZjYzZDI5ZjZhIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLW │
+│ 1hc3RlciIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhcm1hc2VjX3R1d │
+│ G9yaWFsIjp7InJvbGVzIjpbInJlYWQ6c3R1ZmYiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2Ut │
+│ YWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6ImE3NmVhM2ExLWRhNzA │
+│ tNDM4Ni1hYmUzLWYxY2Y2M2QyOWY2YSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoibG9jYWwtdX │
+│ NlciIsImVtYWlsIjoibG9jYWwtdXNlckBrZXljbG9hay5sb2NhbCJ9.ntEA67CNS2ZvPIMac3X-1wKBTiKFS5i5aYo32M7ytVIrnh_X │
+│ j_YHLz17WmP3PBKyJtZKgIN8zq_nOF4XeRBMMHSg8ec9ySRNNRia0AkB0AKB-yPa4Q2qGwAFFipWhkP_iQapHj3XWPNDSVRPy8ZvRzb │
+│ LDjcgxhvSQE2Yzm68dtiVrcxA-FpImtJRNwARgeXFcvsYjrWfaACLVrvABgi0PiBiqPoFE4-zHEwhVZ3-DfmvXGRj4NxVsOzTyVkzi0 │
+│ pfMgHtOzI3MHb_hQ2xAtNBp-Ra5yYXHV3hteb_RPfjVTYADl6fq5Rggi3ydPsJVs0I7GAwzh85P8wRs127dtYv1w                │
+│                                                                                                         │
+╰──────────────────────────────── The output was copied to your clipboard ────────────────────────────────╯
+```
+
+If your terminal supports it, the token will be automatically copied into your clipboard.
+However, if you need to manually copy it, you can run the above command again with the
+`--plain` flag to print the token without formatting:
+
+```bash
+Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3dzlNZ0FSNExXbXNuTE9vYTJKTkE4WXZkVUFZX25jZnNvcTU0c3dkbERzIn0.eyJleHAiOjE3MDA1OTE2OTAsImlhdCI6MTcwMDU5MTYzMCwiYXV0aF90aW1lIjoxNzAwNTkxNjI4LCJqdGkiOiI0ZTNmN2U4Ni00ZTJhLTQwZDAtOWQ3ZS0zZTRmYjNkMzk1YWYiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsImF1ZCI6WyJodHRwOi8va2V5Y2xvYWsubG9jYWwiLCJhY2NvdW50Il0sInN1YiI6IjMxMzY1ZWYyLTZmYjYtNGVhOS04MmE2LWUwMTliYjYwNmFkOSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFybWFzZWNfdHV0b3JpYWwiLCJzZXNzaW9uX3N0YXRlIjoiYTc2ZWEzYTEtZGE3MC00Mzg2LWFiZTMtZjFjZjYzZDI5ZjZhIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLW1hc3RlciIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhcm1hc2VjX3R1dG9yaWFsIjp7InJvbGVzIjpbInJlYWQ6c3R1ZmYiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6ImE3NmVhM2ExLWRhNzAtNDM4Ni1hYmUzLWYxY2Y2M2QyOWY2YSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoibG9jYWwtdXNlciIsImVtYWlsIjoibG9jYWwtdXNlckBrZXljbG9hay5sb2NhbCJ9.ntEA67CNS2ZvPIMac3X-1wKBTiKFS5i5aYo32M7ytVIrnh_Xj_YHLz17WmP3PBKyJtZKgIN8zq_nOF4XeRBMMHSg8ec9ySRNNRia0AkB0AKB-yPa4Q2qGwAFFipWhkP_iQapHj3XWPNDSVRPy8ZvRzbLDjcgxhvSQE2Yzm68dtiVrcxA-FpImtJRNwARgeXFcvsYjrWfaACLVrvABgi0PiBiqPoFE4-zHEwhVZ3-DfmvXGRj4NxVsOzTyVkzi0pfMgHtOzI3MHb_hQ2xAtNBp-Ra5yYXHV3hteb_RPfjVTYADl6fq5Rggi3ydPsJVs0I7GAwzh85P8wRs127dtYv1w
+```
+
+Keep the token close at hand; you will be using it shortly to access your API endpoint.
 
 
 ## Try it out
@@ -205,12 +343,12 @@ This will show you the auto-generated swagger docs for the example API app. Clic
 API.
 
 
-![Authorize](../images/keycloak-13.png){: .framed-image}
+![Authorize](../images/keycloak-authorize.png){: .framed-image}
 _Authorize_
 
-First, type "Bearer " followed by pasting the token from the clipboard into the form and click the
-`Authorize` button in the dialog, click `Close` to dismiss the dialog. Now, all subsequent calls
-to the API will include a header that looks like:
+First, paste the token (including the "Bearer" prefix) from the clipboard into the form
+and click the `Authorize` button in the dialog, click `Close` to dismiss the dialog.
+Now, all subsequent calls to the API will include a header that looks like:
 
 ```json
 {
@@ -221,13 +359,13 @@ to the API will include a header that looks like:
 
 Now, expand the "GET" REST operation on the `/stuff` endpoint and click `Try it out`.
 
-![Try it out](../images/keycloak-14.png){: .framed-image}
+![Try it out](../images/keycloak-try-it-out.png){: .framed-image}
 _Try it out_
 
 
 Finally, click `Execute` to issue the request to the API.
 
-![Execute](../images/keycloak-16.png){: .framed-image}
+![Execute](../images/keycloak-execute.png){: .framed-image}
 _Execute_
 
 
@@ -246,7 +384,7 @@ Congratulations! You are now using Armasec and Auth0 to authorize requests to yo
 
 Now, there are a few things you can do to check out how things work. Try the following things:
 
-* Remove the "read:stuff" role from the Service Account and try another request
+* Remove the "read:stuff" role from your user and try another request
 * Try a request without being authorized in swagger
 * Try making requests using `curl` or the `httpx` library in IPython
 
