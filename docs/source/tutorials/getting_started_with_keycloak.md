@@ -243,7 +243,15 @@ the tutorial.
 ## Login via Armasec CLI
 
 Next, you will log in using the Armasec CLI to get an API token to access your example
-API. In your terminal, type the following command to start the login process:
+API. Before you log in, however, you will need to configure the Armasec CLI to connect
+to your Keycloak server. Type the following command to configure the CLI:
+
+```bash
+armasec set-config --domain=localhost:8080/realms/master --audience=http://keycloak.local --no-use-https --client-id=armasec_tutorial
+```
+
+Now you should be ready to log in. In your terminal, type the following command to start
+the process:
 
 ```bash
 armasec login
