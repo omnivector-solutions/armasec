@@ -209,7 +209,7 @@ def fetch_auth_tokens(ctx: CliContext) -> TokenSet:
         ),
     )
 
-    max_poll_time = 6 * 60  # 5 minutes
+    max_poll_time = 5 * 60  # 5 minutes
     terminal_message(
         f"""
         To complete login, please open the following link in a browser:
@@ -248,6 +248,7 @@ def fetch_auth_tokens(ctx: CliContext) -> TokenSet:
         if "error" in response_data:
             if response_data["error"] == "authorization_pending":
                 logger.debug(f"Token fetch attempt #{tick.counter} failed")
+                logger.debug(f"Will try again in {device_code_data.interval} seconds")
                 sleep(device_code_data.interval)
             else:
                 # TODO: Test this failure condition
