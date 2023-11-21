@@ -1,9 +1,8 @@
 !!! example "An [Omnivector](https://www.omnivector.io/){:target="_blank"} initiative"
 
-    [![omnivector-logo](https://omnivector-public-assets.s3.us-west-2.amazonaws.com/branding/omnivector-logo-text-black-horz.png)](https://www.omnivector.io/){:target="_blank"}
+    ![armasec-logo](https://omnivector-public-assets.s3.us-west-2.amazonaws.com/branding/armasec-logo-text-dark-horz.png#only-light)
+    ![armasec-logo](https://omnivector-public-assets.s3.us-west-2.amazonaws.com/branding/armasec-logo-text-white-horz.png#only-dark)
 
-
-# Armasec Documentation
 
 Armasec is a security package that simplifies OIDC security for FastAPI apps.
 
