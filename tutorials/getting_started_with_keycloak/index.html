@@ -375,6 +375,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installing-python-packages" class="md-nav__link">
+    Installing python packages
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#start-your-keycloak-server" class="md-nav__link">
     Start your Keycloak server
   </a>
@@ -403,8 +410,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-the-test-token" class="md-nav__link">
-    Get the test token
+  <a href="#login-via-armasec-cli" class="md-nav__link">
+    Login via Armasec CLI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fetch-the-auth-token" class="md-nav__link">
+    Fetch the auth token
   </a>
   
 </li>
@@ -492,6 +506,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installing-python-packages" class="md-nav__link">
+    Installing python packages
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#start-your-keycloak-server" class="md-nav__link">
     Start your Keycloak server
   </a>
@@ -520,8 +541,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#get-the-test-token" class="md-nav__link">
-    Get the test token
+  <a href="#login-via-armasec-cli" class="md-nav__link">
+    Login via Armasec CLI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fetch-the-auth-token" class="md-nav__link">
+    Fetch the auth token
   </a>
   
 </li>
@@ -572,17 +600,29 @@ the minimal example. For this tutorial, I am running Keycloak locally with Docke
 <ul>
 <li>Docker installed (or an existing Keycloak server)</li>
 <li>Python 3.8+ installed</li>
-<li>Python packages <code>armasec</code> and <code>uvicorn</code> installed</li>
 </ul>
-<h2 id="start-your-keycloak-server">Start your Keycloak server</h2>
-<p>If you want to try the example locally without an existing Keycloak server, you can start a new one
-using Docker with the following command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>-e<span class="w"> </span><span class="nv">KEYCLOAK_ADMIN</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">KEYCLOAK_ADMIN_PASSWORD</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="w"> </span>keycloak/keycloak:18.0.0<span class="w"> </span>start-dev
+<h2 id="installing-python-packages">Installing python packages</h2>
+<p>The first thing you will need to do is to install some neeeded python dependencies. In
+order to run the example API, you will need the the <code>uvicorn</code> package installed. You
+will also be using the Armasec CLI to verify that you can log in. For this, you will
+need the <code>armasec</code> package with the <code>cli</code> extra. For this tutorial, it will be best to
+work in a new virtual environment. To bootstrap it, run the following commands:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>env
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">source</span><span class="w"> </span>env/bin/activate
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>pip<span class="w"> </span>install<span class="w"> </span>uvicorn<span class="w"> </span>armasec<span class="o">[</span>cli<span class="o">]</span>
 </span></code></pre></div>
-<p>This will start a server who's admin UI is available at localhost:8080.</p>
-<p>Open a browser and load the address <code>localhost:8080</code>. Then, click on the "Administration Console" to
-log in.</p>
-<p><img alt="Log-in to admin console" class="framed-image" src="../../images/keycloak-01.png" />
+<p>When the commands finish running, your environment will be ready to complete this guide.</p>
+<h2 id="start-your-keycloak-server">Start your Keycloak server</h2>
+<p>If you want to try the example locally without an existing Keycloak server, you will
+need to start a new one. Docker is the easiest way to get Keycloak up and running. To
+start the Keycloak server in Docker, run the following command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>-e<span class="w"> </span><span class="nv">KEYCLOAK_ADMIN</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">KEYCLOAK_ADMIN_PASSWORD</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="w"> </span>keycloak/keycloak:22.0.5<span class="w"> </span>start-dev
+</span></code></pre></div>
+<p>This will start a new Keycloak server with an admin UI available at localhost:8080.
+A new <code>admin</code> user will automatically be created with the password "admin".</p>
+<p>Open a browser and load the address <code>localhost:8080</code>. Then, click on the "Administration
+Console" to log in.</p>
+<p><img alt="Log-in to admin console" class="framed-image" src="../../images/keycloak-login-admin.png" />
 <em>Log-in to admin console</em></p>
 <p>The sign-in credentials for the admin account are:</p>
 <table>
@@ -603,161 +643,219 @@ log in.</p>
 </tr>
 </tbody>
 </table>
-<p>After you log in, you will load the "Master" realm.</p>
+<p>After you log in, the UI will automatically load the "Master" realm.</p>
 <h2 id="set-up-your-master-realm">Set up your "Master" realm</h2>
-<p>First, we need to change the lifespan for tokens. By default they expire after 1 minute, but that's
-not so friendly for a tutorial, so we will lengthen the lifespan to 5 minutes.</p>
-<p>Go to the "Tokens" tab of your "Master" realm and set the "Access Token Lifespan" to 5 minutes.</p>
-<p><img alt="Realm settings" class="framed-image" src="../../images/keycloak-02.png" />
-<em>Ream settings</em></p>
-<p>Click "Save" at the bottom after you change the value. All of the rest of the settings can be left as they are.</p>
+<p>First, you should change the lifespan for tokens. By default they expire after 1 minute,
+but that's not so friendly for a tutorial, so you should lengthen the lifespan to 15
+minutes.</p>
+<p>Click on the "Realm settings" section in the side-nav, and then go to the "Tokens" tab.
+Find the "Access Token Lifespan" setting, and change it to 15 minutes.</p>
+<p><img alt="Realm settings" class="framed-image" src="../../images/keycloak-access-token-lifespan.png" />
+<em>Realm settings</em></p>
+<p>Click "Save" at the bottom after you change the value. All of the rest of the settings
+can be left as they are.</p>
 <h2 id="set-up-a-client">Set up a client</h2>
-<p>We will need a client that is configured with our permissions. To do this, navigate to the "Clients"
-tab in the nav bar and click the "Create" button:</p>
-<p><img alt="Clients" class="framed-image" src="../../images/keycloak-03.png" />
-<em>Clients</em></p>
-<p>For this tutorial, we will use the name "armasec_tutorial". Click "Save" to create the new client.</p>
-<p><img alt="Create client" class="framed-image" src="../../images/keycloak-04.png" />
-<em>Create client</em></p>
-<p>Now we need to set the following values for the new client:</p>
-<table>
-<thead>
-<tr>
-<th><em>Field</em></th>
-<th><em>Value</em></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Access Type</td>
-<td>Confidential</td>
-</tr>
-<tr>
-<td>Service Accounts Enabled</td>
-<td>ON</td>
-</tr>
-<tr>
-<td>Valid Redirect URIs</td>
-<td>*</td>
-</tr>
-</tbody>
-</table>
-<p>The service account produce a token using the client secret over an API request to Keycloak.</p>
-<p><img alt="Client settings" class="framed-image" src="../../images/keycloak-05.png" />
-<em>Client settings</em></p>
-<p>Next, we need to save the "Client Secret" for later when we request a token. Navigate to the
-"Credentials" tab and copy the value found in the "Secret" field.</p>
-<p><img alt="Secrets" class="framed-image" src="../../images/keycloak-06.png" />
-<em>Secrets</em></p>
-<p>Next, we need to create the "Roles" that Armasec uses for the "permissions" claim inside the tokens.
-Navigate to the "Roles" tab for the client and click the "Add Role" button.</p>
-<p><img alt="Add role" class="framed-image" src="../../images/keycloak-07.png" />
-<em>Add role</em></p>
-<p>Fill the "Role Name" field with "read:stuff". There's no need to add a description at this time.
-Click the "Save" button to add the role to the client.</p>
-<p><img alt="Save role" class="framed-image" src="../../images/keycloak-08.png" />
-<em>Save role</em></p>
-<p>Finally, we need to set up an "Audience" mapper to set the audience claim in the token that our
-example app will check for.</p>
-<p>Navigate back to the "armasec_tutorial" client and open the "Mappers" tab. Click the
-"Create" button to add a new mapper.</p>
-<p><img alt="Mappers" class="framed-image" src="../../images/keycloak-09.png" />
-<em>Mappers</em></p>
-<p>Create a new mapper with the following settings:</p>
-<table>
-<thead>
-<tr>
-<th><em>Field</em></th>
-<th><em>Value</em></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Name</td>
-<td>audience</td>
-</tr>
-<tr>
-<td>Mapper Type</td>
-<td>Audience</td>
-</tr>
-<tr>
-<td>Included Custom Audience</td>
-<td>http://keycloak.local</td>
-</tr>
-<tr>
-<td>Add to ID token</td>
-<td>ON</td>
-</tr>
-</tbody>
-</table>
-<p>Click "Save" to create the new mapper.</p>
-<p><img alt="Audience mapper" class="framed-image" src="../../images/keycloak-15.png" />
-<em>Audience mapper</em></p>
-<p>Now, for the purposes of this tutorial, we will be getting a token via a request with a
-"Service Account Role". We need to add the role we created above to the "Service Account Role" so
-that the token issued later includes the needed permissions.</p>
-<p>Navigate to the "Service Account Roles" tab. Then, select "armasec_tutorial" for the "Client Roles"
-field. Select the "read:stuff" role and add it with the "Add selected &gt;&gt;" button.</p>
-<p><img alt="Add role" class="framed-image" src="../../images/keycloak-11.png" />
-<em>Add role</em></p>
-<p>Now your client should be all set up and ready to go.</p>
+<p>You will need a client that is configured for the tutorial. To do this, navigate to
+the "Clients" tab in the nav bar and click the "Create client" button in the
+"Clients list" tab:</p>
+<p><img alt="Create the client" class="framed-image" src="../../images/keycloak-create-client.png" />
+<em>Create the client</em></p>
+<p>A creation wizard will load starting with the "General Settings" tab. For this tutorial,
+use the name "armasec_tutorial". Click the "Next" button to go on to the next page.</p>
+<p><img alt="Name the client" class="framed-image" src="../../images/keycloak-name-client.png" />
+<em>Name the client</em></p>
+<p>In the "Capability config" page, select the
+"OAuth 2.0 Device Authorization Grant" setting. This will be needed to log in via the
+Armasec CLI later. Click the "Next" button to go on to the next page.</p>
+<p><img alt="Device Auth" class="framed-image" src="../../images/keycloak-device-auth.png" />
+<em>Device auth</em></p>
+<p>Finally, in the "Login settings" page, put "*" in the "Valid redirect URIs" setting.
+Click the "Save" button to finish creating the new client.</p>
+<p><img alt="Redirect URIs" class="framed-image" src="../../images/keycloak-redirect-uris.png" />
+<em>Redirect URIs</em></p>
+<p>Once the new client is created, you will be redirected to the "Client details" page.</p>
+<p>This tutorial demonstrates how to set up role-based access on an API endpoint. So, the
+next step is to create a role that the API will require users to have in order to access
+an endpoint.</p>
+<p>Click on the "Roles" tab of the "Client Details" page, and then click the "Create role"
+button.</p>
+<p><img alt="Create Role" class="framed-image" src="../../images/keycloak-create-role.png" />
+<em>Create Role</em></p>
+<p>The name is not important as long as it matches on your API endpoint. For this tutorial,
+name the role "read:stuff" and then click the "Save" button.</p>
+<p><img alt="Name Role" class="framed-image" src="../../images/keycloak-name-role.png" />
+<em>Name Role</em></p>
+<p>The final step for our new client is to set up an "Audience" mapper to set the audience
+claim in the token that our example app will check for.</p>
+<p>Navigate back to the "Client details" for our "armasec_tutorial" client and open the
+"Client scopes" tab. To add a new mapper for our client, click the link for
+"armasec_tutorial-dedicated" scope.</p>
+<p><img alt="Client Scopes" class="framed-image" src="../../images/keycloak-client-scopes.png" />
+<em>Client Scopes</em></p>
+<p>The "Mappers" tab will load by default. Click the "Configure a new mapper" button.</p>
+<p><img alt="Configure New Mapper" class="framed-image" src="../../images/keycloak-configure-mapper.png" />
+<em>Configure Mapper</em></p>
+<p>Select the "Audience" mapper from the list that is shown.</p>
+<p><img alt="Select Audience" class="framed-image" src="../../images/keycloak-select-audience.png" />
+<em>Select Audience</em></p>
+<p>The "Add mapper" form will be loaded next. In this form, name the mapper "Audience" and
+set the "Included Custom Audience" field to "http://keycloak.local". Make sure
+"Add to ID token" is selected. Finally, click "Save" to finish adding the new mapper.</p>
+<p><img alt="Mapper Settings" class="framed-image" src="../../images/keycloak-mapper-settings.png" />
+<em>Mapper Settings</em></p>
+<p>The last step in configuring keycloak is setting up a user that will be accessing the
+protected endpoint.</p>
+<p>Navigate to the "Users" section using the side-nav and click the "Add user" button to
+get started.</p>
+<p><img alt="Add User" class="framed-image" src="../../images/keycloak-add-user.png" />
+<em>Add User</em></p>
+<p>In the "Create user" form that is opened next, name your user "local-user" and provide
+a fake email address like "local-user@keycloak.local". Click "Create" to create the new
+user.</p>
+<p><img alt="Create User" class="framed-image" src="../../images/keycloak-create-user.png" />
+<em>Create User</em></p>
+<p>Next, we need to assign the user a password that they will use to log in. Open the
+"Credentials" tab in the "User details" page for your new user. Click the "Set password"
+button.</p>
+<p><img alt="Set Password" class="framed-image" src="../../images/keycloak-set-password.png" />
+<em>Set Password</em></p>
+<p>In the form that opens, use "local" for the password (and confirmation). Make sure to
+turn off the "Temporary" flag so that the user will not have to change their password
+in this tutoria. Then, click the "Save" button to finish setting up the user
+credentials.</p>
+<p><img alt="Save Password" class="framed-image" src="../../images/keycloak-save-password.png" />
+<em>Save Password</em></p>
+<p>Next, we need to add the "read:stuff" role that we created before to your new user. Open
+the "Role mapping" tab in the "User details" page for your new user. Click the
+"Assign role" button.</p>
+<p><img alt="Assign Role" class="framed-image" src="../../images/keycloak-assign-role.png" />
+<em>Assign Role</em></p>
+<p>In the "Assign roles to local-user" dialog that opens, click the drop down that shows
+"Filter by realm roles" and switch the setting to "Filter by clients". Find the
+"read:stuff" role that was assigned to the "armasec_tutorial" client, select it, and
+click the "Assign" button to assign this role to your new user.</p>
+<p><img alt="Select Role" class="framed-image" src="../../images/keycloak-select-role.png" />
+<em>Select Role</em></p>
+<p>Now your client should be all set up and ready to go! Log out of the admin portal before
+you go on so that you are ready to log in with your new user later on in the tutorial.</p>
 <h2 id="start-up-the-example-app">Start up the example app</h2>
-<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">example.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-1-10">10</a></span>
-<span class="normal"><a href="#__codelineno-1-11">11</a></span>
-<span class="normal"><a href="#__codelineno-1-12">12</a></span>
-<span class="normal"><a href="#__codelineno-1-13">13</a></span>
-<span class="normal"><a href="#__codelineno-1-14">14</a></span>
-<span class="normal"><a href="#__codelineno-1-15">15</a></span>
-<span class="normal"><a href="#__codelineno-1-16">16</a></span>
-<span class="normal"><a href="#__codelineno-1-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">armasec</span> <span class="kn">import</span> <span class="n">Armasec</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Depends</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="n">armasec</span> <span class="o">=</span> <span class="n">Armasec</span><span class="p">(</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>    <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;localhost:8080/realms/master&quot;</span><span class="p">,</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a>    <span class="n">audience</span><span class="o">=</span><span class="s2">&quot;http://keycloak.local&quot;</span><span class="p">,</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a>    <span class="n">use_https</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a>    <span class="n">payload_claim_mapping</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">permissions</span><span class="o">=</span><span class="s2">&quot;resource_access.armasec_tutorial.roles&quot;</span><span class="p">),</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a>    <span class="n">debug_logger</span><span class="o">=</span><span class="nb">print</span><span class="p">,</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a>    <span class="n">debug_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="p">)</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/stuff&quot;</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">armasec</span><span class="o">.</span><span class="n">lockdown</span><span class="p">(</span><span class="s2">&quot;read:stuff&quot;</span><span class="p">))])</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">check_access</span><span class="p">():</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a>    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Successfully authenticated!&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">example.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">armasec</span> <span class="kn">import</span> <span class="n">Armasec</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Depends</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="n">armasec</span> <span class="o">=</span> <span class="n">Armasec</span><span class="p">(</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a>    <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;localhost:8080/realms/master&quot;</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a>    <span class="n">audience</span><span class="o">=</span><span class="s2">&quot;http://keycloak.local&quot;</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a>    <span class="n">use_https</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a>    <span class="n">payload_claim_mapping</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">permissions</span><span class="o">=</span><span class="s2">&quot;resource_access.armasec_tutorial.roles&quot;</span><span class="p">),</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a>    <span class="n">debug_logger</span><span class="o">=</span><span class="nb">print</span><span class="p">,</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a>    <span class="n">debug_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="p">)</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/stuff&quot;</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">armasec</span><span class="o">.</span><span class="n">lockdown</span><span class="p">(</span><span class="s2">&quot;read:stuff&quot;</span><span class="p">))])</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">check_access</span><span class="p">():</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17"></a>    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Successfully authenticated!&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
-<p>Note in this example that the <code>use_https</code> flag must be set to false to allow a local server using
-unsecured HTTP.</p>
+<p>Note in this example that the <code>use_https</code> flag must be set to false to allow a local
+server using unsecured HTTP.</p>
 <p>Also not that we need to add a <code>payload_claim_mapping</code> because Keycloak does not provide
 a permissions claim at the top level. This mapping copies the roles found at
 <code>resource_access.armasec_tutorial.roles</code> to a top-level attribute of the token payload
 called permissions.</p>
 <p>Copy the <code>example.py</code> app to a local source file called "example.py".</p>
-<p>Start it up with uvicorn (running in the background):</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>example:app
+<p>Start it up with uvicorn:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">5000</span><span class="w"> </span>example:app
 </span></code></pre></div>
 <p>Once it is up and running, hit <code>&lt;ctrl-z&gt;</code> and type the command <code>bg</code> to put the uvicorn
 process into the background. You should make sure to kill the process when you complete
 the tutorial.</p>
-<h2 id="get-the-test-token">Get the test token</h2>
-<p>We will use <code>curl</code> to get an example token to test out our route's security. You will
-need to replace <code>$CLIENT_SECRET</code> with the secret variable we noted earlier.
-Alternatively, you can set a shell variable with this value and use the command
-directly.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;client_id=armasec_tutorial&amp;client_secret=</span><span class="nv">$CLIENT_SECRET</span><span class="s2">&amp;grant_type=client_credentials&quot;</span><span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://localhost:8080/realms/master/protocol/openid-connect/token&quot;</span>
+<h2 id="login-via-armasec-cli">Login via Armasec CLI</h2>
+<p>Next, you will log in using the Armasec CLI to get an API token to access your example
+API. Before you log in, however, you will need to configure the Armasec CLI to connect
+to your Keycloak server. Type the following command to configure the CLI:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>armasec<span class="w"> </span>set-config<span class="w"> </span>--domain<span class="o">=</span>localhost:8080/realms/master<span class="w"> </span>--audience<span class="o">=</span>http://keycloak.local<span class="w"> </span>--no-use-https<span class="w"> </span>--client-id<span class="o">=</span>armasec_tutorial
 </span></code></pre></div>
-<p>You should see a JSON blob printed out that includes an <code>access_token</code> attribute along
-with other metadata about the token.</p>
+<p>Now you should be ready to log in. In your terminal, type the following command to start
+the process:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>armasec<span class="w"> </span>login
+</span></code></pre></div>
+<p>The CLI will show a box prompting you to complete the login process in a browser:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>╭─────────────────────────────────────────── Waiting for login ───────────────────────────────────────────╮
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>│                                                                                                         │
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>│   To complete login, please open the following link in a browser:                                       │
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>│                                                                                                         │
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>│     http://localhost:8080/realms/master/device?user_code=TQOL-RIYP                                      │
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>│                                                                                                         │
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>│   Waiting up to 6.0 minutes for you to complete the process...                                          │
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>│                                                                                                         │
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>╰─────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>Waiting for web login... ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   2% 0:04:56
+</span></code></pre></div>
+<p>Open the provided link in the browser and log in using the "local-user" that you
+created.</p>
+<p><img alt="Log in" class="framed-image" src="../../images/keycloak-log-in.png" />
+<em>Log in</em></p>
+<p>You will then be prompted with a question asking if you want to grant access. Click
+"Yes" to complete the log in process. The browser will show a message confirming that
+you are now logged in. You may close that browser tab.</p>
+<p>Notice in the terminal, a message is now printed showing that your user was logged in:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>╭──────────────────────────────────────────────<span class="w"> </span>Logged<span class="w"> </span><span class="k">in</span>!<span class="w"> </span>───────────────────────────────────────────────╮
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>│<span class="w">                                                                                                         </span>│
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>│<span class="w">   </span>User<span class="w"> </span>was<span class="w"> </span>logged<span class="w"> </span><span class="k">in</span><span class="w"> </span>with<span class="w"> </span>email<span class="w"> </span><span class="s1">&#39;local-user@keycloak.local&#39;</span><span class="w">                                             </span>│
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>│<span class="w">                                                                                                         </span>│
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>╰─────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+</span></code></pre></div>
+<h2 id="fetch-the-auth-token">Fetch the auth token</h2>
+<p>Next, you will use the Armasec CLI to fetch the token for the logged in user. To do
+this, you will use the <code>show-token</code> subcommand. In a terminal, type (the prefix flag
+includes the "Bearer" type indicator for the token):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>armasec<span class="w"> </span>show-token<span class="w"> </span>--prefix
+</span></code></pre></div>
+<p>The Armasec CLI will print out a box showing the auth token for your user:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>╭─────────────────────────────────────────────<span class="w"> </span>Access<span class="w"> </span>Token<span class="w"> </span>──────────────────────────────────────────────╮
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>│<span class="w">                                                                                                         </span>│
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>│<span class="w"> </span>Bearer<span class="w">                                                                                                  </span>│
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>│<span class="w"> </span>eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3dzlNZ0FSNExXbXNuTE9vYTJKTkE4WXZkVUFZX25jZnNvcTU0c3d<span class="w"> </span>│
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>│<span class="w"> </span>kbERzIn0.eyJleHAiOjE3MDA1OTE2OTAsImlhdCI6MTcwMDU5MTYzMCwiYXV0aF90aW1lIjoxNzAwNTkxNjI4LCJqdGkiOiI0ZTNmN2<span class="w"> </span>│
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>│<span class="w"> </span>U4Ni00ZTJhLTQwZDAtOWQ3ZS0zZTRmYjNkMzk1YWYiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsI<span class="w"> </span>│
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>│<span class="w"> </span>mF1ZCI6WyJodHRwOi8va2V5Y2xvYWsubG9jYWwiLCJhY2NvdW50Il0sInN1YiI6IjMxMzY1ZWYyLTZmYjYtNGVhOS04MmE2LWUwMTli<span class="w"> </span>│
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>│<span class="w"> </span>YjYwNmFkOSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFybWFzZWNfdHV0b3JpYWwiLCJzZXNzaW9uX3N0YXRlIjoiYTc2ZWEzYTEtZGE<span class="w"> </span>│
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>│<span class="w"> </span>3MC00Mzg2LWFiZTMtZjFjZjYzZDI5ZjZhIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLW<span class="w"> </span>│
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>│<span class="w"> </span>1hc3RlciIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhcm1hc2VjX3R1d<span class="w"> </span>│
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>│<span class="w"> </span>G9yaWFsIjp7InJvbGVzIjpbInJlYWQ6c3R1ZmYiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2Ut<span class="w"> </span>│
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>│<span class="w"> </span>YWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6ImE3NmVhM2ExLWRhNzA<span class="w"> </span>│
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>│<span class="w"> </span>tNDM4Ni1hYmUzLWYxY2Y2M2QyOWY2YSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoibG9jYWwtdX<span class="w"> </span>│
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>│<span class="w"> </span>NlciIsImVtYWlsIjoibG9jYWwtdXNlckBrZXljbG9hay5sb2NhbCJ9.ntEA67CNS2ZvPIMac3X-1wKBTiKFS5i5aYo32M7ytVIrnh_X<span class="w"> </span>│
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>│<span class="w"> </span>j_YHLz17WmP3PBKyJtZKgIN8zq_nOF4XeRBMMHSg8ec9ySRNNRia0AkB0AKB-yPa4Q2qGwAFFipWhkP_iQapHj3XWPNDSVRPy8ZvRzb<span class="w"> </span>│
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>│<span class="w"> </span>LDjcgxhvSQE2Yzm68dtiVrcxA-FpImtJRNwARgeXFcvsYjrWfaACLVrvABgi0PiBiqPoFE4-zHEwhVZ3-DfmvXGRj4NxVsOzTyVkzi0<span class="w"> </span>│
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>│<span class="w"> </span>pfMgHtOzI3MHb_hQ2xAtNBp-Ra5yYXHV3hteb_RPfjVTYADl6fq5Rggi3ydPsJVs0I7GAwzh85P8wRs127dtYv1w<span class="w">                </span>│
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>│<span class="w">                                                                                                         </span>│
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>╰────────────────────────────────<span class="w"> </span>The<span class="w"> </span>output<span class="w"> </span>was<span class="w"> </span>copied<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>clipboard<span class="w"> </span>────────────────────────────────╯
+</span></code></pre></div>
+<p>If your terminal supports it, the token will be automatically copied into your clipboard.
+However, if you need to manually copy it, you can run the above command again with the
+<code>--plain</code> flag to print the token without formatting:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Bearer<span class="w"> </span>eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3dzlNZ0FSNExXbXNuTE9vYTJKTkE4WXZkVUFZX25jZnNvcTU0c3dkbERzIn0.eyJleHAiOjE3MDA1OTE2OTAsImlhdCI6MTcwMDU5MTYzMCwiYXV0aF90aW1lIjoxNzAwNTkxNjI4LCJqdGkiOiI0ZTNmN2U4Ni00ZTJhLTQwZDAtOWQ3ZS0zZTRmYjNkMzk1YWYiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvcmVhbG1zL21hc3RlciIsImF1ZCI6WyJodHRwOi8va2V5Y2xvYWsubG9jYWwiLCJhY2NvdW50Il0sInN1YiI6IjMxMzY1ZWYyLTZmYjYtNGVhOS04MmE2LWUwMTliYjYwNmFkOSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFybWFzZWNfdHV0b3JpYWwiLCJzZXNzaW9uX3N0YXRlIjoiYTc2ZWEzYTEtZGE3MC00Mzg2LWFiZTMtZjFjZjYzZDI5ZjZhIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLW1hc3RlciIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhcm1hc2VjX3R1dG9yaWFsIjp7InJvbGVzIjpbInJlYWQ6c3R1ZmYiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6ImE3NmVhM2ExLWRhNzAtNDM4Ni1hYmUzLWYxY2Y2M2QyOWY2YSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoibG9jYWwtdXNlciIsImVtYWlsIjoibG9jYWwtdXNlckBrZXljbG9hay5sb2NhbCJ9.ntEA67CNS2ZvPIMac3X-1wKBTiKFS5i5aYo32M7ytVIrnh_Xj_YHLz17WmP3PBKyJtZKgIN8zq_nOF4XeRBMMHSg8ec9ySRNNRia0AkB0AKB-yPa4Q2qGwAFFipWhkP_iQapHj3XWPNDSVRPy8ZvRzbLDjcgxhvSQE2Yzm68dtiVrcxA-FpImtJRNwARgeXFcvsYjrWfaACLVrvABgi0PiBiqPoFE4-zHEwhVZ3-DfmvXGRj4NxVsOzTyVkzi0pfMgHtOzI3MHb_hQ2xAtNBp-Ra5yYXHV3hteb_RPfjVTYADl6fq5Rggi3ydPsJVs0I7GAwzh85P8wRs127dtYv1w
+</span></code></pre></div>
+<p>Keep the token close at hand; you will be using it shortly to access your API endpoint.</p>
 <h2 id="try-it-out">Try it out</h2>
 <p>Open a browser to <a href="http://localhost:8000/docs" target="_blank">localhost:8000/docs</a></p>
 <p><img alt="Swagger" class="framed-image" src="../../images/keycloak-12.png" />
@@ -765,31 +863,31 @@ with other metadata about the token.</p>
 <p>This will show you the auto-generated swagger docs for the example API app. Click on the
 <code>Authorize</code> button to add the token you copied to the clipboard in the header of requests to the
 API.</p>
-<p><img alt="Authorize" class="framed-image" src="../../images/keycloak-13.png" />
+<p><img alt="Authorize" class="framed-image" src="../../images/keycloak-authorize.png" />
 <em>Authorize</em></p>
-<p>First, type "Bearer " followed by pasting the token from the clipboard into the form and click the
-<code>Authorize</code> button in the dialog, click <code>Close</code> to dismiss the dialog. Now, all subsequent calls
-to the API will include a header that looks like:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;Authorization&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bearer eyJhbGciOi...&quot;</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="p">}</span>
+<p>First, paste the token (including the "Bearer" prefix) from the clipboard into the form
+and click the <code>Authorize</code> button in the dialog, click <code>Close</code> to dismiss the dialog.
+Now, all subsequent calls to the API will include a header that looks like:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">&quot;Authorization&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bearer eyJhbGciOi...&quot;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>Now, expand the "GET" REST operation on the <code>/stuff</code> endpoint and click <code>Try it out</code>.</p>
-<p><img alt="Try it out" class="framed-image" src="../../images/keycloak-14.png" />
+<p><img alt="Try it out" class="framed-image" src="../../images/keycloak-try-it-out.png" />
 <em>Try it out</em></p>
 <p>Finally, click <code>Execute</code> to issue the request to the API.</p>
-<p><img alt="Execute" class="framed-image" src="../../images/keycloak-16.png" />
+<p><img alt="Execute" class="framed-image" src="../../images/keycloak-execute.png" />
 <em>Execute</em></p>
 <p>You should see a response that includes a 200 status code and a response body that includes:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Successfully authenticated&quot;</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Successfully authenticated&quot;</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>Congratulations! You are now using Armasec and Auth0 to authorize requests to your API.</p>
 <h2 id="tinker">Tinker</h2>
 <p>Now, there are a few things you can do to check out how things work. Try the following things:</p>
 <ul>
-<li>Remove the "read:stuff" role from the Service Account and try another request</li>
+<li>Remove the "read:stuff" role from your user and try another request</li>
 <li>Try a request without being authorized in swagger</li>
 <li>Try making requests using <code>curl</code> or the <code>httpx</code> library in IPython</li>
 </ul>
