@@ -117,7 +117,7 @@ application type and click the `Create` button.
 ![Application Form](../images/auth0-application-form.png){: .framed-image}
 _Application Form_
 
-Next, we will need to enable device code authorization this for API. You can find this
+Next, we will need to enable device code authorization for this API. You can find this
 on the Settings tab.
 
 
