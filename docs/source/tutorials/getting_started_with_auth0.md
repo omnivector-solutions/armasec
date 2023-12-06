@@ -30,7 +30,7 @@ When the commands finish running, your environment will be ready to complete thi
 Navigate to [Auth0's homepage](https://auth0.com), and click `Sign Up`.
 
 Create a new account (if you don't already have one). It doesn't really matter how you
-choose to sign up, but it may be easiest to use your google or github account.
+choose to sign up, but it may be easiest to use your Google or Github account.
 
 The first step will be to select your tenant domain. This tutorial will be using
 "auth0-armasec-tutorial". However, you will need to select your own domain name as this
@@ -117,8 +117,8 @@ application type and click the `Create` button.
 ![Application Form](../images/auth0-application-form.png){: .framed-image}
 _Application Form_
 
-Next, we will need to enable device code authorization this API. You can find this on
-the Settings tab.
+Next, we will need to enable device code authorization this for API. You can find this
+on the Settings tab.
 
 
 ![Application Settings](../images/auth0-application-settings.png){: .framed-image}
@@ -195,11 +195,6 @@ armasec = Armasec(
 async def check_access():
     return dict(message="Successfully authenticated!")
 ```
-
-Also not that we need to add a `payload_claim_mapping` because Keycloak does not provide
-a permissions claim at the top level. This mapping copies the roles found at
-`resource_access.armasec_tutorial.roles` to a top-level attribute of the token payload
-called permissions.
 
 Copy the `example.py` app to a local source file called "example.py".
 
@@ -319,8 +314,8 @@ Open a browser to [localhost:8000/docs](http://localhost:8000/docs){:target="_bl
 _Swagger_
 
 This will show you the auto-generated swagger docs for the example API app. Click on the
-`Authorize` button to add the token you copied to the clipboard in the header of requests to the
-API.
+`Authorize` button to add the token you copied to the clipboard in the header of
+requests to the API.
 
 
 ![Authorize](../images/keycloak-authorize.png){: .framed-image}
