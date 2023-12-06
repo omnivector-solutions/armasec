@@ -14,7 +14,6 @@ DEFAULT_DOMAIN = "https://dummy-domain.com"
 
 @pytest.fixture
 def dummy_client():
-
     def _helper(
         base_url: str = DEFAULT_DOMAIN,
         headers: Optional[Dict] = None,
@@ -110,8 +109,7 @@ def test_make_request__raises_Abort_if_client_request_raises_exception(
     respx_mock.get(f"{DEFAULT_DOMAIN}{req_path}").mock(side_effect=original_error)
 
     with pytest.raises(
-        Abort,
-        match="There was a big problem: Communication with the API failed"
+        Abort, match="There was a big problem: Communication with the API failed"
     ) as err_info:
         make_request(
             client,
@@ -121,9 +119,7 @@ def test_make_request__raises_Abort_if_client_request_raises_exception(
             abort_subject="BIG PROBLEM",
         )
     assert err_info.value.subject == "BIG PROBLEM"
-    assert err_info.value.log_message == (
-        "There was an error making the request to the API"
-    )
+    assert err_info.value.log_message == ("There was an error making the request to the API")
     assert err_info.value.original_error == original_error
 
 
@@ -182,9 +178,7 @@ def test_make_request__raises_Abort_when_expected_status_is_not_None_and_respons
             abort_subject="BIG PROBLEM",
         )
     assert err_info.value.subject == "BIG PROBLEM"
-    assert err_info.value.log_message == (
-        "Got an error code for request: 400: It blowed up"
-    )
+    assert err_info.value.log_message == ("Got an error code for request: 400: It blowed up")
     assert err_info.value.original_error is None
 
 
@@ -238,11 +232,15 @@ def test_make_request__returns_the_response_status_code_if_expect_response_is_Fa
         return_value=httpx.Response(httpx.codes.BAD_REQUEST),
     )
 
-    assert make_request(
-        client, req_path,
-        "POST",
-        expect_response=False,
-    ) == httpx.codes.BAD_REQUEST
+    assert (
+        make_request(
+            client,
+            req_path,
+            "POST",
+            expect_response=False,
+        )
+        == httpx.codes.BAD_REQUEST
+    )
 
 
 def test_make_request__raises_an_Abort_if_the_response_cannot_be_deserialized_with_JSON(
@@ -353,7 +351,7 @@ def test_make_request__uses_request_model_instance_for_request_body_if_passed(
     assert dummy_response_instance.foo == 1
     assert dummy_response_instance.bar == "one"
 
-    assert dummy_route.calls.last.request.content == json.dumps(
-        dict(foo=1, bar="one")
-    ).encode("utf-8")
+    assert dummy_route.calls.last.request.content == json.dumps(dict(foo=1, bar="one")).encode(
+        "utf-8"
+    )
     assert dummy_route.calls.last.request.headers["Content-Type"] == "application/json"

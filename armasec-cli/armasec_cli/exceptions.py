@@ -10,7 +10,6 @@ from rich.console import Console
 from rich.panel import Panel
 
 
-
 # Enables prettified traceback printing via rich
 traceback.install()
 
@@ -37,7 +36,6 @@ class Abort(buzz.Buzz):
 
 
 def handle_abort(func):
-
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:

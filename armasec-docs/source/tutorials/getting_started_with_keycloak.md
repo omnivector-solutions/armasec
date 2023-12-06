@@ -342,10 +342,6 @@ Keep the token close at hand; you will be using it shortly to access your API en
 
 Open a browser to [localhost:8000/docs](http://localhost:8000/docs){:target="_blank"}
 
-
-![Swagger](../images/keycloak-12.png){: .framed-image}
-_Swagger_
-
 This will show you the auto-generated swagger docs for the example API app. Click on the
 `Authorize` button to add the token you copied to the clipboard in the header of requests to the
 API.

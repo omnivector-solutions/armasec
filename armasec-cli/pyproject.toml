@@ -33,20 +33,15 @@ pyperclip = "^1.8.2"
 
 [tool.poetry.group.dev.dependencies]
 ipython = ">=7,<9"
-# mypy = "^1.5"
-# python-dotenv = "^0.19"
-# grip = "^4.6.1"
-# pytest-mock = "^3.11.1"
-# types-jmespath = "^1.0.2.7"
 pytest = "^7.4.3"
 pendulum = "^2.1.2"
 plummet = {extras = ["time-machine"], version = "^1.2.1"}
 pytest-random-order = "^1.1.0"
 pytest-sugar = "^0.9.7"
-pytest-cov = "^4.1.0"
 ruff = "^0.1.5"
 pytest-mock = "^3.12.0"
 respx = "^0.20.2"
+mypy = "^1.7.1"
 
 
 [tool.poetry.scripts]
@@ -54,18 +49,15 @@ armasec = "armasec_cli.main:app"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-# Unfortunately, pytest-cov breaks when we add armasec.pytest_extension as a pytest plugin
-# TODO: Figure out why this is and how to fix it
 addopts = "--random-order"
 testpaths = ["tests"]
 asyncio_mode = "auto"
 
 [[tool.mypy.overrides]]
 module = [
-    # "jose",
-    # "buzz",
-    # "snick",
-    # "auto_name_enum",
+    "jose",
+    "jose.exceptions",
+    "pyperclip",
 ]
 ignore_missing_imports = true
 

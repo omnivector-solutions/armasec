@@ -13,7 +13,7 @@ class TokenSet(BaseModel):
 
 class IdentityData(BaseModel):
     client_id: str
-    email: Optional[str] =  None
+    email: Optional[str] = None
 
 
 class Persona(BaseModel):
@@ -28,6 +28,6 @@ class DeviceCodeData(BaseModel):
 
 
 class CliContext(BaseModel, arbitrary_types_allowed=True):
-    persona: Optional[Persona]
-    client: Optional[httpx.Client]
-    settings: Optional[Settings]
+    persona: Optional[Persona] = None
+    client: Optional[httpx.Client] = None
+    settings: Optional[Settings] = None

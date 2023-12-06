@@ -21,7 +21,7 @@ format: install
 	poetry run ruff format ${PACKAGE_NAME} tests
 	poetry run ruff check --fix ${PACKAGE_NAME} tests
 
-clean: clean-eggs clean-build
+clean:
 	@find . -iname '*.pyc' -delete
 	@find . -iname '*.pyo' -delete
 	@find . -iname '*~' -delete

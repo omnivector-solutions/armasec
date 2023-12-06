@@ -37,7 +37,6 @@ def make_token():
     return _helper
 
 
-
 @pytest.fixture
 def override_cache_dir(tmp_path, mocker):
     with mocker.patch("armasec_cli.cache.cache_dir", new=tmp_path):

@@ -11,7 +11,6 @@ documentation = "https://omnivector-solutions.github.io/armasec"
 
 packages = [
     { include = "armasec_fastapi"},
-    # { include = "armasec_cli"},
 ]
 
 [tool.poetry.urls]
@@ -41,10 +40,6 @@ rich = {version = "^13.5.2", optional = true}
 pendulum = {version = "^2.1.2", optional = true}
 pyperclip = {version = "^1.8.2", optional = true}
 jmespath = "^1.0.1"
-
-# [tool.poetry.extras]
-# cli = ["typer", "loguru", "rich", "pendulum", "pyperclip"]
-
 
 [tool.poetry.group.dev.dependencies]
 ipython = ">=7,<9"

@@ -20,7 +20,6 @@ from armasec_cli.time_loop import TimeLoop
 
 
 def extract_persona(ctx: CliContext, token_set: TokenSet | None = None):
-
     if token_set is None:
         token_set = load_tokens_from_cache()
 
@@ -71,7 +70,7 @@ def validate_token_and_extract_identity(token_set: TokenSet) -> IdentityData:
 
         Please try logging in again.
         """,
-        ignore_exc_class=ExpiredSignatureError,     # Will be handled in calling context
+        ignore_exc_class=ExpiredSignatureError,  # Will be handled in calling context
         raise_kwargs=dict(
             subject="Invalid access token",
             log_message="Unknown error while validating access access token",
@@ -145,22 +144,32 @@ def refresh_access_token(ctx: CliContext, token_set: TokenSet):
 
     If refresh fails, notify the user that they need to log in again.
     """
-    print("MAKE THIS FUCKING THING USE THE BASE URL")
     url = "/protocol/openid-connect/token"
     logger.debug(f"Requesting refreshed access token from {url}")
+
+    client = Abort.enforce_defined(
+        ctx.client,
+        "Client is undefined in cli context!",
+        raise_kwargs=dict(subject="Invalid CLI context"),
+    )
+    settings = Abort.enforce_defined(
+        ctx.settings,
+        "Settings is undefined in cli context!",
+        raise_kwargs=dict(subject="Invalid CLI context"),
+    )
 
     refreshed_token_set: TokenSet = cast(
         TokenSet,
         make_request(
-            ctx.client,
+            client,
             "/protocol/openid-connect/token",
             "POST",
             abort_message="The auth token could not be refreshed. Please try logging in again.",
             abort_subject="EXPIRED ACCESS TOKEN",
             response_model_cls=TokenSet,
             data=dict(
-                client_id=ctx.settings.oidc_client_id,
-                audience=ctx.settings.oidc_audience,
+                client_id=settings.oidc_client_id,
+                audience=settings.oidc_audience,
                 grant_type="refresh_token",
                 refresh_token=token_set.refresh_token,
             ),
@@ -177,10 +186,21 @@ def fetch_auth_tokens(ctx: CliContext) -> TokenSet:
     Prints out a URL for the user to use to authenticate and polls the token endpoint to fetch it
     when the browser-based process finishes.
     """
-    if ctx.settings.oidc_provider == OidcProvider.KEYCLOAK:
+    client = Abort.enforce_defined(
+        ctx.client,
+        "Client is undefined in cli context!",
+        raise_kwargs=dict(subject="Invalid CLI context"),
+    )
+    settings = Abort.enforce_defined(
+        ctx.settings,
+        "Settings is undefined in cli context!",
+        raise_kwargs=dict(subject="Invalid CLI context"),
+    )
+
+    if settings.oidc_provider == OidcProvider.KEYCLOAK:
         device_path = "/protocol/openid-connect/auth/device"
         token_path = "/protocol/openid-connect/token"
-    elif ctx.settings.oidc_provider == OidcProvider.AUTH0:
+    elif settings.oidc_provider == OidcProvider.AUTH0:
         device_path = "/oauth/device/code"
         token_path = "oauth/token"
     else:
@@ -189,7 +209,7 @@ def fetch_auth_tokens(ctx: CliContext) -> TokenSet:
     device_code_data: DeviceCodeData = cast(
         DeviceCodeData,
         make_request(
-            ctx.client,
+            client,
             device_path,
             "POST",
             expected_status=200,
@@ -202,9 +222,9 @@ def fetch_auth_tokens(ctx: CliContext) -> TokenSet:
             abort_subject="COULD NOT RETRIEVE TOKEN",
             response_model_cls=DeviceCodeData,
             data=dict(
-                client_id=ctx.settings.oidc_client_id,
+                client_id=settings.oidc_client_id,
                 grant_type="client_credentials",
-                audience=ctx.settings.oidc_audience,
+                audience=settings.oidc_audience,
             ),
         ),
     )
@@ -222,13 +242,13 @@ def fetch_auth_tokens(ctx: CliContext) -> TokenSet:
     )
 
     for tick in TimeLoop(
-        ctx.settings.oidc_max_poll_time,
+        settings.oidc_max_poll_time,
         message="Waiting for web login",
     ):
         response_data: dict = cast(
             dict,
             make_request(
-                ctx.client,
+                client,
                 token_path,
                 "POST",
                 abort_message=snick.unwrap(
@@ -241,7 +261,7 @@ def fetch_auth_tokens(ctx: CliContext) -> TokenSet:
                 data=dict(
                     grant_type="urn:ietf:params:oauth:grant-type:device_code",
                     device_code=device_code_data.device_code,
-                    client_id=ctx.settings.oidc_client_id,
+                    client_id=settings.oidc_client_id,
                 ),
             ),
         )

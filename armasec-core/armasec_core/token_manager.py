@@ -2,7 +2,7 @@
 This module defines a TokenManager that can be used to extract token payloads from request headers.
 """
 
-from typing import Callable, Optional
+from typing import Callable, Optional, Mapping
 
 from armasec_core.exceptions import AuthenticationError
 from armasec_core.schemas import OpenidConfig
@@ -48,7 +48,7 @@ class TokenManager:
         self.openid_config = openid_config
         self.token_decoder = token_decoder
 
-    def unpack_token_from_header(self, headers: dict) -> str:
+    def unpack_token_from_header(self, headers: Mapping[str, str]) -> str:
         """
         Unpack a JWT from a request header.
 
@@ -78,7 +78,7 @@ class TokenManager:
         )
         return token
 
-    def extract_token_payload(self, headers: dict) -> TokenPayload:
+    def extract_token_payload(self, headers: Mapping[str, str]) -> TokenPayload:
         """
         Retrieve a token from a request header and decode it into a TokenPayload.
 

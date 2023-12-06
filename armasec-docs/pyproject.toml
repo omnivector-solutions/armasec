@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "armsec-docs"
+version = "1.2.1"
+description = "Armasec Official Documentation"
+authors = ["Omnivector Engineering Team <info@omnivector.solutions>"]
+license = "MIT"
+homepage = "https://github.com/omnivector-solutions/armasec"
+repository = "https://github.com/omnivector-solutions/armasec"
+documentation = "https://omnivector-solutions.github.io/armasec"
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+mkdocs-material = "^9.4.2"
+mkdocstrings = { extras = ["python"], version = "^0.23.0" }
+pygments = "^2.16.1"
+armasec-core = { path = "../armasec-core", develop = true }
+armasec-cli = { path = "../armasec-cli", develop = true }
+armasec-fastapi = { path = "../armasec-fastapi", develop = true }
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
