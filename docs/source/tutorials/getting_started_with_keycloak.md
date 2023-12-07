@@ -385,7 +385,7 @@ You should see a response that includes a 200 status code and a response body th
 }
 ```
 
-Congratulations! You are now using Armasec and Auth0 to authorize requests to your API.
+Congratulations! You are now using Armasec and Keycloak to authorize requests to your API.
 
 
 ## Tinker
