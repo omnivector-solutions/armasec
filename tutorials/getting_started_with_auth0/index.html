@@ -391,6 +391,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installing-python-packages" class="md-nav__link">
+    Installing python packages
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#create-auth0-account-tenant" class="md-nav__link">
     Create Auth0 account tenant
   </a>
@@ -405,15 +412,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#add-your-permissions" class="md-nav__link">
-    Add your permissions
+  <a href="#set-up-a-client" class="md-nav__link">
+    Set up a client
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#grant-your-permission-to-the-test-app" class="md-nav__link">
-    Grant your permission to the test app
+  <a href="#set-up-a-user" class="md-nav__link">
+    Set up a user
   </a>
   
 </li>
@@ -421,6 +428,20 @@
         <li class="md-nav__item">
   <a href="#start-up-the-example-app" class="md-nav__link">
     Start up the example app
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#login-via-armasec-cli" class="md-nav__link">
+    Login via Armasec CLI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fetch-the-auth-token" class="md-nav__link">
+    Fetch the auth token
   </a>
   
 </li>
@@ -528,6 +549,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installing-python-packages" class="md-nav__link">
+    Installing python packages
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#create-auth0-account-tenant" class="md-nav__link">
     Create Auth0 account tenant
   </a>
@@ -542,15 +570,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#add-your-permissions" class="md-nav__link">
-    Add your permissions
+  <a href="#set-up-a-client" class="md-nav__link">
+    Set up a client
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#grant-your-permission-to-the-test-app" class="md-nav__link">
-    Grant your permission to the test app
+  <a href="#set-up-a-user" class="md-nav__link">
+    Set up a user
   </a>
   
 </li>
@@ -558,6 +586,20 @@
         <li class="md-nav__item">
   <a href="#start-up-the-example-app" class="md-nav__link">
     Start up the example app
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#login-via-armasec-cli" class="md-nav__link">
+    Login via Armasec CLI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fetch-the-auth-token" class="md-nav__link">
+    Fetch the auth token
   </a>
   
 </li>
@@ -607,106 +649,240 @@ minimal example.</p>
 <p>You will need:</p>
 <ul>
 <li>Python 3.8+ installed</li>
-<li>Python packages <code>armasec</code> and <code>uvicorn</code> installed</li>
 </ul>
+<h2 id="installing-python-packages">Installing python packages</h2>
+<p>The first thing you will need to do is to install some neeeded python dependencies. In
+order to run the example API, you will need the the <code>uvicorn</code> package installed. You
+will also be using the Armasec CLI to verify that you can log in. For this, you will
+need the <code>armasec</code> package with the <code>cli</code> extra. For this tutorial, it will be best to
+work in a new virtual environment. To bootstrap it, run the following commands:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>env
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">source</span><span class="w"> </span>env/bin/activate
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>pip<span class="w"> </span>install<span class="w"> </span>uvicorn<span class="w"> </span>armasec<span class="o">[</span>cli<span class="o">]</span>
+</span></code></pre></div>
+<p>When the commands finish running, your environment will be ready to complete this guide.</p>
 <h2 id="create-auth0-account-tenant">Create Auth0 account tenant</h2>
 <p>Navigate to <a href="https://auth0.com">Auth0's homepage</a>, and click <code>Sign Up</code>.</p>
-<p>Create a new account (if you don't already have one). It doesn't really matter how you choose to
-sign up, but I used my google account.</p>
-<p><img alt="Create a personal account" class="framed-image" src="../../images/auth0-1.jpg" />
-<em>Create a personal account</em></p>
-<p>For this tutorial, just select a "Personal" account. You can come back and repeat the process for
-your company later if you need to.</p>
-<p>Select <code>I need advanced settings</code> so that you can choose your tenant name, and click <code>Next</code> to
-move on to tenant setup.</p>
-<p><img alt="Select tenant domain" class="framed-image" src="../../images/auth0-2.jpg" />
+<p>Create a new account (if you don't already have one). It doesn't really matter how you
+choose to sign up, but it may be easiest to use your Google or Github account.</p>
+<p>The first step will be to select your tenant domain. This tutorial will be using
+"auth0-armasec-tutorial". However, you will need to select your own domain name as this
+cannot be re-used by other people. Choose your region and click <code>Create Account</code>.</p>
+<p><img alt="Select tenant domain" class="framed-image" src="../../images/auth0-create-domain.png" />
 <em>Select tenant domain</em></p>
-<p>Select your tenant domain. For this tutorial, I will be using "armasec-tutorial". Choose your region
-and click <code>Create Account</code>. The full domain that I will use later is
-"armasec-tutorial.us.auth0.com".</p>
+<p>The full domain for that will be used later is "auth0-armasec-tutorial.us.auth0.com".
+Throughout the tutorial, remember to substitute your own chosen domain for this value.</p>
 <h2 id="add-your-api-application">Add your API application</h2>
-<p>This will set up the Auth0 api endpoints that Auth0 will use to authenticate your users.</p>
-<p><img alt="Navigate to Applications -&gt; APIs" class="framed-image" src="../../images/auth0-3.jpg" />
+<p>This step will guide you as you set up the Auth0 api endpoints that Auth0 will use to
+authenticate your users.</p>
+<p>First, you need to create a new API. On the left navbar, click <code>Applications</code> and then
+select <code>APIs</code>.</p>
+<p><img alt="Navigate to Applications -&gt; APIs" class="framed-image" src="../../images/auth0-navigate-apis.png" />
 <em>Navigate to Applications &gt; APIs</em></p>
-<p>Click <code>Applications</code> -&gt; <code>APIs</code></p>
-<p><img alt="Create an API" class="framed-image" src="../../images/auth0-4.jpg" />
+<p>Once there, click the <code>Create API</code> button</p>
+<p><img alt="Create an API" class="framed-image" src="../../images/auth0-create-api.png" />
 <em>Create an API</em></p>
-<p>Click <code>Create API</code></p>
-<p><img alt="Fill out API form" class="framed-image" src="../../images/auth0-5.jpg" />
-<em>Fill out API form</em></p>
-<p>Fill out the form. The Name you choose doesn't matter, but for the tutorial, I used
-"Armasec Tutorial".  Choose a name for the identifier that makes sense, as this will be the
-"Audience" for your tutorial app. I chose "https://armasec-tutorial.com" for this tutorial.</p>
-<p>Leave the "Signing Algorithm" as "RS256". Armasec also supports HS256, but it is not preferred.</p>
-<p>Click <code>Create</code></p>
-<p><img alt="Enable RBAC Settings" class="framed-image" src="../../images/auth0-6.jpg" />
-<em>Enable RBAC Settings</em></p>
-<p>Go to the Settings tab and scroll down to the "RBAC Settings"</p>
-<p>Activate <code>Enable RBAC</code> and <code>Add Permissions</code> in the Access Token".</p>
-<p>This will include permissions scopes to your users' access tokens.</p>
-<p>Click <code>Save</code></p>
-<h2 id="add-your-permissions">Add your permissions</h2>
-<p>Next, we will add the permission for the minimal example.</p>
-<p><img alt="Add a permission" class="framed-image" src="../../images/auth0-7.jpg" />
-<em>Add a permission</em></p>
-<p>Click on the <code>Permissions</code> tab and add the "read:stuff" permission.</p>
-<h2 id="grant-your-permission-to-the-test-app">Grant your permission to the test app</h2>
-<p>Auth0 provides a "Machine-to-Machine" test app for verifying that log in will work. We will grant
-our "read:stuff" permission to tokens provided from this app.</p>
-<p><img alt="Navigate to Applications" class="framed-image" src="../../images/auth0-8.jpg" />
+<p>Fill out the form. The Name you choose doesn't matter, but will help you find your API
+in the Auth0 UI going forward.  The "Identifier" will be the "Audience" claim that is
+used in the auth tokens. Whatever value you use here, make sure to substitute it for
+"Audience" throughout this tutorial. Leave the "Signing Algorithm" as "RS256".
+Armasec also supports HS256, but it is not preferred. Finally, click <code>Create</code>.</p>
+<p><img alt="API Creation Form" class="framed-image" src="../../images/auth0-api-form.png" />
+<em>API Creation Form</em></p>
+<p>Next, we will need to enable RBAC for this API. You can find this on the Settings tab.</p>
+<p><img alt="API Settings" class="framed-image" src="../../images/auth0-api-settings.png" />
+<em>API Settings</em></p>
+<p>Scroll down to the "RBAC Settings". Activate <code>Enable RBAC</code>. Also enable
+<code>Add Permissions in the Access Token</code> to include permissions scopes to your users'
+access tokens. Click <code>Save</code></p>
+<p><img alt="RBAC Enabled" class="framed-image" src="../../images/auth0-api-rbac.png" />
+<em>RBAC Enabled</em></p>
+<p>Next, we will add the permission scopes to tokens issued by this API. Click on the
+<code>Permissions</code> tab and add the "read:stuff" permission.</p>
+<p><img alt="Add permissions" class="framed-image" src="../../images/auth0-add-permissions.png" />
+<em>Add permissions</em></p>
+<h2 id="set-up-a-client">Set up a client</h2>
+<p>Next, you will need to set up a client that is configured for the tutorial. To do this,
+click on <code>Applications</code> on the left navbar and then click the <code>Applications</code> link
+beneath it.</p>
+<p><img alt="Navigate to Applications" class="framed-image" src="../../images/auth0-navigate-applications.png" />
 <em>Navigate to Applications</em></p>
-<p>Navigate to <code>Applications</code> -&gt; <code>Applications</code></p>
-<p><img alt="Select tutorial test app" class="framed-image" src="../../images/auth0-9.jpg" />
-<em>Select tutorial test app</em></p>
-<p>Click on <code>Armasec Tutorial (Test Application)</code></p>
-<p><img alt="Add permissions to test app" class="framed-image" src="../../images/auth0-10.jpg" />
-<em>Add permission to test app</em></p>
-<p>Go to the APIs tab and click the drop-down. Select the "read-stuff" box in the "Permissions" box.
-Click <code>Update</code>.</p>
+<p>Click the <code>Create Application</code> button.</p>
+<p><img alt="Create Application" class="framed-image" src="../../images/auth0-create-application.png" />
+<em>Create Application</em></p>
+<p>A form will appear. It doesn't matter what you name the application. Select a "Native"
+application type and click the <code>Create</code> button.</p>
+<p><img alt="Application Form" class="framed-image" src="../../images/auth0-application-form.png" />
+<em>Application Form</em></p>
+<p>Next, we will need to enable device code authorization for this API. You can find this
+on the Settings tab.</p>
+<p><img alt="Application Settings" class="framed-image" src="../../images/auth0-application-settings.png" />
+<em>Application Settings</em></p>
+<p>Scroll down to the bottom of the settings page to find the "Advanced Settings". Expand
+the block and click on the <code>Grant Types</code> tab. In this tab, enable the "Device Code"
+option. Click "Save Changes" to finish.</p>
+<p><img alt="Enable Device Code" class="framed-image" src="../../images/auth0-device-code.png" />
+<em>Enable Device Code</em></p>
+<p>You will use the "Client ID" for this application later in the tutorial, so be sure
+to note it.</p>
+<h2 id="set-up-a-user">Set up a user</h2>
+<p>Next, you will need to create a user to log in with. Click on <code>User Management</code> on the
+left navbar and then click the <code>Users</code> link beneath it.</p>
+<p><img alt="Navigate Users" class="framed-image" src="../../images/auth0-navigate-users.png" />
+<em>Navigate Users</em></p>
+<p>Click on the <code>Create User</code> button to start the process.</p>
+<p><img alt="Create User" class="framed-image" src="../../images/auth0-create-user.png" />
+<em>Create User</em></p>
+<p>Fill out the form. You will use the provided email to sign in; this does not have to be
+a real email address. Chose a password (Auth0 requires a semi-strong password, so make
+sure to make note of your choice. Finally, click <code>Create</code> to create the user.</p>
+<p><img alt="User Form" class="framed-image" src="../../images/auth0-user-form.png" />
+<em>User Form</em></p>
+<p>Finally, you need to add the permissions for your user. Click on the "Permissions" tab,
+click <code>Assign Permissions</code>.</p>
+<p><img alt="Assign Permissions" class="framed-image" src="../../images/auth0-assign-permissions.png" />
+<em>Assign Permissions</em></p>
+<p>A form will open. Select the API created earlier in the tutorial. Enable the
+<code>read:stuff</code> permission, and then click <code>Add Permissions</code>.</p>
+<p><img alt="Select Permissions" class="framed-image" src="../../images/auth0-select-permissions.png" />
+<em>Select Permissions</em></p>
+<p>Your user should now be ready to sign into the application.</p>
 <h2 id="start-up-the-example-app">Start up the example app</h2>
-<p>Copy the example app to a local source file called "example.py".</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">example.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">armasec</span> <span class="kn">import</span> <span class="n">Armasec</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Depends</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="n">armasec</span> <span class="o">=</span> <span class="n">Armasec</span><span class="p">(</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>    <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;armasec-tutorial.us.auth0.com&quot;</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a>    <span class="n">audience</span><span class="o">=</span><span class="s2">&quot;https://armasec-tutorial.com&quot;</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a>    <span class="n">debug_logger</span><span class="o">=</span><span class="nb">print</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a>    <span class="n">debug_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="p">)</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/stuff&quot;</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">armasec</span><span class="o">.</span><span class="n">lockdown</span><span class="p">(</span><span class="s2">&quot;read:stuff&quot;</span><span class="p">))])</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">check_access</span><span class="p">():</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a>    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Successfully authenticated!&quot;</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Copy the <code>example.py</code> app to a local source file called "example.py".</p>
 <p>Start it up with uvicorn:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>example:app
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>uvicorn<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">5000</span><span class="w"> </span>example:app
 </span></code></pre></div>
+<p>Once it is up and running, hit <code>&lt;ctrl-z&gt;</code> and type the command <code>bg</code> to put the uvicorn
+process into the background. You should make sure to kill the process when you complete
+the tutorial.</p>
+<h2 id="login-via-armasec-cli">Login via Armasec CLI</h2>
+<p>Next, you will log in using the Armasec CLI to get an API token to access your example
+API. Before you log in, however, you will need to configure the Armasec CLI to connect
+to the Auth0 server. Type the following command to configure the CLI (remember to
+substitute your domain and client-id):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>armasec<span class="w"> </span>set-config<span class="w"> </span>--provider<span class="o">=</span>AUTH0<span class="w"> </span>--domain<span class="o">=</span>auth0-armasec-tutorial.us.auth0.com<span class="w"> </span>--audience<span class="o">=</span>https://auth0-api<span class="w"> </span>--client-id<span class="o">=</span>VByjtzLPOglJemX4SBncHudJedZ6NVoo
+</span></code></pre></div>
+<p>Now you should be ready to log in. In your terminal, type the following command to start
+the process:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>armasec<span class="w"> </span>login
+</span></code></pre></div>
+<p>The CLI will show a box prompting you to complete the login process in a browser:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>╭─────────────────────────────────────────── Waiting for login ───────────────────────────────────────────╮
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>│                                                                                                         │
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>│   To complete login, please open the following link in a browser:                                       │
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│                                                                                                         │
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>│     https://auth0-armasec-tutorial.us.auth0.com/activate?user_code=RRRR-PZFG                            │
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>│                                                                                                         │
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>│   Waiting up to 5.0 minutes for you to complete the process...                                          │
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>│                                                                                                         │
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>╰─────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>Waiting for web login... ╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   2% 0:04:55
+</span></code></pre></div>
+<p>Open the provided link in the browser and log in using the user that you
+created.</p>
+<p><img alt="Log in" class="framed-image" src="../../images/auth0-log-in.png" />
+<em>Log in</em></p>
+<p>You will then be prompted with a question asking if you want to grant access. Click
+"Yes" to complete the log in process. The browser will show a message confirming that
+you are now logged in. You may close that browser tab.</p>
+<p>Notice in the terminal, a message is now printed showing that your user was logged in:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>╭──────────────────────────────────────────────<span class="w"> </span>Logged<span class="w"> </span><span class="k">in</span>!<span class="w"> </span>───────────────────────────────────────────────╮
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>│<span class="w">                                                                                                         </span>│
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>│<span class="w">   </span>User<span class="w"> </span>was<span class="w"> </span>logged<span class="w"> </span><span class="k">in</span><span class="w"> </span>with<span class="w"> </span>email<span class="w"> </span><span class="s1">&#39;None&#39;</span><span class="w">                                                                  </span>│
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>│<span class="w">                                                                                                         </span>│
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>╰─────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+</span></code></pre></div>
+<p>Note that the email was listed as 'None'. This is because Auth0 by default does not
+include the user's email in the auth token.</p>
+<h2 id="fetch-the-auth-token">Fetch the auth token</h2>
+<p>Next, you will use the Armasec CLI to fetch the token for the logged in user. To do
+this, you will use the <code>show-token</code> subcommand. In a terminal, type (the prefix flag
+includes the "Bearer" type indicator for the token):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>armasec<span class="w"> </span>show-token<span class="w"> </span>--prefix
+</span></code></pre></div>
+<p>The Armasec CLI will print out a box showing the auth token for your user:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>╭─────────────────────────────────────────────<span class="w"> </span>Access<span class="w"> </span>Token<span class="w"> </span>──────────────────────────────────────────────╮
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>│<span class="w">                                                                                                         </span>│
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>│<span class="w"> </span>Bearer<span class="w">                                                                                                  </span>│
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>│<span class="w"> </span>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjQ0d2UwS21haXlZMjlmRVh4OWM5MCJ9.eyJpc3MiOiJodHRwczovL2F1dG<span class="w"> </span>│
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>│<span class="w"> </span>gwLWFybWFzZWMtdHV0b3JpYWwudXMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY1NjhlYmZhODlkNzM4ZTIyNThkZGFkZSIsImF1Z<span class="w"> </span>│
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>│<span class="w"> </span>CI6Imh0dHBzOi8vYXV0aDAtYXBpIiwiaWF0IjoxNzAxMzc2MTY3LCJleHAiOjE3MDE0NjI1NjcsImF6cCI6IlZCeWp0ekxQT2dsSmVt<span class="w"> </span>│
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>│<span class="w"> </span>WDRTQm5jSHVkSmVkWjZOVm9vIiwicGVybWlzc2lvbnMiOlsicmVhZDpzdHVmZiJdfQ.KFKVJNcUDuCN89nNV6D8WwMrg9IV7FpCufem<span class="w"> </span>│
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>│<span class="w"> </span>LJqGlYXwm4DpPxFGbRuN4FhqKKxOUbr4hleox9pxSk8nqrsVHD0d9Y4EqARM1ihRIzQCVknZt9r6yx_JLwS9NKFwb-AaGiJERbwKxa1<span class="w"> </span>│
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>│<span class="w"> </span>fvTO3aX6dB4ecRtPFduMfwaokseyGq-LhVRnyb9eXGML_XswnKJ9FKcKXyvP794qRv13zmu05pLMSjcwStf_nLFKe5cYyCui8rOLCwe<span class="w"> </span>│
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>│<span class="w"> </span>qRwZEKYSb4l4v0ke9QhA3bKPQxBvQe3R7m5Zwl6wXTN3VJ7Smv4tLtsJCTIDInOO-glTbs2NRcl_Uvbnl7AtcugsaDwdlIaX3CTg<span class="w">    </span>│
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>│<span class="w">                                                                                                         </span>│
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>╰────────────────────────────────<span class="w"> </span>The<span class="w"> </span>output<span class="w"> </span>was<span class="w"> </span>copied<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>clipboard<span class="w"> </span>────────────────────────────────╯
+</span></code></pre></div>
+<p>If your terminal supports it, the token will be automatically copied into your clipboard.
+However, if you need to manually copy it, you can run the above command again with the
+<code>--plain</code> flag to print the token without formatting:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Bearer<span class="w"> </span>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjQ0d2UwS21haXlZMjlmRVh4OWM5MCJ9.eyJpc3MiOiJodHRwczovL2F1dGgwLWFybWFzZWMtdHV0b3JpYWwudXMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY1NjhlYmZhODlkNzM4ZTIyNThkZGFkZSIsImF1ZCI6Imh0dHBzOi8vYXV0aDAtYXBpIiwiaWF0IjoxNzAxMzc2MTY3LCJleHAiOjE3MDE0NjI1NjcsImF6cCI6IlZCeWp0ekxQT2dsSmVtWDRTQm5jSHVkSmVkWjZOVm9vIiwicGVybWlzc2lvbnMiOlsicmVhZDpzdHVmZiJdfQ.KFKVJNcUDuCN89nNV6D8WwMrg9IV7FpCufemLJqGlYXwm4DpPxFGbRuN4FhqKKxOUbr4hleox9pxSk8nqrsVHD0d9Y4EqARM1ihRIzQCVknZt9r6yx_JLwS9NKFwb-AaGiJERbwKxa1fvTO3aX6dB4ecRtPFduMfwaokseyGq-LhVRnyb9eXGML_XswnKJ9FKcKXyvP794qRv13zmu05pLMSjcwStf_nLFKe5cYyCui8rOLCweqRwZEKYSb4l4v0ke9QhA3bKPQxBvQe3R7m5Zwl6wXTN3VJ7Smv4tLtsJCTIDInOO-glTbs2NRcl_Uvbnl7AtcugsaDwdlIaX3CTg
+</span></code></pre></div>
+<p>Keep the token close at hand; you will be using it shortly to access your API endpoint.</p>
 <h2 id="try-it-out">Try it out</h2>
-<p>Next, we will try to use a test token to call our minimal example's endpoint.</p>
-<p>Navigate back to <code>Applications</code> -&gt; <code>APIs</code>, select the <code>Armasec Tutorial</code>, and go to the Test
-tab.</p>
-<p><img alt="Copy test access token" class="framed-image" src="../../images/auth0-11.jpg" />
-<em>Copy test access token</em></p>
-<p>Find the "Response" box. This contains a token that has been issued by your test application. Click
-the <code>Copy Token</code> button.</p>
-<p>Now, open a browser to "localhost:8000/docs"</p>
-<p><img alt="Swagger page for example" class="framed-image" src="../../images/auth0-12.jpg" />
-<em>Swagger page for example</em></p>
+<p>Open a browser to <a href="http://localhost:8000/docs" target="_blank">localhost:8000/docs</a></p>
+<p><img alt="Swagger" class="framed-image" src="../../images/keycloak-12.png" />
+<em>Swagger</em></p>
 <p>This will show you the auto-generated swagger docs for the example API app. Click on the
-<code>Authorize</code> button to add the token you copied to the clipboard in the header of requests to the
-API.</p>
-<p><img alt="Add access token in Swagger" class="framed-image" src="../../images/auth0-13.jpg" />
-<em>Add access token in Swagger</em></p>
-<p>First, type "Bearer " followed by pasting the token from the clipboard into the form and click the
-<code>Authorize</code> button in the dialog, click <code>Close</code> to dismiss the dialog. Now, all subsequent calls
-to the API will include a header that looks like:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;Authorization&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bearer eyJhbGciOi...&quot;</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">}</span>
+<code>Authorize</code> button to add the token you copied to the clipboard in the header of
+requests to the API.</p>
+<p><img alt="Authorize" class="framed-image" src="../../images/keycloak-authorize.png" />
+<em>Authorize</em></p>
+<p>First, paste the token (including the "Bearer" prefix) from the clipboard into the form
+and click the <code>Authorize</code> button in the dialog, click <code>Close</code> to dismiss the dialog.
+Now, all subsequent calls to the API will include a header that looks like:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;Authorization&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bearer eyJhbGciOi...&quot;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>Now, expand the "GET" REST operation on the <code>/stuff</code> endpoint and click <code>Try it out</code>.</p>
-<p><img alt="Try it out" class="framed-image" src="../../images/auth0-14.jpg" />
+<p><img alt="Try it out" class="framed-image" src="../../images/keycloak-try-it-out.png" />
 <em>Try it out</em></p>
 <p>Finally, click <code>Execute</code> to issue the request to the API.</p>
-<p><img alt="Execute" class="framed-image" src="../../images/auth0-15.jpg" />
+<p><img alt="Execute" class="framed-image" src="../../images/keycloak-execute.png" />
 <em>Execute</em></p>
 <p>You should see a response that includes a 200 status code and a response body that includes:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Successfully authenticated&quot;</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Successfully authenticated&quot;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>Congratulations! You are now using Armasec and Auth0 to authorize requests to your API.</p>
 <h2 id="tinker">Tinker</h2>
 <p>Now, there are a few things you can do to check out how things work. Try the following things:</p>
 <ul>
-<li>Remove the "read:stuff" permission from the test application and try another request</li>
+<li>Remove the "read:stuff" role from your user and try another request</li>
 <li>Try a request without being authorized in swagger</li>
 <li>Try making requests using <code>curl</code> or the <code>httpx</code> library in IPython</li>
 </ul>
