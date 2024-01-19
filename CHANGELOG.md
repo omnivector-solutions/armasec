@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## v1.2.1 - 2023-09-14
 
+- Updated dependencies in poetry.lock
+
+## v1.2.1 - 2023-09-14
+
 - Fixed CLI sub-package problem with installing via pip
 
 ## v1.2.0 - 2023-09-14
