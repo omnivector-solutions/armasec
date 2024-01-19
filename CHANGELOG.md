@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v1.3.0 - 2024-12-19
+
+- Added Python 3.12 support by updating to Pendulum 3.0
+- Updated dependencies in poetry.lock
+
 ## v1.2.1 - 2023-09-14
 
 - Fixed CLI sub-package problem with installing via pip
