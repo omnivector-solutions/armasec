@@ -19,7 +19,6 @@ class OidcProvider(AutoNameEnum):
     KEYCLOAK = auto()
 
 
-
 class Settings(BaseModel):
     oidc_domain: str
     oidc_audience: str
@@ -48,10 +47,8 @@ def init_settings(**settings_values):
 
 
 def attach_settings(func):
-
     @wraps(func)
     def wrapper(ctx: typer.Context, *args, **kwargs):
-
         try:
             logger.debug(f"Loading settings from {settings_path}")
             settings_values = json.loads(settings_path.read_text())
@@ -68,6 +65,7 @@ def attach_settings(func):
         logger.debug("Binding settings to CLI context")
         ctx.obj.settings = init_settings(**settings_values)
         return func(ctx, *args, **kwargs)
+
     return wrapper
 
 

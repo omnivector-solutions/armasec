@@ -53,6 +53,7 @@ nav:
   - Home: index.md
   - Getting Started: getting_started.md
   - Minimal Example: minimal_example.md
+  - Plugins: plugins.md
   - Tutorials:
     - Getting Started with Auth0: tutorials/getting_started_with_auth0.md
     - Getting Started with Keycloak: tutorials/getting_started_with_keycloak.md

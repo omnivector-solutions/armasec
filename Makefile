@@ -19,6 +19,7 @@ qa: test mypy lint
 
 format: install
 	poetry run ruff check --fix ${PACKAGE_NAME} tests armasec_cli
+	poetry run ruff format ${PACKAGE_NAME} tests armasec_cli
 
 example: install
 	poetry run uvicorn --host 0.0.0.0 --app-dir=examples basic:app --reload

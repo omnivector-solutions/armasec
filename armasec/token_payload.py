@@ -3,7 +3,7 @@ This module defines a pydantic schema for the payload of a jwt.
 """
 
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -13,16 +13,18 @@ class TokenPayload(BaseModel):
     A convenience class that can be used to access parts of a decoded jwt.
 
     Attributes:
-        sub:         The "sub" claim from a JWT.
-        permissions: The permissions claims extracted from a JWT.
-        expire:      The "exp" claim extracted from a JWT.
-        client_id:   The "azp" claim extracted from a JWT.
+        sub:            The "sub" claim from a JWT.
+        permissions:    The permissions claims extracted from a JWT.
+        expire:         The "exp" claim extracted from a JWT.
+        client_id:      The "azp" claim extracted from a JWT.
+        original_token: The original token value
     """
 
     sub: str
     permissions: List[str] = Field(list())
     expire: datetime = Field(None, alias="exp")
     client_id: str = Field(None, alias="azp")
+    original_token: Optional[str] = None
 
     class Config:
         extra = "allow"

@@ -69,7 +69,6 @@ class TokenManager:
 
         self.debug_logger("Attempting to get authorization scheme")
         (scheme, token) = get_authorization_scheme_param(auth_str)
-        self.debug_logger(f"Auth scheme is {scheme} and token is {token}")
         AuthenticationError.require_condition(
             scheme and token,
             f"Could not extract scheme ('{self.auth_scheme}') from token '{token}'",

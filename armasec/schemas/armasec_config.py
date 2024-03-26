@@ -35,16 +35,16 @@ class DomainConfig(BaseModel):
             """,
         ),
     )
-    match_keys: Dict[
-        str, Union[str, List[Any], Dict[Any, Any], Set[Any], bool, int, float]
-    ] = Field(
-        dict(),
-        description=snick.unwrap(
-            """
+    match_keys: Dict[str, Union[str, List[Any], Dict[Any, Any], Set[Any], bool, int, float]] = (
+        Field(
+            dict(),
+            description=snick.unwrap(
+                """
             Dictionary of key-value pair to match in the token when decoding it. It will
             raise 403 in case the input key-value pair cannot be found in the token.
             """
-        ),
+            ),
+        )
     )
     payload_claim_mapping: Optional[Dict[str, Any]] = Field(
         None,
@@ -53,5 +53,5 @@ class DomainConfig(BaseModel):
             Optional mappings that are applied to map claims to top-level properties of
             TokenPayload. See docs for `TokenDecoder` for more info.
             """
-        )
+        ),
     )
