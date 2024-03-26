@@ -1,6 +1,7 @@
 """
 Verify that the TokenSecurity functions as expected with FastAPI's dependeny injection on endpoints
 """
+
 from typing import List, Optional
 
 import asgi_lifespan
@@ -12,6 +13,9 @@ import starlette
 from plummet import frozen_time
 
 from armasec.token_security import PermissionMode, TokenSecurity
+from armasec.token_payload import TokenPayload
+from armasec.pluggable import plugin_manager, hookimpl
+from armasec.exceptions import ArmasecError
 
 
 @pytest.fixture
@@ -33,6 +37,7 @@ async def build_secure_endpoint(app, rs256_domain_config, mock_openid_server, rs
         path: str,
         scopes: Optional[List[str]] = None,
         permission_mode: PermissionMode = PermissionMode.ALL,
+        **kwargs,
     ):
         """
         Adds a route onto the app at the provide path. If scopes are provided, they are supplied
@@ -45,7 +50,10 @@ async def build_secure_endpoint(app, rs256_domain_config, mock_openid_server, rs
             dependencies=[
                 fastapi.Depends(
                     TokenSecurity(
-                        [rs256_domain_config], scopes=scopes, permission_mode=permission_mode
+                        [rs256_domain_config],
+                        scopes=scopes,
+                        permission_mode=permission_mode,
+                        **kwargs,
                     )
                 ),
             ],
@@ -169,3 +177,74 @@ async def test_injector_raises_error_on_unknown_permission_mode(
     )
     response = await client.get("/requires_read_all", headers=headers)
     assert response.status_code == starlette.status.HTTP_403_FORBIDDEN
+
+
+@frozen_time("2021-09-16 20:56:00")
+async def test_injector_validates_with_plugins(client, build_rs256_token):
+    """
+    This test verifies that a request is also validated against plugin implementations
+    that have been registered.
+    """
+
+    class DummyError(ArmasecError):
+        status_code = starlette.status.HTTP_418_IM_A_TEAPOT
+        detail = "Ka-Boom!"
+
+    class DummyImplementation:
+        @staticmethod
+        @hookimpl
+        def armasec_plugin_check():
+            DummyError.require_condition(allow, "Request is not allowed by dummy plugin.")
+
+    plugin_manager.register(DummyImplementation)
+    try:
+        exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
+        token = build_rs256_token(
+            claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
+        )
+        headers = {"Authorization": f"bearer {token}"}
+
+        allow = True
+        response = await client.get("/secure", headers=headers)
+        assert response.status_code == starlette.status.HTTP_200_OK
+
+        allow = False
+        response = await client.get("/secure", headers=headers)
+        assert response.status_code == starlette.status.HTTP_418_IM_A_TEAPOT
+        assert response.json()["detail"] == "Ka-Boom!"
+    finally:
+        plugin_manager.unregister(DummyImplementation)
+
+
+@frozen_time("2021-09-16 20:56:00")
+async def test_injector_skip_plugins_flag(client, build_rs256_token, build_secure_endpoint):
+    """
+    This test verifies that a request is not validated against plugin implementations
+    that have been registered if the `skip_plugins` flag is supplied.
+    """
+
+    class DummyError(ArmasecError):
+        status_code = starlette.status.HTTP_418_IM_A_TEAPOT
+        detail = "Ka-Boom!"
+
+    class DummyImplementation:
+        @staticmethod
+        @hookimpl
+        def armasec_plugin_check():
+            DummyError.require_condition(allow, "Request is not allowed by dummy plugin.")
+
+    build_secure_endpoint("/plugin_skipper", skip_plugins=True)
+
+    plugin_manager.register(DummyImplementation)
+    try:
+        exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
+        token = build_rs256_token(
+            claim_overrides=dict(sub="me", permissions=["read:all"], exp=exp.timestamp()),
+        )
+        headers = {"Authorization": f"bearer {token}"}
+
+        allow = False
+        response = await client.get("/plugin_skipper", headers=headers)
+        assert response.status_code == starlette.status.HTTP_200_OK
+    finally:
+        plugin_manager.unregister(DummyImplementation)

@@ -11,6 +11,7 @@ class ArmasecError(buzz.Buzz):
     """
 
     status_code: int = starlette.status.HTTP_400_BAD_REQUEST
+    detail: str = "Bad request"
 
 
 class AuthenticationError(ArmasecError):
@@ -22,6 +23,7 @@ class AuthenticationError(ArmasecError):
     """
 
     status_code: int = starlette.status.HTTP_401_UNAUTHORIZED
+    detail: str = "Not authenticated"
 
 
 class AuthorizationError(ArmasecError):
@@ -33,6 +35,7 @@ class AuthorizationError(ArmasecError):
     """
 
     status_code: int = starlette.status.HTTP_403_FORBIDDEN
+    detail: str = "Not authorized"
 
 
 class PayloadMappingError(ArmasecError):
@@ -44,3 +47,4 @@ class PayloadMappingError(ArmasecError):
     """
 
     status_code: int = starlette.status.HTTP_500_INTERNAL_SERVER_ERROR
+    detail: str = "Server error"

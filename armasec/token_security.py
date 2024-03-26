@@ -14,6 +14,7 @@ from starlette.requests import Request
 
 from armasec.exceptions import AuthenticationError, AuthorizationError
 from armasec.openid_config_loader import OpenidConfigLoader
+from armasec.pluggable import plugin_manager
 from armasec.schemas import DomainConfig
 from armasec.token_decoder import TokenDecoder
 from armasec.token_manager import TokenManager
@@ -67,6 +68,7 @@ class TokenSecurity(APIKeyBase):
         permission_mode: PermissionMode = PermissionMode.ALL,
         debug_logger: Optional[Callable[..., None]] = None,
         debug_exceptions: bool = False,
+        skip_plugins: bool = False,
     ):
         """
         Initializes the TokenSecurity instance.
@@ -79,6 +81,7 @@ class TokenSecurity(APIKeyBase):
                               passed as a logger method like `logger.debug`
             debug_exceptions: If True, raise original exceptions. Should only be used in a testing
                               or debugging context.
+            skip_plugins:     If True, do not evaluate plugin validators.
         """
         self.domain_configs = domain_configs
         self.scopes = scopes
@@ -86,6 +89,7 @@ class TokenSecurity(APIKeyBase):
 
         self.debug_logger = debug_logger if debug_logger else noop
         self.debug_exceptions = debug_exceptions
+        self.skip_plugins = skip_plugins
 
         # Settings needed for FastAPI's APIKeyBase
         self.model: APIKey = APIKey(
@@ -122,58 +126,76 @@ class TokenSecurity(APIKeyBase):
             else:
                 raise HTTPException(
                     status_code=getattr(err, "status_code", status.HTTP_401_UNAUTHORIZED),
-                    detail="Not authenticated",
+                    detail=getattr(err, "detail", "Not authenticated"),
                     headers={"WWW-Authenticate": "Bearer"},
                 )
 
-        if not self.scopes:
-            return token_payload
+        if self.scopes:
+            token_permissions = set(token_payload.permissions)
+            my_permissions = set(self.scopes)
 
-        token_permissions = set(token_payload.permissions)
-        my_permissions = set(self.scopes)
-
-        self.debug_logger(
-            unwrap(
-                f"""
-                Checking my permissions {my_permissions} against token_permissions
-                {token_permissions} using PermissionMode {self.permission_mode}
-                """
+            self.debug_logger(
+                unwrap(
+                    f"""
+                    Checking my permissions {my_permissions} against token_permissions
+                    {token_permissions} using PermissionMode {self.permission_mode}
+                    """
+                )
             )
-        )
-        try:
-            if self.permission_mode == PermissionMode.ALL:
-                message = unwrap(
-                    f"""
-                    Token permissions {token_permissions} missing some required permissions
-                    {my_permissions - token_permissions}
-                    """
-                )
-                self.debug_logger(message)
-                AuthorizationError.require_condition(
-                    my_permissions - token_permissions == set(),
-                    message,
-                )
-            elif self.permission_mode == PermissionMode.SOME:
-                message = unwrap(
-                    f"""
-                    Token permissions {token_permissions} missing at least one required permissions
-                    {my_permissions}
-                    """
-                )
-                self.debug_logger(message)
-                AuthorizationError.require_condition(token_permissions & my_permissions, message)
-            else:
-                raise AuthorizationError(f"Unknown permission_mode: {self.permission_mode}")
+            try:
+                if self.permission_mode == PermissionMode.ALL:
+                    message = unwrap(
+                        f"""
+                        Token permissions {token_permissions} missing some required permissions
+                        {my_permissions - token_permissions}
+                        """
+                    )
+                    AuthorizationError.require_condition(
+                        my_permissions - token_permissions == set(),
+                        message,
+                    )
+                elif self.permission_mode == PermissionMode.SOME:
+                    message = unwrap(
+                        f"""
+                        Token permissions {token_permissions} missing at least
+                        one required permissions
+                        {my_permissions}
+                        """
+                    )
+                    AuthorizationError.require_condition(
+                        token_permissions & my_permissions,
+                        message,
+                    )
+                else:
+                    raise AuthorizationError(f"Unknown permission_mode: {self.permission_mode}")
 
-        except Exception as err:
-            if self.debug_exceptions:
-                raise err
-            else:
-                raise HTTPException(
-                    status_code=getattr(err, "status_code", status.HTTP_403_FORBIDDEN),
-                    detail="Not authorized",
-                    headers={"WWW-Authenticate": "Bearer"},
+            except Exception as err:
+                if self.debug_exceptions:
+                    raise err
+                else:
+                    raise HTTPException(
+                        status_code=getattr(err, "status_code", status.HTTP_403_FORBIDDEN),
+                        detail=getattr(err, "detail", "Not authorized"),
+                        headers={"WWW-Authenticate": "Bearer"},
+                    )
+
+        if not self.skip_plugins:
+            self.debug_logger("Applying plugin checks")
+            try:
+                plugin_manager.hook.armasec_plugin_check(
+                    request=request,
+                    token_payload=token_payload,
+                    debug_logger=self.debug_logger,
                 )
+            except Exception as err:
+                if self.debug_exceptions:
+                    raise err
+                else:
+                    raise HTTPException(
+                        status_code=getattr(err, "status_code", status.HTTP_403_FORBIDDEN),
+                        detail=getattr(err, "detail", "Not authorized"),
+                        headers={"WWW-Authenticate": "Bearer"},
+                    )
 
         return token_payload
 

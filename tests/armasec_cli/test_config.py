@@ -1,4 +1,3 @@
-
 import json
 from pathlib import Path
 
@@ -14,7 +13,7 @@ def test_init_settings__success():
     settings = init_settings(
         oidc_domain="test.domain",
         oidc_audience="https://test.domain/api",
-        oidc_client_id="test-client-id"
+        oidc_client_id="test-client-id",
     )
     assert settings.oidc_domain == "test.domain"
     assert settings.oidc_audience == "https://test.domain/api"
@@ -33,7 +32,7 @@ def test_dump_settings__success(tmp_path, mocker):
             init_settings(
                 oidc_domain="test.domain",
                 oidc_audience="https://test.domain/api",
-                oidc_client_id="test-client-id"
+                oidc_client_id="test-client-id",
             )
         )
         settings_dict = json.loads(dummy_settings_path.read_text())
@@ -50,7 +49,7 @@ def test_attach_settings__success(tmp_path, mocker, mock_context):
             init_settings(
                 oidc_domain="test.domain",
                 oidc_audience="https://test.domain/api",
-                oidc_client_id="test-client-id"
+                oidc_client_id="test-client-id",
             )
         )
 

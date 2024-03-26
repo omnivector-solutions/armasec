@@ -1,6 +1,7 @@
 """
 Provides some utility functions.
 """
+
 from traceback import format_tb
 from typing import Callable
 

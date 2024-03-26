@@ -193,8 +193,10 @@ click the "Assign" button to assign this role to your new user.
 ![Select Role](../images/keycloak-select-role.png){: .framed-image}
 _Select Role_
 
-Now your client should be all set up and ready to go! Log out of the admin portal before
-you go on so that you are ready to log in with your new user later on in the tutorial.
+Now your client should be all set up and ready to go! **Make sure you log out of the
+admin portal before you go on** so that you are ready to log in with your new user later
+on in the tutorial. Otherwise, you will automatically be logged in as the admin user,
+and this user does not have any roles mapped to it!
 
 
 ## Start up the example app
@@ -232,7 +234,7 @@ Copy the `example.py` app to a local source file called "example.py".
 Start it up with uvicorn:
 
 ```bash
-python -m uvicorn --host 0.0.0.0 --port 5000 example:app
+python -m uvicorn --host 0.0.0.0 --port 8000 example:app
 ```
 
 Once it is up and running, hit `<ctrl-z>` and type the command `bg` to put the uvicorn

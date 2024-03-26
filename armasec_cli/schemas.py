@@ -13,7 +13,7 @@ class TokenSet(BaseModel):
 
 class IdentityData(BaseModel):
     client_id: str
-    email: Optional[str] =  None
+    email: Optional[str] = None
 
 
 class Persona(BaseModel):

@@ -57,6 +57,7 @@ class Armasec:
         self,
         *scopes: str,
         permission_mode: PermissionMode = PermissionMode.ALL,
+        skip_plugins: bool = False,
     ) -> TokenSecurity:
         """
         Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
@@ -67,6 +68,7 @@ class Armasec:
             scopes: A list of scopes needed to access the endpoint.
             permissions_mode: If "ALL", all scopes listed are required for access. If "SOME", only
                 one of the scopes listed are required for access.
+            skip_plugins: If True, do not evaluate plugin validators.
         """
         return TokenSecurity(
             domain_configs=self.domain_configs,
@@ -74,9 +76,14 @@ class Armasec:
             permission_mode=permission_mode,
             debug_logger=self.debug_logger,
             debug_exceptions=self.debug_exceptions,
+            skip_plugins=skip_plugins,
         )
 
-    def lockdown_all(self, *scopes: str) -> TokenSecurity:
+    def lockdown_all(
+        self,
+        *scopes: str,
+        skip_plugins: bool = False,
+    ) -> TokenSecurity:
         """
         Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
         the number of TokenSecurity instances initialized. Requires all the scopes in the
@@ -85,10 +92,19 @@ class Armasec:
 
         Args:
             scopes: A list of the scopes needed to access the endpoint. All are required.
+            skip_plugins: If True, do not evaluate plugin validators.
         """
-        return self.lockdown(*scopes, permission_mode=PermissionMode.ALL)
+        return self.lockdown(
+            *scopes,
+            permission_mode=PermissionMode.ALL,
+            skip_plugins=skip_plugins,
+        )
 
-    def lockdown_some(self, *scopes: str) -> TokenSecurity:
+    def lockdown_some(
+        self,
+        *scopes: str,
+        skip_plugins: bool = False,
+    ) -> TokenSecurity:
         """
         Initialize an instance of TokenSecurity to lockdown a route. Uses memoization to minimize
         the number of TokenSecurity instances initialized. Requires at least one permission in the
@@ -96,5 +112,10 @@ class Armasec:
 
         Args:
             scopes: A list of the scopes needed to access the endpoint. Only one is required.
+            skip_plugins: If True, do not evaluate plugin validators.
         """
-        return self.lockdown(*scopes, permission_mode=PermissionMode.SOME)
+        return self.lockdown(
+            *scopes,
+            permission_mode=PermissionMode.SOME,
+            skip_plugins=skip_plugins,
+        )

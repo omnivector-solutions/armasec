@@ -126,6 +126,7 @@ def test_clear_token_cache__does_not_fail_if_no_tokens_are_in_cache():
 def test_init_cache__success(tmp_path, mocker):
     new_cache_dir = tmp_path / "cache"
     with mocker.patch("armasec_cli.cache.cache_dir", new=new_cache_dir):
+
         @init_cache
         def _helper():
             assert new_cache_dir.exists()

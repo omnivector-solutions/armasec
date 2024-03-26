@@ -12,3 +12,5 @@
 ::: armasec.schemas.armasec_config
 ::: armasec.schemas.jwks
 ::: armasec.schemas.openid_config
+::: armasec.pluggable
+::: armasec.pluggable.hookspecs

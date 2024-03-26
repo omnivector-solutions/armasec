@@ -11,7 +11,6 @@ from armasec_cli.config import cache_dir
 
 
 def init_cache(func):
-
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -31,6 +30,7 @@ def init_cache(func):
                 log_message="Non-writable cache dir",
             )
         return func(*args, **kwargs)
+
     return wrapper
 
 

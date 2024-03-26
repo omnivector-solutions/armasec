@@ -53,7 +53,6 @@ def main(
     ctx.obj = CliContext()
 
 
-
 @app.command()
 @handle_abort
 @init_cache
@@ -66,6 +65,7 @@ def login(ctx: typer.Context):
         f"User was logged in with email '{persona.identity_data.email}'",
         subject="Logged in!",
     )
+
 
 @app.command()
 @handle_abort

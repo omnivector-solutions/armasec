@@ -1,6 +1,7 @@
 """
 Test the Armasec convenience class.
 """
+
 import asgi_lifespan
 import fastapi
 import httpx
