@@ -25,9 +25,7 @@ def test_validate_token_and_extract_identity__success(make_token):
         expires="2022-02-16 22:30:00",
     )
     with plummet.frozen_time("2022-02-16 21:30:00"):
-        identity_data = validate_token_and_extract_identity(
-            TokenSet(access_token=access_token)
-        )
+        identity_data = validate_token_and_extract_identity(TokenSet(access_token=access_token))
     assert identity_data.client_id == "dummy-client"
     assert identity_data.email == "good@email.com"
 
@@ -57,7 +55,7 @@ def test_validate_token_and_extract_identity__raises_abort_on_unknown_error(mock
 
 
 def test_validate_token_and_extract_identity__raises_abort_if_token_is_missing_identity_data(
-    make_token
+    make_token,
 ):
     access_token = make_token(expires="2022-02-16 22:30:00")
     with plummet.frozen_time("2022-02-16 21:30:00"):
@@ -142,11 +140,10 @@ def test_init_persona__refreshes_access_token_if_it_is_expired(make_token, respx
         ),
     )
 
-
     settings = init_settings(
         oidc_domain="test.domain",
         oidc_audience="https://test.domain/api",
-        oidc_client_id="test-client-id"
+        oidc_client_id="test-client-id",
     )
     client = build_client(settings)
     cli_context = CliContext(
@@ -189,7 +186,7 @@ def test_refresh_access_token__success(make_token, respx_mock, mock_context):
     settings = init_settings(
         oidc_domain="test.domain",
         oidc_audience="https://test.domain/api",
-        oidc_client_id="test-client-id"
+        oidc_client_id="test-client-id",
     )
     client = build_client(settings)
     cli_context = CliContext(
@@ -217,7 +214,7 @@ def test_refresh_access_token__raises_abort_on_non_200_response(respx_mock):
     settings = init_settings(
         oidc_domain="test.domain",
         oidc_audience="https://test.domain/api",
-        oidc_client_id="test-client-id"
+        oidc_client_id="test-client-id",
     )
     client = build_client(settings)
     cli_context = CliContext(
@@ -255,7 +252,7 @@ def test_fetch_auth_tokens__success(respx_mock):
     settings = init_settings(
         oidc_domain="test.domain",
         oidc_audience="https://test.domain/api",
-        oidc_client_id="test-client-id"
+        oidc_client_id="test-client-id",
     )
     client = build_client(settings)
     cli_context = CliContext(
@@ -292,7 +289,7 @@ def test_fetch_auth_tokens__raises_Abort_when_it_times_out_waiting_for_the_user(
     settings = init_settings(
         oidc_domain="test.domain",
         oidc_audience="https://test.domain/api",
-        oidc_client_id="test-client-id"
+        oidc_client_id="test-client-id",
     )
     client = build_client(settings)
     cli_context = CliContext(

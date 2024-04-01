@@ -23,11 +23,10 @@ def build_client(settings: Settings):
         headers={"content-type": "application/x-www-form-urlencoded"},
     )
 
-def attach_client(func):
 
+def attach_client(func):
     @wraps(func)
     def wrapper(ctx: typer.Context, *args, **kwargs):
-
         if ctx.obj.settings is None:
             raise Abort(
                 """
@@ -43,6 +42,7 @@ def attach_client(func):
         logger.debug("Binding client to CLI context")
         ctx.obj.client = build_client(ctx.obj.settings)
         return func(ctx, *args, **kwargs)
+
     return wrapper
 
 

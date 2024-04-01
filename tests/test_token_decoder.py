@@ -1,6 +1,7 @@
 """
 These tests verify the functionality of the TokenDecoder.
 """
+
 from unittest import mock
 
 import pytest
@@ -68,6 +69,7 @@ def test_decode__success(rs256_jwk, build_rs256_token):
     token_payload = decoder.decode(token)
     assert token_payload.sub == "test_decode-test-sub"
     assert token_payload.client_id == "some-fake-id"
+    assert token_payload.original_token == token
 
 
 def test_decode__fails_when_jwt_decode_throws_an_error(rs256_jwk):
@@ -122,7 +124,7 @@ def test_decode__missing_payload_claim_mapping(rs256_jwk, build_rs256_token):
     )
     with pytest.raises(
         PayloadMappingError,
-            match="Failed to map decoded token.*No matching values",
+        match="Failed to map decoded token.*No matching values",
     ):
         decoder.decode(token)
 

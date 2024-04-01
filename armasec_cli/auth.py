@@ -20,7 +20,6 @@ from armasec_cli.time_loop import TimeLoop
 
 
 def extract_persona(token_set: TokenSet | None = None):
-
     if token_set is None:
         token_set = load_tokens_from_cache()
 
@@ -71,7 +70,7 @@ def validate_token_and_extract_identity(token_set: TokenSet) -> IdentityData:
 
         Please try logging in again.
         """,
-        ignore_exc_class=ExpiredSignatureError,     # Will be handled in calling context
+        ignore_exc_class=ExpiredSignatureError,  # Will be handled in calling context
         raise_kwargs=dict(
             subject="Invalid access token",
             log_message="Unknown error while validating access access token",

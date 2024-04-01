@@ -1,6 +1,7 @@
 """
 This module provides an abstract base class for algorithmic token decoders
 """
+
 from __future__ import annotations
 
 from functools import partial
@@ -48,7 +49,7 @@ class TokenDecoder:
 
                                      ```
                                      {
-                                         "top_level+attribute": "decoded.token.JMESPath"
+                                         "top_level_attribute": "decoded.token.JMESPath"
                                      }
                                      ```
                                      The values _must_ be a valid JMESPath.
@@ -130,7 +131,7 @@ class TokenDecoder:
             "Failed to map decoded token to payload",
             do_except=partial(log_error, self.debug_logger),
         ):
-            for (payload_key, token_jmespath) in self.payload_claim_mapping.items():
+            for payload_key, token_jmespath in self.payload_claim_mapping.items():
                 mapped_value = jmespath.search(token_jmespath, payload_dict)
                 buzz.require_condition(
                     mapped_value is not None,
@@ -141,6 +142,9 @@ class TokenDecoder:
             self.debug_logger(f"Mapped payload dictionary is {payload_dict}")
 
             self.debug_logger("Attempting to convert to TokenPayload")
-            token_payload = TokenPayload(**payload_dict)
+            token_payload = TokenPayload(
+                **payload_dict,
+                original_token=token,
+            )
             self.debug_logger(f"Built token_payload as {token_payload}")
             return token_payload

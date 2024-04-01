@@ -1,6 +1,7 @@
 """
 Test the openid_config_loader module.
 """
+
 from unittest import mock
 
 import httpx

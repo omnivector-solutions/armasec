@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+- Added plugin support
+- Included original token in TokenPayload object
+- Added default messages to ArmasecError classes
+- Formatted source files with ruff
+- Added examples for Keycloak and Auth0
+
 ## v1.3.0 - 2024-12-19
 
 - Added Python 3.12 support by updating to Pendulum 3.0
