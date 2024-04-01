@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../getting_started/">
+        <link rel="prev" href="../minimal_example/">
       
       
-        <link rel="next" href="../plugins/">
+        <link rel="next" href="../tutorials/getting_started_with_auth0/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Minimal Example - armasec documentation</title>
+        <title>Plugins - armasec documentation</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#minimal-example" class="md-skip">
+        <a href="#writing-plugins" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Minimal Example
+              Plugins
             
           </span>
         </div>
@@ -290,6 +290,26 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../minimal_example/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Minimal Example
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -302,28 +322,18 @@
         
       
       
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
   
   <span class="md-ellipsis">
-    Minimal Example
+    Plugins
   </span>
   
 
-      </a>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../plugins/" class="md-nav__link">
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -332,6 +342,62 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Example
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -464,6 +530,50 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Example
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -480,11 +590,18 @@
   
 
 
-<h1 id="minimal-example">Minimal Example</h1>
-<p>The following is a minimal example of how to configure your API to enforce security on endpoints
-using tokens issued by Auth0.</p>
-<p>First, create a file named <code>example.py</code> with the following contents:</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">example.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<h1 id="writing-plugins">Writing Plugins</h1>
+<p>Armasec provides a plugin system for adding additional token validators. These
+validators are applied at auth time on every route that applies auth checks.</p>
+<p>In order to include the custom validators, they need only be installed along-side
+Armasec. The Armasec package will automatically detect the installed plugin and include
+it in the auth checks.</p>
+<h2 id="implementation">Implementation</h2>
+<p>Armasec uses <a href="https://pluggy.readthedocs.io/en/stable/">Pluggy</a> to provide plugins. To
+build a custom validator, a method named <code>armasec_plugin_check</code> needs to be implemented
+and deocorated with the <code>hookimpl</code> decorator that you import from <code>armasec.pluggable</code>.</p>
+<p>Here is an example implementation:</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">plugin/main.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
@@ -498,36 +615,80 @@ using tokens issued by Auth0.</p>
 <span class="normal"><a href="#__codelineno-0-12">12</a></span>
 <span class="normal"><a href="#__codelineno-0-13">13</a></span>
 <span class="normal"><a href="#__codelineno-0-14">14</a></span>
-<span class="normal"><a href="#__codelineno-0-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">os</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="kn">from</span> <span class="nn">armasec</span> <span class="kn">import</span> <span class="n">Armasec</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Depends</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">armasec</span> <span class="kn">import</span> <span class="n">TokenPayload</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">armasec.exceptions</span> <span class="kn">import</span> <span class="n">ArmasecError</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="kn">from</span> <span class="nn">armasec.pluggable</span> <span class="kn">import</span> <span class="n">hookimpl</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="n">subscribers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="n">armasec</span> <span class="o">=</span> <span class="n">Armasec</span><span class="p">(</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a>    <span class="n">domain</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ARMASEC_DOMAIN&quot;</span><span class="p">),</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>    <span class="n">audience</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ARMASEC_AUDIENCE&quot;</span><span class="p">),</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="p">)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/stuff&quot;</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">armasec</span><span class="o">.</span><span class="n">lockdown</span><span class="p">(</span><span class="s2">&quot;read:stuff&quot;</span><span class="p">))])</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">check_access</span><span class="p">():</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Successfully authenticated!&quot;</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">class</span> <span class="nc">PluginError</span><span class="p">(</span><span class="n">ArmasecError</span><span class="p">):</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>    <span class="n">status_code</span> <span class="o">=</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_402_PAYMENT_REQUIRED</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a>    <span class="n">detail</span> <span class="o">=</span> <span class="s2">&quot;User is not subscribed.&quot;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="nd">@hookimpl</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">def</span> <span class="nf">armasec_plugin_check</span><span class="p">(</span><span class="n">token_payload</span><span class="p">:</span> <span class="n">TokenPayload</span><span class="p">):</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Applying check from example plugin&quot;</span><span class="p">)</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="n">PluginError</span><span class="o">.</span><span class="n">require_condition</span><span class="p">(</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>        <span class="nb">getattr</span><span class="p">(</span><span class="n">token_payload</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">subscribers</span><span class="p">,</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>        <span class="s2">&quot;User is not subscribed!&quot;</span><span class="p">,</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
-<p>In this example, you would have set two environment variables for your project settings:</p>
-<ul>
-<li><code>ARMASEC_DOMAIN</code></li>
-<li>This would be your Auth0 domain</li>
-<li>Example: <code>my-auth.us.auth0.com</code></li>
-<li><code>ARMASEC_AUDIENCE</code></li>
-<li>You get this from your Auth0 API App</li>
-<li>Example: <code>https://my-api.my-domain.com</code></li>
-</ul>
-<p>When you run your app, access to the <code>/stuff</code> endpoint would be restricted to authenticated users
-whose access tokens carried the permission scope "read:stuff".</p>
-<p>For a step-by-step walk-through of how to set up Auth0 for the minimal example, see the
-<a href="../tutorials/getting_started_with_auth0">"Getting Started with Auth0"</a> page.</p>
-<p>The above code can be found in <a href="https://github.com/omnivector-solutions/armasec/blob/main/examples/basic.py&gt;">examples/basic.py</a>.</p>
+<p>In this example, the email provided by the auth token's payload is checked against an
+in-memory store of active subscribers. If it is not found, an exception is raised with
+a <code>status_code</code> of 402. This will cause any endpoint protected by <code>Armasec</code> to return
+a <code>402</code> status code indicating that payment is required.</p>
+<p>2 things are critical in this implementation:</p>
+<ol>
+<li>The <code>hookimpl</code> decorator wraps the function that applies the check logic</li>
+<li>If the check fails, a derived class of <code>ArmasecError</code> is raised to indicate that
+     the check Failed</li>
+</ol>
+<p>Beyond these two things, the implementation is left to the imagination and creativity of
+the user.</p>
+<h2 id="setup">Setup</h2>
+<p>In order for the plugin to be recognized by Armasec, it must be registered under the
+<code>entry_points</code> group "armasec". To read more on <code>entry_points</code> and their significance in
+python packaging, please read the
+<a href="https://packaging.python.org/en/latest/specifications/entry-points/">Entry points specification</a>
+documentation.</p>
+<p>Entrypoints are specified differently according to the packaging tool your project uses.</p>
+<p>Suppose that your project implements a plugin named <code>my-plugin</code> and the source for your
+<code>hookimpl</code> functions is in the module <code>plugin/main</code>.</p>
+<p>For a project that uses <code>setuptools</code>, the entrypoint for the plugin should be indicated
+like this:</p>
+<div class="language-python highlight"><span class="filename">setup.py</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">setup</span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="o">...</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;armasec&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my-plugin=plugin.main&quot;</span><span class="p">]},</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="o">...</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>For a project that uses <code>poetry</code>, you need to include an entry in your <code>pyproect.toml</code>
+for the plugin like so:</p>
+<div class="language-toml highlight"><span class="filename">pyproject.toml</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">[tool.poetry.plugins.</span><span class="s1">&#39;armasec&#39;</span><span class="k">]</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">my-plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;plugin.main&#39;</span>
+</span></code></pre></div>
+<h2 id="usage">Usage</h2>
+<p>Once your plugin is installed in the environment where you need to extend Armasec's
+functionality, its <code>hookimpl</code> decorated <code>armasec_plugin_check()</code> method will
+automatically be called by Armasec for every secured route.</p>
+<p>Note that you may skip plugins in any routes that include a skip parameter to Armasec's
+<code>lockdown()</code> method. For example, if you have a route that should be exempted from
+processing any plugin validations, you should use the dependency injection like so:</p>
+<div class="language-python highlight"><span class="filename">routers.py</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="s2">&quot;/secured&quot;</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">armasec</span><span class="o">.</span><span class="n">lockdown</span><span class="p">(</span><span class="s2">&quot;my:permission&quot;</span><span class="p">,</span> <span class="n">skip_plugins</span><span class="o">=</span><span class="kc">True</span><span class="p">))],</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">secured</span><span class="p">():</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">)</span>
+</span></code></pre></div>
+<p>For this route, only the core Armasec validations will be applied and all plugins will
+be skipped.</p>
+<h2 id="complete-example">Complete Example</h2>
+<p>For a complete example of an implementation of an Armasec plugin, see the
+<a href="https://github.com/omnivector-solutions/armasec-subscriptions">armasec-subscriptions</a>
+plugin.</p>
 
 
 
