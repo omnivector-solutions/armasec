@@ -1,6 +1,7 @@
 """
 Hook specification module for armasec plugins.
 """
+
 from typing import Callable
 
 import pluggy

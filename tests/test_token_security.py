@@ -13,7 +13,6 @@ import starlette
 from plummet import frozen_time
 
 from armasec.token_security import PermissionMode, TokenSecurity
-from armasec.token_payload import TokenPayload
 from armasec.pluggable import plugin_manager, hookimpl
 from armasec.exceptions import ArmasecError
 
