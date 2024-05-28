@@ -57,6 +57,8 @@ class OpenidConfigLoader:
         Helper method to load data from an openid connect resource.
         """
         self.debug_logger(f"Attempting to fetch from openid resource '{url}'")
+        print("URL: ", url)
+        print("TYPE URL: ", type(url))
         with AuthenticationError.handle_errors(
             message=f"Call to url {url} failed",
             do_except=partial(log_error, self.debug_logger),
@@ -95,7 +97,7 @@ class OpenidConfigLoader:
         """
         if not self._jwks:
             self.debug_logger("Fetching jwks")
-            data = self._load_openid_resource(self.config.jwks_uri)
+            data = self._load_openid_resource(str(self.config.jwks_uri))
             with AuthenticationError.handle_errors(
                 message="jwks data was invalid",
                 do_except=partial(log_error, self.debug_logger),

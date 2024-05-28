@@ -8,7 +8,7 @@ from auto_name_enum import AutoNameEnum, auto
 from fastapi import HTTPException, status
 from fastapi.openapi.models import APIKey, APIKeyIn
 from fastapi.security.api_key import APIKeyBase
-from pydantic import BaseModel
+from pydantic import ConfigDict, BaseModel
 from snick import unwrap
 from starlette.requests import Request
 
@@ -33,9 +33,7 @@ class ManagerConfig(BaseModel):
 
     manager: TokenManager
     domain_config: DomainConfig
-
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class PermissionMode(AutoNameEnum):

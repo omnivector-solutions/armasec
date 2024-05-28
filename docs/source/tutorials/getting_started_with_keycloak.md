@@ -172,7 +172,7 @@ _Set Password_
 
 In the form that opens, use "local" for the password (and confirmation). Make sure to
 turn off the "Temporary" flag so that the user will not have to change their password
-in this tutoria. Then, click the "Save" button to finish setting up the user
+in this tutorial. Then, click the "Save" button to finish setting up the user
 credentials.
 
 ![Save Password](../images/keycloak-save-password.png){: .framed-image}

@@ -2,6 +2,7 @@
 This module provides a pytest plugin for testing.
 """
 
+import json
 from collections import namedtuple
 from contextlib import _GeneratorContextManager, contextmanager
 from datetime import datetime
@@ -258,14 +259,14 @@ def build_mock_openid_server(
             )
             openid_config_route.return_value = httpx.Response(
                 starlette.status.HTTP_200_OK,
-                json=openid_config.dict(),
+                json=json.loads(openid_config.model_dump_json()),
             )
 
             jwks = JWKs(keys=[jwk])
             jwks_route = respx.get(jwks_uri)
             jwks_route.return_value = httpx.Response(
                 starlette.status.HTTP_200_OK,
-                json=jwks.dict(),
+                json=json.loads(jwks.model_dump_json()),
             )
             yield MockOpenidRoutes(openid_config_route, jwks_route)
 

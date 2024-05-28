@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v2.0.0 - 2024-05-28
+
+- Upgraded pydantic base version to 2.7.
+- Upgraded fastapi base version to 0.111.
+
+
 ## v1.4.0 - 2024-04-01
 
 - Added plugin support

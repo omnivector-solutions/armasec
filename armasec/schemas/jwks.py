@@ -4,7 +4,7 @@ This module provides pydantic schemas for JSON Web Keys.
 
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import ConfigDict, BaseModel
 
 
 class JWK(BaseModel):
@@ -29,12 +29,10 @@ class JWK(BaseModel):
     kty: str
     n: str
 
-    use: Optional[str]
-    x5c: Optional[List[str]]
-    x5t: Optional[str]
-
-    class Config:
-        extra = "allow"
+    use: Optional[str] = None
+    x5c: Optional[List[str]] = None
+    x5t: Optional[str] = None
+    model_config = ConfigDict(extra="allow")
 
 
 class JWKs(BaseModel):
