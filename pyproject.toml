@@ -55,7 +55,7 @@ mypy = "^1.5"
 pytest-sugar = "^0.9.4"
 python-dotenv = "^0.19"
 pytest-cov = "^4"
-uvicorn = "^0.15"
+uvicorn = "^0.30"
 loguru = "^0.5.3"
 mkdocs-material = "^9.1.21"
 mkdocstrings = {extras = ["python"], version = "^0.22.0"}
