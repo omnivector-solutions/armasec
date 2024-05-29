@@ -95,7 +95,7 @@ class OpenidConfigLoader:
         """
         if not self._jwks:
             self.debug_logger("Fetching jwks")
-            data = self._load_openid_resource(self.config.jwks_uri)
+            data = self._load_openid_resource(str(self.config.jwks_uri))
             with AuthenticationError.handle_errors(
                 message="jwks data was invalid",
                 do_except=partial(log_error, self.debug_logger),

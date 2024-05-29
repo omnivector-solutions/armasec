@@ -5,7 +5,7 @@ This module defines a pydantic schema for the payload of a jwt.
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import ConfigDict, BaseModel, Field, AliasChoices
 
 
 class TokenPayload(BaseModel):
@@ -22,12 +22,10 @@ class TokenPayload(BaseModel):
 
     sub: str
     permissions: List[str] = Field(list())
-    expire: datetime = Field(None, alias="exp")
-    client_id: str = Field(None, alias="azp")
+    expire: datetime = Field(None, validation_alias=AliasChoices("exp", "expire"))
+    client_id: str = Field(None, validation_alias=AliasChoices("azp", "client_id"))
     original_token: Optional[str] = None
-
-    class Config:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
     def to_dict(self):
         """

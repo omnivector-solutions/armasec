@@ -351,7 +351,8 @@ def test_make_request__uses_request_model_instance_for_request_body_if_passed(
     assert dummy_response_instance.foo == 1
     assert dummy_response_instance.bar == "one"
 
-    assert dummy_route.calls.last.request.content == json.dumps(dict(foo=1, bar="one")).encode(
-        "utf-8"
-    )
+    assert dummy_route.calls.last.request.content == json.dumps(
+        dict(foo=1, bar="one"),
+        separators=(",", ":"),
+    ).encode("utf-8")
     assert dummy_route.calls.last.request.headers["Content-Type"] == "application/json"

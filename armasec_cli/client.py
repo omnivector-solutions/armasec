@@ -96,7 +96,7 @@ def _deserialize_request_model(
             ),
         ),
     ):
-        request_kwargs["content"] = request_model.json()
+        request_kwargs["content"] = request_model.model_dump_json()
         request_kwargs["headers"] = {"Content-Type": "application/json"}
 
 

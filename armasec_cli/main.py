@@ -122,7 +122,7 @@ def show_config(ctx: typer.Context):
     """
     Show the current config.
     """
-    render_json(ctx.obj.settings.dict())
+    render_json(ctx.obj.settings.model_dump())
 
 
 @app.command()

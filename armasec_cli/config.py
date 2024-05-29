@@ -71,7 +71,7 @@ def attach_settings(func):
 
 def dump_settings(settings: Settings):
     logger.debug(f"Saving settings to {settings_path}")
-    settings_values = json.dumps(settings.dict())
+    settings_values = json.dumps(settings.model_dump())
     settings_path.write_text(settings_values)
 
 

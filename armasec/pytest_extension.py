@@ -258,14 +258,14 @@ def build_mock_openid_server(
             )
             openid_config_route.return_value = httpx.Response(
                 starlette.status.HTTP_200_OK,
-                json=openid_config.dict(),
+                json=openid_config.model_dump(mode="json"),
             )
 
             jwks = JWKs(keys=[jwk])
             jwks_route = respx.get(jwks_uri)
             jwks_route.return_value = httpx.Response(
                 starlette.status.HTTP_200_OK,
-                json=jwks.dict(),
+                json=jwks.model_dump(mode="json"),
             )
             yield MockOpenidRoutes(openid_config_route, jwks_route)
 

@@ -28,6 +28,6 @@ class DeviceCodeData(BaseModel):
 
 
 class CliContext(BaseModel, arbitrary_types_allowed=True):
-    persona: Optional[Persona]
-    client: Optional[httpx.Client]
-    settings: Optional[Settings]
+    persona: Optional[Persona] = None
+    client: Optional[httpx.Client] = None
+    settings: Optional[Settings] = None

@@ -98,7 +98,7 @@ class TokenDecoder:
             self.debug_logger(f"Checking key in jwk: {jwk}")
             if jwk.kid == kid:
                 self.debug_logger("Key matches unverified header. Using as decode secret.")
-                return jwk.dict()
+                return jwk.model_dump()
 
         raise AuthenticationError("Could not find a matching jwk")
 
