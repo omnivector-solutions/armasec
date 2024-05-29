@@ -31,8 +31,6 @@ class TokenPayload(BaseModel):
         """
         Convert a TokenPayload to the equivalent dictionary returned by `jwt.decode()`.
         """
-        print("EXPIRE? ", self.expire)
-        print("CLIENT ID? ", self.client_id)
         return dict(
             sub=self.sub,
             permissions=self.permissions,

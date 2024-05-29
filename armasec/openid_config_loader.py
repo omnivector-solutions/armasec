@@ -57,8 +57,6 @@ class OpenidConfigLoader:
         Helper method to load data from an openid connect resource.
         """
         self.debug_logger(f"Attempting to fetch from openid resource '{url}'")
-        print("URL: ", url)
-        print("TYPE URL: ", type(url))
         with AuthenticationError.handle_errors(
             message=f"Call to url {url} failed",
             do_except=partial(log_error, self.debug_logger),
