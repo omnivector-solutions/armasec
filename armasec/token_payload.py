@@ -22,8 +22,8 @@ class TokenPayload(BaseModel):
 
     sub: str
     permissions: List[str] = Field(list())
-    expire: datetime = Field(None, validation_alias=AliasChoices("exp", "expire"))
-    client_id: str = Field(None, validation_alias=AliasChoices("azp", "client_id"))
+    expire: Optional[datetime] = Field(None, validation_alias=AliasChoices("exp", "expire"))
+    client_id: Optional[str] = Field(None, validation_alias=AliasChoices("azp", "client_id"))
     original_token: Optional[str] = None
     model_config = ConfigDict(extra="allow")
 
