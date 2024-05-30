@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v2.0.1 - 2024-05-29
+
+- Restored optional TokenPayload fields.
+
+
 ## v2.0.0 - 2024-05-28
 
 - Upgraded pydantic base version to 2.7.
