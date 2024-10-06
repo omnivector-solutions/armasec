@@ -59,7 +59,7 @@ from fastapi import FastAPI, Depends
 
 app = FastAPI()
 armasec = Armasec(
-    os.environ.get("ARMASEC_DOMAIN"),
+    domain=os.environ.get("ARMASEC_DOMAIN"),
     audience=os.environ.get("ARMASEC_AUDIENCE"),
 )
 
