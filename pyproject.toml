@@ -30,7 +30,7 @@ py-buzz = "^4.1"
 
 # These must be included as a main dependency for the pytest extension to work out of the box
 respx = "^0"
-pytest = ">=6, <8"
+pytest = ">=6, <9"
 auto-name-enum = "^2"
 
 # These are needed for the "cli" extra
