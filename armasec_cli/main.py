@@ -86,7 +86,7 @@ def logout():
 def set_config(
     domain: str = typer.Option(..., help="The domain used by your OIDC provider"),
     audience: str = typer.Option(
-        ...,
+        None,
         help="The audience required by your OIDC provider",
     ),
     client_id: str = typer.Option(

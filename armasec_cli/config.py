@@ -1,6 +1,7 @@
 import json
 from functools import wraps
 from pathlib import Path
+from typing import Optional
 
 import snick
 import typer
@@ -21,7 +22,7 @@ class OidcProvider(AutoNameEnum):
 
 class Settings(BaseModel):
     oidc_domain: str
-    oidc_audience: str
+    oidc_audience: Optional[str] = None
     oidc_client_id: str
     oidc_use_https: bool = True
     oidc_max_poll_time: int = 5 * 60  # 5 minutes
