@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v2.0.3 - 2024-10-10
+
+- Made audience optional in cli
+
+## v2.0.2 - 2024-10-05
+
+- Added support for pytest 8
+
 ## v2.0.1 - 2024-05-29
 
 - Restored optional TokenPayload fields.

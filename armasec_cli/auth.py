@@ -144,7 +144,6 @@ def refresh_access_token(ctx: CliContext, token_set: TokenSet):
 
     If refresh fails, notify the user that they need to log in again.
     """
-    print("MAKE THIS FUCKING THING USE THE BASE URL")
     url = "/protocol/openid-connect/token"
     logger.debug(f"Requesting refreshed access token from {url}")
 
@@ -152,7 +151,7 @@ def refresh_access_token(ctx: CliContext, token_set: TokenSet):
         TokenSet,
         make_request(
             ctx.client,
-            "/protocol/openid-connect/token",
+            url,
             "POST",
             abort_message="The auth token could not be refreshed. Please try logging in again.",
             abort_subject="EXPIRED ACCESS TOKEN",
