@@ -2,6 +2,7 @@
 These tests verify the functionality of the TokenDecoder.
 """
 
+from uuid import uuid4
 from unittest import mock
 
 import pytest
@@ -141,19 +142,20 @@ def test_decode__permission_extractor_raises_error(rs256_jwk, build_rs256_token)
 
 def test_extract_keycloak_permissions():
     """
-    Verify the `extract_keyclaok_permissons()` works as intended.
+    Verify the `extract_keycloak_permissions()` works as intended.
 
     It should correctly extract's the client's role as the permissions to be used in the
     TokenPayload.
     """
+    client_id = uuid4()
     decoded_token = {
         "exp": 1728627701,
         "iat": 1728626801,
         "jti": "24fdb7ef-d773-4e6b-982a-b8126dd58af7",
         "sub": "dfa64115-40b5-46ab-924c-c376e73f631d",
-        "azp": "my-client",
+        "azp": client_id,
         "resource_access": {
-            "my-client": {"roles": ["read:stuff"]},
+            client_id: {"roles": ["read:stuff"]},
         },
     }
 
