@@ -37,6 +37,6 @@ When you run your app, access to the `/stuff` endpoint would be restricted to au
 whose access tokens carried the permission scope "read:stuff".
 
 For a step-by-step walk-through of how to set up Auth0 for the minimal example, see the
-["Getting Started with Auth0"](../tutorials/getting_started_with_auth0) page.
+["Getting Started with Auth0"](tutorials/getting_started_with_auth0.md) page.
 
 The above code can be found in [examples/basic.py](https://github.com/omnivector-solutions/armasec/blob/main/examples/basic.py>).

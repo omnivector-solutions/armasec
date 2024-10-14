@@ -56,7 +56,7 @@ pytest-cov = "^4"
 uvicorn = "^0.30"
 loguru = "^0.5.3"
 mkdocs-material = "^9.1.21"
-mkdocstrings = {extras = ["python"], version = "^0.22.0"}
+mkdocstrings = {version = "^0.26", extras = ["python"]}
 pygments = "^2.16.1"
 plummet = {extras = ["time-machine"], version = "^1.2.1"}
 pytest-mock = "^3.11.1"
