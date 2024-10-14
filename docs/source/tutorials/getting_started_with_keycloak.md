@@ -202,7 +202,7 @@ and this user does not have any roles mapped to it!
 ## Start up the example app
 
 ```python title="example.py" linenums="1"
-from armasec import Armasec
+from armasec import Armasec, extract_keycloak_permissions
 from fastapi import FastAPI, Depends
 
 
@@ -211,7 +211,7 @@ armasec = Armasec(
     domain="localhost:8080/realms/master",
     audience="http://keycloak.local",
     use_https=False,
-    payload_claim_mapping=dict(permissions="resource_access.armasec_tutorial.roles"),
+    permission_extractor=extract_keycloak_permissions,
     debug_logger=print,
     debug_exceptions=True,
 )
@@ -224,10 +224,10 @@ async def check_access():
 Note in this example that the `use_https` flag must be set to false to allow a local
 server using unsecured HTTP.
 
-Also not that we need to add a `payload_claim_mapping` because Keycloak does not provide
-a permissions claim at the top level. This mapping copies the roles found at
-`resource_access.armasec_tutorial.roles` to a top-level attribute of the token payload
-called permissions.
+Also not that we need to tell Armasec to use `extract_keycloak_permissions()` because
+Keycloak does not provide a permissions claim at the top level. This extractor function
+extracts the roles from `resource_access.armasec_tutorial.roles` so that they can
+be used as the "permissions" in the decoded token payload.
 
 Copy the `example.py` app to a local source file called "example.py".
 
