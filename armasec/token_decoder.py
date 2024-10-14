@@ -7,8 +7,6 @@ from __future__ import annotations
 from functools import partial
 from typing import Callable
 
-import jmespath
-import buzz
 from jose import jwt
 
 from armasec.exceptions import AuthenticationError, PayloadMappingError
@@ -30,7 +28,7 @@ class TokenDecoder:
         algorithm: str = "RS256",
         debug_logger: Callable[..., None] | None = None,
         decode_options_override: dict | None = None,
-        payload_claim_mapping: dict | None = None,
+        permission_extractor: Callable[[dict], list[str]] | None = None,
     ):
         """
         Initializes a TokenDecoder.
@@ -44,36 +42,46 @@ class TokenDecoder:
             decode_options_override: Options that can override the default behavior of the jwt
                                      decode method. For example, one can ignore token expiration by
                                      setting this to `{ "verify_exp": False }`
-            payload_claim_mapping:   Optional mappings that are applied to map claims to top-level
-                                     attribute of TokenPayload using a dict format of:
+            permission_extractor:    Optional function that may be used to extract permissions from
+                                     the decoded token dictionary when the permissions are not a
+                                     top-level claim in the token. If not provided, permissions will
+                                     be assumed to be a top-level claim in the token.
+
+                                     Consider the example token:
 
                                      ```
                                      {
-                                         "top_level_attribute": "decoded.token.JMESPath"
+                                       "exp": 1728627701,
+                                       "iat": 1728626801,
+                                       "jti": "24fdb7ef-d773-4e6b-982a-b8126dd58af7",
+                                       "sub": "dfa64115-40b5-46ab-924c-c376e73f631d",
+                                       "azp": "my-client",
+                                       "resource_access": {
+                                         "my-client": {
+                                           "roles": [
+                                             "read:stuff"
+                                           ]
+                                         },
+                                       },
                                      }
                                      ```
-                                     The values _must_ be a valid JMESPath.
 
-                                     Consider this example:
-
-                                     ```
-                                     {
-                                          "permissions": "resource_access.default.roles"
-                                     }
-                                     ```
-
-                                     The above example would result in a TokenPayload like:
+                                     In this example, the permissions are found at
+                                     `resource_access.my-client.roles`. To produce a TokenPayload
+                                     with the permissions set as expected, you could supply a
+                                     permission extractor like this:
 
                                      ```
-                                     TokenPayload(permissions=token["resource_access"]["default"]["roles"])
+                                     def my_extractor(decoded_token: dict) -> list[str]:
+                                         resource_key = decoded_token["azp"]
+                                         return decoded_token["resource_access"][resource_key]["roles"]
                                      ```
-                                     Raises a 500 if the path does not match
         """
         self.algorithm = algorithm
         self.jwks = jwks
         self.debug_logger = debug_logger if debug_logger else noop
         self.decode_options_override = decode_options_override if decode_options_override else {}
-        self.payload_claim_mapping = payload_claim_mapping if payload_claim_mapping else {}
+        self.permission_extractor = permission_extractor
 
     def get_decode_key(self, token: str) -> dict:
         """
@@ -128,18 +136,15 @@ class TokenDecoder:
             self.debug_logger(f"Raw payload dictionary is {payload_dict}")
 
         with PayloadMappingError.handle_errors(
-            "Failed to map decoded token to payload",
+            "Failed to map decoded token to TokenPayload",
             do_except=partial(log_error, self.debug_logger),
         ):
-            for payload_key, token_jmespath in self.payload_claim_mapping.items():
-                mapped_value = jmespath.search(token_jmespath, payload_dict)
-                buzz.require_condition(
-                    mapped_value is not None,
-                    f"No matching values found for claim mapping {token_jmespath} -> {payload_key}",
-                    raise_exc_class=KeyError,
+            if self.permission_extractor is not None:
+                self.debug_logger("Attempting to extract permissions.")
+                payload_dict["permissions"] = self.permission_extractor(payload_dict)
+                self.debug_logger(
+                    f"Payload dictionary with extracted permissions is {payload_dict}"
                 )
-                payload_dict[payload_key] = mapped_value
-            self.debug_logger(f"Mapped payload dictionary is {payload_dict}")
 
             self.debug_logger("Attempting to convert to TokenPayload")
             token_payload = TokenPayload(
@@ -148,3 +153,39 @@ class TokenDecoder:
             )
             self.debug_logger(f"Built token_payload as {token_payload}")
             return token_payload
+
+
+def extract_keycloak_permissions(decoded_token: dict) -> list[str]:
+    """
+    Provide a permission extractor for Keycloak.
+
+    By default, Keycloak packages the roles for a given client
+    nested within the "resource_access" claim. In order to extract
+    those roles into the expected permissions in the TokenPayload,
+    this permission_extractor can be used.
+
+    Here is an example decoded token from Keycloak (with some stuff
+    removed to improve readability):
+
+    ```
+    {
+      "exp": 1728627701,
+      "iat": 1728626801,
+      "jti": "24fdb7ef-d773-4e6b-982a-b8126dd58af7",
+      "sub": "dfa64115-40b5-46ab-924c-c376e73f631d",
+      "azp": "my-client",
+      "resource_access": {
+        "my-client": {
+          "roles": [
+            "read:stuff"
+          ]
+        },
+      },
+    }
+    ```
+
+    This extractor would extract the roles `["read:stuff"]` as the
+    permissions for the TokenPayload returned by the TokenDecoder.
+    """
+    resource_key = decoded_token["azp"]
+    return decoded_token["resource_access"][resource_key]["roles"]

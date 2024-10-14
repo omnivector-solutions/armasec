@@ -225,7 +225,7 @@ class TokenSecurity(APIKeyBase):
             loader.jwks,
             domain_config.algorithm,
             debug_logger=self.debug_logger,
-            payload_claim_mapping=domain_config.payload_claim_mapping,
+            permission_extractor=domain_config.permission_extractor,
         )
         return TokenManager(
             loader.config,

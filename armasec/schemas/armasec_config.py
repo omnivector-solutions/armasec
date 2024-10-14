@@ -2,7 +2,7 @@
 This module provides a pydantic schema describing Armasec's configuration parameters.
 """
 
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union, Callable
 
 import snick
 from pydantic import BaseModel, Field
@@ -46,12 +46,13 @@ class DomainConfig(BaseModel):
             ),
         )
     )
-    payload_claim_mapping: Optional[Dict[str, Any]] = Field(
+    permission_extractor: Optional[Callable[[Dict[str, Any]], List[str]]] = Field(
         None,
         description=snick.unwrap(
             """
-            Optional mappings that are applied to map claims to top-level properties of
-            TokenPayload. See docs for `TokenDecoder` for more info.
+            Optional function that may be used to extract permissions from the decoded token
+            dictionary when the permissions are not a top-level claim in the token.
+            See docs for `TokenDecoder` for more info.
             """
         ),
     )
