@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v2.1.0 - 2024-10-13
+
+- Refactored pemission claim mapping
+
 ## v2.0.3 - 2024-10-10
 
 - Made audience optional in cli
