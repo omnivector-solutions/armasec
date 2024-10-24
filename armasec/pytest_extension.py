@@ -4,8 +4,9 @@ This module provides a pytest plugin for testing.
 
 from collections import namedtuple
 from contextlib import _GeneratorContextManager, contextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Callable, Optional
+from uuid import uuid4
 
 import httpx
 import pytest
@@ -165,16 +166,45 @@ def build_rs256_token(rs256_private_key, rs256_iss, rs256_sub, rs256_kid):
     base_claims = dict(
         iss=rs256_iss,
         sub=rs256_sub,
-        permissions=[],
     )
     base_headers = dict(kid=rs256_kid)
 
     def _helper(
         claim_overrides: Optional[dict] = None,
         headers_overrides: Optional[dict] = None,
+        format_keycloak: bool = False,
     ):
         """
         Encode a jwt token with the default claims and headers overridden with user supplied values.
+
+        Args:
+            claim_overrides:  A dictionary of claims to add to the token.
+                              Will override any existing values upon collision
+            header_overrides: A dictionary of headers to add to the token.
+                              Will override any existing values upon collision
+            format_keycloak:  If set, will remap "permissions" provided as a part of the
+                              claim_overrides to the expected position for keycloak. If an "azp"
+                              claim is not provided in the claim_overrides, it will generate
+                              a random test client_id in the "azp" claim that matches the keycloak
+                              structure. Example keycloak structure:
+
+                              ```
+                              {
+                                "exp": 1728627701,
+                                "iat": 1728626801,
+                                "jti": "24fdb7ef-d773-4e6b-982a-b8126dd58af7",
+                                "sub": "dfa64115-40b5-46ab-924c-c376e73f631d",
+                                "azp": "my-client",
+                                "resource_access": {
+                                  "my-client": {
+                                    "roles": [
+                                      "read:stuff"
+                                    ]
+                                  },
+                                },
+                              }
+                              ```
+
         """
         if claim_overrides is None:
             claim_overrides = dict()
@@ -182,7 +212,16 @@ def build_rs256_token(rs256_private_key, rs256_iss, rs256_sub, rs256_kid):
         if headers_overrides is None:
             headers_overrides = dict()
 
-        now = int(datetime.utcnow().timestamp())
+        now = int(datetime.now(timezone.utc).timestamp())
+
+        if format_keycloak and "permissions" in claim_overrides:
+            test_client = claim_overrides.get("azp", f"test-client-{uuid4()}")
+            claim_overrides["azp"] = test_client
+            claim_overrides["resource_access"] = {
+                test_client: {
+                    "roles": claim_overrides.pop("permissions"),
+                }
+            }
 
         return jwt.encode(
             {

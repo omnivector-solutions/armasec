@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v2.1.1 - 2024-10-23
+
+- Added `format_keycloak` to `build_rs256_token()` helper
+
 ## v2.1.0 - 2024-10-13
 
 - Refactored pemission claim mapping

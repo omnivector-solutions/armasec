@@ -73,6 +73,38 @@ def test_decode__success(rs256_jwk, build_rs256_token):
     assert token_payload.original_token == token
 
 
+def test_decode__with_token_built_with_format_keycloak(rs256_jwk, build_rs256_token):
+    """
+    Verify that an RS256Decoder can successfully decode a valid jwt that was encoded with the
+    format_keycloak flag.
+    """
+    decoder = TokenDecoder(
+        JWKs(keys=[rs256_jwk]),
+        permission_extractor=extract_keycloak_permissions,
+    )
+    token = build_rs256_token(
+        claim_overrides=dict(
+            permissions=["read:stuff", "write:stuff"],
+        ),
+        format_keycloak=True,
+    )
+    token_payload = decoder.decode(token)
+    assert token_payload.permissions == ["read:stuff", "write:stuff"]
+    assert token_payload.client_id is not None
+    assert token_payload.client_id.startswith("test-client")
+
+    token = build_rs256_token(
+        claim_overrides=dict(
+            azp="my-client-id",
+            permissions=["read:stuff", "write:stuff"],
+        ),
+        format_keycloak=True,
+    )
+    token_payload = decoder.decode(token)
+    assert token_payload.permissions == ["read:stuff", "write:stuff"]
+    assert token_payload.client_id == "my-client-id"
+
+
 def test_decode__fails_when_jwt_decode_throws_an_error(rs256_jwk):
     """
     This test verifies that the ``decode()`` raises an exception with a helpful message when it
