@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v2.1.2 - 2024-10-30
+
+- Loosened FastAPI dependency constraints (with this package ever hit 1.0?)
+
 ## v2.1.1 - 2024-10-23
 
 - Added `format_keycloak` to `build_rs256_token()` helper
