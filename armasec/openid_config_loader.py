@@ -58,7 +58,7 @@ class OpenidConfigLoader:
         """
         self.debug_logger(f"Attempting to fetch from openid resource '{url}'")
         with AuthenticationError.handle_errors(
-            message=f"Call to url {url} failed",
+            f"Call to url {url} failed",
             do_except=partial(log_error, self.debug_logger),
         ):
             response = httpx.get(url)
@@ -80,7 +80,7 @@ class OpenidConfigLoader:
                 self.build_openid_config_url(self.domain, self.use_https)
             )
             with AuthenticationError.handle_errors(
-                message="openid config data was invalid",
+                "openid config data was invalid",
                 do_except=partial(log_error, self.debug_logger),
             ):
                 self._config = OpenidConfig(**data)
@@ -97,7 +97,7 @@ class OpenidConfigLoader:
             self.debug_logger("Fetching jwks")
             data = self._load_openid_resource(str(self.config.jwks_uri))
             with AuthenticationError.handle_errors(
-                message="jwks data was invalid",
+                "jwks data was invalid",
                 do_except=partial(log_error, self.debug_logger),
             ):
                 self._jwks = JWKs(**data)
