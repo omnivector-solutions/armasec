@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## v3.0.0 - 2025-05-10
+
+- Dropped support for Python 3.8
+
 ## v2.1.2 - 2024-10-30
 
 - Loosened FastAPI dependency constraints (with this package ever hit 1.0?)
@@ -31,12 +35,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Restored optional TokenPayload fields.
 
-
 ## v2.0.0 - 2024-05-28
 
 - Upgraded pydantic base version to 2.7.
 - Upgraded fastapi base version to 0.111.
-
 
 ## v1.4.0 - 2024-04-01
 
