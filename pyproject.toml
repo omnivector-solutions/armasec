@@ -1,72 +1,83 @@
-[tool.poetry]
+[project]
 name = "armasec"
-version = "3.0.0"
+version = "3.0.1"
 description = "Injectable FastAPI auth via OIDC"
-authors = ["Omnivector Engineering Team <info@omnivector.solutions>"]
-license = "MIT"
+authors = [
+    {name = "Omnivector Engineering Team", email = "info@omnivector.solutions"}
+]
+license = {text = "MIT"}
 readme = "README.md"
-homepage = "https://github.com/omnivector-solutions/armasec"
-repository = "https://github.com/omnivector-solutions/armasec"
-documentation = "https://omnivector-solutions.github.io/armasec"
-
-packages = [
-    { include = "armasec"},
-    { include = "armasec_cli"},
+requires-python = ">=3.12"
+keywords = ["fastapi", "auth", "oidc", "oauth2", "security"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: FastAPI",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "python-jose[cryptography]>=3.2,<4",
+    "fastapi>=0.116.2,<1",
+    "pydantic>=2.11.9,<3",
+    "httpx>=0.28.1,<1",
+    "snick>=2.1,<3",
+    "py-buzz>=7.3,<8",
+    "pluggy>=1.4.0,<2",
+    # These must be included as a main dependency for the pytest extension to work out of the box
+    "respx",
+    "pytest>=6,<9",
+    "auto-name-enum>=3.0.0,<4",
+    # These are needed for the "cli" extra
+    "typer>=0.12,<1",
 ]
 
-[tool.poetry.urls]
-CHANGELOG = "https://github.com/omnivector-solutions/armasec/blob/main/CHANGELOG.md"
-CONDUCT = "https://github.com/omnivector-solutions/armasec/blob/main/CONDUCT.md"
-CONTRIBUTING = "https://github.com/omnivector-solutions/armasec/blob/main/CONTRIBUTING.md"
+[project.urls]
+Homepage = "https://github.com/omnivector-solutions/armasec"
+Repository = "https://github.com/omnivector-solutions/armasec"
+Documentation = "https://omnivector-solutions.github.io/armasec"
+Changelog = "https://github.com/omnivector-solutions/armasec/blob/main/CHANGELOG.md"
+"Code of Conduct" = "https://github.com/omnivector-solutions/armasec/blob/main/CONDUCT.md"
+Contributing = "https://github.com/omnivector-solutions/armasec/blob/main/CONTRIBUTING.md"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-python-jose = {extras = ["cryptography"], version = "^3.2"}
-fastapi = ">=0.111,<1"
-pydantic = "^2.7"
-httpx = "^0"
-snick = "^2.1"
-py-buzz = "^7.3"
-pluggy = "^1.4.0"
+[project.optional-dependencies]
+cli = [
+    "loguru>=0.5.3,<1",
+    "rich>=14.1.0,<15",
+    "pendulum>=3.0.0,<4",
+    "pyperclip>=1.8.2,<2",
+]
 
-# These must be included as a main dependency for the pytest extension to work out of the box
-respx = "^0"
-pytest = ">=6, <9"
-auto-name-enum = "^2"
+[project.scripts]
+armasec = "armasec_cli.main:app"
 
-# These are needed for the "cli" extra
-typer = "^0.12"
-loguru = {version = "^0.5.3", optional = true}
-rich = {version = "^13.5.2", optional = true}
-pendulum = {version = "^3.0.0", optional = true}
-pyperclip = {version = "^1.8.2", optional = true}
-
-[tool.poetry.extras]
-cli = ["typer", "loguru", "rich", "pendulum", "pyperclip"]
-
-[tool.poetry.group.dev.dependencies]
-ipython = ">=7,<9"
-asgi-lifespan = "^1.0.1"
-pytest-asyncio = "^0"
-pytest-random-order = "^1.0.4"
-mypy = "^1.5"
-pytest-sugar = "^0.9.4"
-python-dotenv = "^0.19"
-pytest-cov = "^4"
-uvicorn = "^0.30"
-loguru = "^0.5.3"
-mkdocs-material = "^9.1.21"
-mkdocstrings = {version = "^0.26", extras = ["python"]}
-pygments = "^2.16.1"
-plummet = {extras = ["time-machine"], version = "^1.2.1"}
-pytest-mock = "^3.11.1"
-ruff = "^0.3"
-
-[tool.poetry.scripts]
-armasec = {callable = "armasec_cli.main:app", extras = ["cli"]}
-
-[tool.poetry.plugins.pytest11]
+[project.entry-points."pytest11"]
 pytest_armasec = "armasec.pytest_extension"
+
+[dependency-groups]
+dev = [
+    "ipython>=7,<9",
+    "asgi-lifespan>=2.1.0,<3",
+    "pytest-asyncio>=1.2.0",
+    "pytest-random-order>=1.0.4,<2",
+    "mypy>=1.18.1,<2",
+    "pytest-sugar>=1.1.1,<2",
+    "python-dotenv>=1.1.1,<2",
+    "pytest-cov>=7.0.0,<8",
+    "uvicorn>=0.30,<1",
+    "loguru>=0.5.3,<1",
+    "mkdocs-material>=9.6.20,<10",
+    "mkdocstrings[python]>=0.26,<1",
+    "pygments>=2.16.1,<3",
+    "plummet[time-machine]>=1.2.1,<2",
+    "pytest-mock>=3.15.1,<4",
+    "ruff>=0.13.0,<1",
+    "toml>=0.10.2",
+]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -84,5 +95,8 @@ ignore_missing_imports = true
 line-length = 100
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["armasec", "armasec_cli"]

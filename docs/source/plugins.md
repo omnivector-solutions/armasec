@@ -75,9 +75,15 @@ setup(
 )
 ```
 
-For a project that uses `poetry`, you need to include an entry in your `pyproect.toml`
+For a project that uses `pyproject.toml` (uv, poetry, etc.), you need to include an entry
 for the plugin like so:
 
+```toml title="pyproject.toml"
+[project.entry-points.'armasec']
+my-plugin = 'plugin.main'
+```
+
+For legacy poetry configurations, you can also use:
 
 ```toml title="pyproject.toml"
 [tool.poetry.plugins.'armasec']

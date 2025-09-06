@@ -11,6 +11,15 @@ The `armasec` package can be installed like any other python package. It is avai
 [PyPI](https://pypi.org/project/armasec/)
 
 
+### uv
+
+To install via `uv`, simply run:
+
+```bash
+uv add armasec
+```
+
+
 ### Poetry
 
 To install via `poetry`, simply run:

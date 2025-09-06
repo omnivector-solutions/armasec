@@ -3,36 +3,36 @@ PACKAGE_NAME:=armasec
 ROOT_DIR:=$(shell dirname $(shell pwd))
 
 install:
-	poetry install --extras=cli
+	uv sync --group dev
 
 test: install
-	poetry run pytest
+	uv run pytest
 
 mypy: install
-	poetry run mypy ${PACKAGE_NAME} --pretty
+	uv run mypy ${PACKAGE_NAME} --pretty
 
 lint: install
-	poetry run ruff check ${PACKAGE_NAME} tests armasec_cli
+	uv run ruff check ${PACKAGE_NAME} tests armasec_cli
 
 qa: test mypy lint
 	echo "All quality checks pass!"
 
 format: install
-	poetry run ruff check --fix ${PACKAGE_NAME} tests armasec_cli
-	poetry run ruff format ${PACKAGE_NAME} tests armasec_cli
+	uv run ruff check --fix ${PACKAGE_NAME} tests armasec_cli
+	uv run ruff format ${PACKAGE_NAME} tests armasec_cli
 
 example: install
-	poetry run uvicorn --host 0.0.0.0 --app-dir=examples basic:app --reload
+	uv run uvicorn --host 0.0.0.0 --app-dir=examples basic:app --reload
 
 publish: install
-	git tag v$(poetry version --short)
-	git push origin v$(poetry version --short)
+	git tag v$(uv run python -c "import toml; print(toml.load('pyproject.toml')['project']['version'])")
+	git push origin v$(uv run python -c "import toml; print(toml.load('pyproject.toml')['project']['version'])")
 
 docs: install
-	poetry run mkdocs build --config-file=docs/mkdocs.yaml
+	uv run mkdocs build --config-file=docs/mkdocs.yaml
 
 docs-serve: install
-	poetry run mkdocs serve --config-file=docs/mkdocs.yaml
+	uv run mkdocs serve --config-file=docs/mkdocs.yaml
 
 clean: clean-eggs clean-build
 	@find . -iname '*.pyc' -delete
