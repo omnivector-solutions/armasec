@@ -68,7 +68,6 @@ dev = [
     { name = "pytest-sugar" },
     { name = "python-dotenv" },
     { name = "ruff" },
-    { name = "toml" },
     { name = "uvicorn" },
 ]
 
@@ -85,7 +84,7 @@ requires-dist = [
     { name = "pyperclip", marker = "extra == 'cli'", specifier = ">=1.8.2,<2" },
     { name = "pytest", specifier = ">=6,<9" },
     { name = "python-jose", extras = ["cryptography"], specifier = ">=3.2,<4" },
-    { name = "respx" },
+    { name = "respx", specifier = ">=0.21,<1" },
     { name = "rich", marker = "extra == 'cli'", specifier = ">=14.1.0,<15" },
     { name = "snick", specifier = ">=2.1,<3" },
     { name = "typer", specifier = ">=0.12,<1" },
@@ -109,7 +108,6 @@ dev = [
     { name = "pytest-sugar", specifier = ">=1.1.1,<2" },
     { name = "python-dotenv", specifier = ">=1.1.1,<2" },
     { name = "ruff", specifier = ">=0.13.0,<1" },
-    { name = "toml", specifier = ">=0.10.2" },
     { name = "uvicorn", specifier = ">=0.30,<1" },
 ]
 
@@ -1488,15 +1486,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/73/b9/3ea4951e8293b0643feb98c0b9a176fa822154f1810835db3f282968ab10/time_machine-2.19.0-cp314-cp314t-win32.whl", hash = "sha256:0fe81bae55b7aefc2c2a34eb552aa82e6c61a86b3353a3c70df79b9698cb02ca", size = 17743, upload-time = "2025-08-19T17:21:51.948Z" },
     { url = "https://files.pythonhosted.org/packages/e4/8b/cd802884ca8a98e2b6cdc2397d57dd12ff8a7d1481e06fc3fad3d4e7e5ff/time_machine-2.19.0-cp314-cp314t-win_amd64.whl", hash = "sha256:7253791b8d7e7399fbeed7a8193cb01bc004242864306288797056badbdaf80b", size = 18956, upload-time = "2025-08-19T17:21:52.997Z" },
     { url = "https://files.pythonhosted.org/packages/c6/49/cabb1593896082fd55e34768029b8b0ca23c9be8b2dc127e0fc14796d33e/time_machine-2.19.0-cp314-cp314t-win_arm64.whl", hash = "sha256:536bd1ac31ab06a1522e7bf287602188f502dc19d122b1502c4f60b1e8efac79", size = 17068, upload-time = "2025-08-19T17:21:54.064Z" },
-]
-
-[[package]]
-name = "toml"
-version = "0.10.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f", size = 22253, upload-time = "2020-11-01T01:40:22.204Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/44/6f/7120676b6d73228c96e17f1f794d8ab046fc910d781c8d151120c3f1569e/toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b", size = 16588, upload-time = "2020-11-01T01:40:20.672Z" },
 ]
 
 [[package]]
