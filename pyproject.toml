@@ -76,7 +76,6 @@ dev = [
     "plummet[time-machine]>=1.2.1,<2",
     "pytest-mock>=3.15.1,<4",
     "ruff>=0.13.0,<1",
-    "toml>=0.10.2",
 ]
 
 [tool.pytest.ini_options]
