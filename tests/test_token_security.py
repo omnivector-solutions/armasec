@@ -71,7 +71,7 @@ async def client(app, build_secure_endpoint):
     """
     build_secure_endpoint("/secure")
     async with asgi_lifespan.LifespanManager(app):
-        async with httpx.AsyncClient(app=app, base_url="http://test") as client:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             yield client
 
 

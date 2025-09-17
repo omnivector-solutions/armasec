@@ -49,7 +49,7 @@ async def client(app):
     endpoint that requires auth via the TokenSecurity injectable.
     """
     async with asgi_lifespan.LifespanManager(app):
-        async with httpx.AsyncClient(app=app, base_url="http://armasec-test") as client:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://armasec-test") as client:
             yield client
 
 
