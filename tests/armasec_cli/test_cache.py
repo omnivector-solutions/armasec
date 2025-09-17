@@ -123,20 +123,20 @@ def test_clear_token_cache__does_not_fail_if_no_tokens_are_in_cache():
 
 
 @pytest.mark.usefixtures("override_cache_dir")
-def test_init_cache__success(tmp_path, mocker):
+def test_init_cache__success(tmp_path, monkeypatch):
     new_cache_dir = tmp_path / "cache"
-    with mocker.patch("armasec_cli.cache.cache_dir", new=new_cache_dir):
+    monkeypatch.setattr("armasec_cli.cache.cache_dir", new_cache_dir)
 
-        @init_cache
-        def _helper():
-            assert new_cache_dir.exists()
-            token_path = new_cache_dir / "token"
-            assert token_path.exists()
-            info_file_path = new_cache_dir / "info.txt"
-            assert info_file_path.exists()
-            assert "cache" in info_file_path.read_text()
+    @init_cache
+    def _helper():
+        assert new_cache_dir.exists()
+        token_path = new_cache_dir / "token"
+        assert token_path.exists()
+        info_file_path = new_cache_dir / "info.txt"
+        assert info_file_path.exists()
+        assert "cache" in info_file_path.read_text()
 
-        _helper()
+    _helper()
 
 
 @pytest.mark.usefixtures("override_cache_dir")
