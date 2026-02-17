@@ -231,6 +231,7 @@ class TokenSecurity(APIKeyBase):
             loader.config,
             decoder,
             audience=domain_config.audience,
+            ignore_audience=domain_config.ignore_audience,
             debug_logger=self.debug_logger,
         )
 
