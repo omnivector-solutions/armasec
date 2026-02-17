@@ -116,10 +116,15 @@ class TokenDecoder:
 
         Args:
             token:  The token to decode.
-            claims: Additional claims to verify in the token.
+            claims: Additional claims to verify in the token. May include an 'options' dict
+                    that will be merged with decode_options_override.
         """
         self.debug_logger(f"Attempting to decode '{token}'")
         self.debug_logger(f"  checking claims: {claims}")
+
+        # Merge any options passed in claims with decode_options_override
+        options = {**self.decode_options_override, **claims.pop("options", {})}
+
         with AuthenticationError.handle_errors(
             "Failed to decode token string",
             do_except=partial(log_error, self.debug_logger),
@@ -129,7 +134,7 @@ class TokenDecoder:
                     token,
                     self.get_decode_key(token),
                     algorithms=[self.algorithm],
-                    options=self.decode_options_override,
+                    options=options,
                     **claims,
                 )
             )

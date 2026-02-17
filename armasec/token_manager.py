@@ -28,6 +28,7 @@ class TokenManager:
         openid_config: OpenidConfig,
         token_decoder: TokenDecoder,
         audience: Optional[str] = None,
+        ignore_audience: bool = False,
         debug_logger: Optional[Callable[..., None]] = None,
         decode_options_override: Optional[dict] = None,
     ):
@@ -38,6 +39,8 @@ class TokenManager:
             openid_config:           The openid_configuration needed for claims such as 'issuer'.
             token_decoder:           The decoder used to verify jwts
             audience:                An optional audience to check in decoded tokens.
+            ignore_audience:         If true and audience is None, disable audience verification
+                                     during token decoding (sets verify_aud=False in PyJWT).
             debug_logger:            A callable, that if provided, will allow debug logging. Should
                                      be passed as a logger method like `logger.debug`
             decode_options_override: Options that can override the default behavior of the jwt
@@ -45,6 +48,7 @@ class TokenManager:
                                      setting this to `{ "verify_exp": False }`
         """
         self.audience = audience
+        self.ignore_audience = ignore_audience
         self.debug_logger = debug_logger if debug_logger else noop
         self.decode_options_override = decode_options_override if decode_options_override else {}
 
@@ -87,5 +91,14 @@ class TokenManager:
             headers: The headers from which to retrieve a JWT.
         """
         token = self.unpack_token_from_header(headers)
-        token_payload = self.token_decoder.decode(token, audience=self.audience)
+
+        # If ignore_audience is True and audience is None, disable audience verification
+        if self.ignore_audience and self.audience is None:
+            self.debug_logger(
+                "Bypassing audience verification (ignore_audience=True, audience=None)"
+            )
+            token_payload = self.token_decoder.decode(token, options={"verify_aud": False})
+        else:
+            token_payload = self.token_decoder.decode(token, audience=self.audience)
+
         return token_payload

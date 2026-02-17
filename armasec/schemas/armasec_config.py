@@ -23,6 +23,14 @@ class DomainConfig(BaseModel):
 
     domain: str = Field(str(), description="The OIDC domain where resources are loaded.")
     audience: Optional[str] = Field(None, description="Optional designation of the token audience.")
+    ignore_audience: bool = Field(
+        False,
+        description=snick.unwrap(
+            """
+            If true and audience is None, disable audience verification during token decoding.
+            """
+        ),
+    )
     algorithm: str = Field(
         "RS256", description="The the algorithm to use for decoding. Defaults to RS256."
     )

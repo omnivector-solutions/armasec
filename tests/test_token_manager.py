@@ -148,3 +148,54 @@ def test_extract_token_payload__fails_with_bad_audience(
     )
     with pytest.raises(AuthenticationError):
         manager.extract_token_payload({"Authorization": f"bearer {token}"})
+
+
+@frozen_time("2021-09-16 20:56:00")
+def test_extract_token_payload__ignore_audience_bypasses_aud_check(
+    build_rs256_token, rs256_openid_config, rs256_jwk
+):
+    """
+    This test verifies that the ``extract_token_payload()`` method successfully decodes a jwt
+    that includes an audience claim when ignore_audience is True and audience is None.
+    The audience verification should be bypassed (verify_aud=False in PyJWT).
+    """
+    jwks = JWKs(keys=[rs256_jwk])
+    decoder = TokenDecoder(jwks)
+    manager = TokenManager(rs256_openid_config, decoder, audience=None, ignore_audience=True)
+    exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
+    token = build_rs256_token(
+        claim_overrides=dict(
+            sub="me",
+            exp=exp.timestamp(),
+            aud="some-audience",
+        ),
+    )
+    # Should succeed because audience verification is bypassed
+    token_payload = manager.extract_token_payload({"Authorization": f"bearer {token}"})
+    assert token_payload.sub == "me"
+
+
+@frozen_time("2021-09-16 20:56:00")
+def test_extract_token_payload__ignore_audience_has_no_effect_when_audience_set(
+    build_rs256_token, rs256_openid_config, rs256_jwk
+):
+    """
+    This test verifies that when ignore_audience is True but audience is set,
+    the audience is still verified (ignore_audience only takes effect when audience is None).
+    """
+    jwks = JWKs(keys=[rs256_jwk])
+    decoder = TokenDecoder(jwks)
+    manager = TokenManager(
+        rs256_openid_config, decoder, audience="expected-audience", ignore_audience=True
+    )
+    exp = pendulum.parse("2021-09-17 20:56:00", tz="UTC")
+    token = build_rs256_token(
+        claim_overrides=dict(
+            sub="me",
+            exp=exp.timestamp(),
+            aud="different-audience",
+        ),
+    )
+    # Should fail because audience is set and doesn't match
+    with pytest.raises(AuthenticationError):
+        manager.extract_token_payload({"Authorization": f"bearer {token}"})
